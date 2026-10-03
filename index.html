@@ -1,134 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="my">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grade 12 Examination</title>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      min-height:100vh;
-      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:linear-gradient(135deg,#f5f8ff 0%,#eef3ff 45%,#ffffff 100%);
-      color:#172033;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:28px 18px;
-    }
-    .page{width:min(980px,100%);text-align:center}
-    .badge{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 14px;border-radius:999px;
-      background:#fff;border:1px solid #e5eaf5;
-      box-shadow:0 8px 25px rgba(30,55,100,.07);
-      font-size:13px;font-weight:700;color:#52617a;
-      margin-bottom:14px;
-    }
-    h1{font-size:clamp(28px,5vw,46px);line-height:1.1;margin-bottom:9px}
-    .subtitle{color:#66738a;font-size:15px;margin-bottom:30px}
-    .subjects{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:18px;
-    }
-    .subject{
-      appearance:none;border:1px solid #e4e9f3;background:#fff;
-      border-radius:22px;padding:26px 18px 22px;
-      min-height:180px;cursor:pointer;text-decoration:none;color:inherit;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      box-shadow:0 12px 35px rgba(37,57,91,.08);
-      transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
-    }
-    .subject:hover{transform:translateY(-5px);box-shadow:0 18px 42px rgba(37,57,91,.14);border-color:#b9c8e8}
-    .subject:active{transform:translateY(-1px)}
-    .icon{
-      width:72px;height:72px;border-radius:20px;
-      display:grid;place-items:center;margin-bottom:15px;
-      background:#f1f5ff;color:#3d64c8;
-    }
-    .icon svg{width:38px;height:38px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-    .subject h2{font-size:20px;margin-bottom:5px}
-    .subject p{font-size:12px;color:#7b879b}
-    .footer{margin-top:25px;font-size:12px;color:#8a94a6}
-    @media(max-width:720px){
-      body{padding:20px 14px}
-      .subjects{grid-template-columns:repeat(2,1fr);gap:13px}
-      .subject{min-height:155px;padding:20px 12px}
-      .icon{width:62px;height:62px;border-radius:17px;margin-bottom:12px}
-      .icon svg{width:32px;height:32px}
-      .subject h2{font-size:17px}
-    }
-    @media(max-width:390px){
-      .subjects{gap:10px}
-      .subject{min-height:145px}
-      .subject h2{font-size:16px}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Grade 12 Exam Paper Generator</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans Myanmar","Myanmar Text",sans-serif;background:#eef2f7;color:#172033}
+button,input,textarea{font:inherit}.hidden{display:none!important}
+.home{min-height:100vh;padding:32px 18px;display:flex;justify-content:center;align-items:center}.home-inner{width:min(1000px,100%);text-align:center}
+.badge{display:inline-block;background:#fff;border:1px solid #e1e6ef;padding:8px 14px;border-radius:999px;font-size:13px;color:#59677d;margin-bottom:14px}
+h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 28px}
+.subjects{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.subject{border:1px solid #e1e6ef;background:#fff;border-radius:22px;min-height:175px;padding:22px;cursor:pointer;box-shadow:0 10px 30px #17203312;transition:.2s}.subject:hover{transform:translateY(-5px);box-shadow:0 16px 38px #1720331c}.icon{width:68px;height:68px;margin:0 auto 14px;border-radius:18px;background:#f0f4ff;display:grid;place-items:center;color:#3c61c7}.icon svg{width:37px;height:37px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.subject h2{margin:0 0 4px;font-size:19px}.subject p{margin:0;color:#7a879a;font-size:12px}
+
+.app{min-height:100vh}.toolbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #dfe5ee;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.toolbar h2{margin:0 10px 0 0;font-size:18px}.btn{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}.back{background:#edf1f7}.primary{background:#315bc7;color:#fff}.green{background:#197a4b;color:#fff}.dark{background:#202938;color:#fff}
+.editor{max-width:1100px;margin:18px auto;padding:0 14px}.settings{background:#fff;border:1px solid #dfe5ee;border-radius:14px;padding:14px;margin-bottom:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.field label{display:block;font-size:12px;color:#68758a;margin-bottom:5px}.field input{width:100%;padding:10px;border:1px solid #ccd5e3;border-radius:8px}
+.paper-list{display:flex;flex-direction:column;gap:22px;align-items:center}.paper{width:210mm;min-height:297mm;background:#fff;padding:16mm 15mm;box-shadow:0 4px 20px #1720331a;position:relative;color:#111}.paper-head{text-align:center;border-bottom:1.5px solid #111;padding-bottom:8px;margin-bottom:12px}.paper-head .school{font-size:18px;font-weight:800}.paper-head .exam{font-size:20px;font-weight:900;margin:3px 0}.paper-head .subject-name{font-size:17px;font-weight:800}.meta{display:flex;justify-content:space-between;font-size:12px;margin-top:8px;gap:12px}.instructions{margin:12px 0;font-size:13px}.questions{min-height:220mm;outline:none;white-space:pre-wrap;line-height:1.75;font-size:14px}.page-num{position:absolute;bottom:8mm;left:0;right:0;text-align:center;font-size:11px;color:#555}
+.note{font-size:12px;color:#657188;text-align:center;margin:12px 0 25px}
+@media(max-width:900px){.subjects{grid-template-columns:repeat(2,1fr)}.paper{transform-origin:top center;zoom:.72}.paper-list{overflow-x:auto;align-items:flex-start}.settings{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.subjects{gap:10px}.subject{min-height:145px;padding:17px}.icon{width:58px;height:58px}.settings{grid-template-columns:1fr}.toolbar h2{width:100%}.paper{zoom:.48}}
+@media print{body{background:#fff}.toolbar,.settings,.note{display:none!important}.editor{margin:0;padding:0}.paper-list{gap:0}.paper{box-shadow:none;margin:0;break-after:page;page-break-after:always}.paper:last-child{break-after:auto}}
+</style>
 </head>
 <body>
-  <main class="page">
-    <div class="badge">🎓 Grade 12 Examination</div>
-    <h1>Choose a Subject</h1>
-    <p class="subtitle">ဘာသာရပ်တစ်ခုကို ရွေးချယ်ပါ</p>
+<section id="home" class="home">
+<div class="home-inner">
+<div class="badge">🎓 Grade 12 Examination</div>
+<h1>Choose a Subject</h1><p class="sub">ဘာသာရပ်ရွေးပြီး Exam Paper ဖန်တီးပါ</p>
+<div class="subjects">
+<button class="subject" data-subject="Myanmar" data-mm="မြန်မာစာ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M7 9h10M7 13h7M7 17h5"/></svg></div><h2>Myanmar</h2><p>မြန်မာစာ</p></button><button class="subject" data-subject="English" data-mm="အင်္ဂလိပ်စာ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h6M8 16h8"/></svg></div><h2>English</h2><p>အင်္ဂလိပ်စာ</p></button><button class="subject" data-subject="Mathematics" data-mm="သင်္ချာ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M8 9h8M12 7v4M8 15h3M15 13l-4 4M15 17l-4-4"/></svg></div><h2>Mathematics</h2><p>သင်္ချာ</p></button><button class="subject" data-subject="Chemistry" data-mm="ဓာတုဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-9V3"/><path d="M8 15h8"/></svg></div><h2>Chemistry</h2><p>ဓာတုဗေဒ</p></button><button class="subject" data-subject="Physics" data-mm="ရူပဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="4" ry="8"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(-60 12 12)"/></svg></div><h2>Physics</h2><p>ရူပဗေဒ</p></button><button class="subject" data-subject="Biology" data-mm="ဇီဝဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 20c-3.8-2.2-6-5.4-6-9.2C6 6.5 8.7 4 12 4s6 2.5 6 6.8c0 3.8-2.2 7-6 9.2z"/><path d="M12 4c0 5.5-2.5 9.3-7 11M12 8c2.5 0 4.5 1 6 3"/></svg></div><h2>Biology</h2><p>ဇီဝဗေဒ</p></button>
+</div>
+</div>
+</section>
 
-    <section class="subjects" aria-label="Grade 12 subjects">
-      <button class="subject" type="button" data-subject="Myanmar">
-        <span class="icon">
-          <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M7 9h10M7 13h7M7 17h5"/></svg>
-        </span>
-        <h2>Myanmar</h2><p>မြန်မာစာ</p>
-      </button>
+<section id="app" class="app hidden">
+<div class="toolbar">
+<button class="btn back" id="back">← Subjects</button><h2 id="selectedTitle">Exam Paper</h2>
+<button class="btn primary" id="pdf">📄 Export PDF</button>
+<button class="btn green" id="png">🖼 Export PNGs</button>
+<button class="btn dark" id="print">🖨 Print</button>
+</div>
+<div class="editor">
+<div class="settings">
+<div class="field"><label>School / Center</label><input id="school" value="School / Education Center"></div>
+<div class="field"><label>Exam Title</label><input id="exam" value="Grade 12 Examination"></div>
+<div class="field"><label>Date</label><input id="date" placeholder="DD / MM / YYYY"></div>
+<div class="field"><label>Duration</label><input id="duration" value="90 Minutes"></div>
+<div class="field"><label>Total Marks</label><input id="marks" value="50 Marks"></div>
+<div class="field"><label>Instructions</label><input id="instructions" value="Answer all questions."></div>
+</div>
+<p class="note">အောက်က စာမျက်နှာ ၄ ခုထဲမှာ မေးခွန်းတွေကို တိုက်ရိုက်ရေးနိုင်ပါတယ်။ PDF တစ်ဖိုင်အဖြစ် သို့မဟုတ် PNG ၄ ပုံအဖြစ် ထုတ်နိုင်ပါတယ်။</p>
+<div id="papers" class="paper-list"></div>
+</div>
+</section>
 
-      <button class="subject" type="button" data-subject="English">
-        <span class="icon">
-          <svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h6M8 16h8"/></svg>
-        </span>
-        <h2>English</h2><p>အင်္ဂလိပ်စာ</p>
-      </button>
-
-      <button class="subject" type="button" data-subject="Mathematics">
-        <span class="icon">
-          <svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M8 9h8M12 7v4M8 15h3M15 13l-4 4M15 17l-4-4"/></svg>
-        </span>
-        <h2>Maths</h2><p>သင်္ချာ</p>
-      </button>
-
-      <button class="subject" type="button" data-subject="Chemistry">
-        <span class="icon">
-          <svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-9V3"/><path d="M8 15h8"/></svg>
-        </span>
-        <h2>Chemistry</h2><p>ဓာတုဗေဒ</p>
-      </button>
-
-      <button class="subject" type="button" data-subject="Physics">
-        <span class="icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><path d="M12 4c2.5 0 4 3.6 4 8s-1.5 8-4 8-4-3.6-4-8 1.5-8 4-8z"/><path d="M5.1 8c1.25-2.15 5-1.55 7.8.05 2.8 1.6 4.85 4.35 3.6 6.5-1.25 2.15-5 1.55-7.8-.05C5.9 12.9 3.85 10.15 5.1 8z"/><path d="M5.1 16c-1.25-2.15.8-4.9 3.6-6.5 2.8-1.6 6.55-2.2 7.8-.05 1.25 2.15-.8 4.9-3.6 6.5-2.8 1.6-6.55 2.2-7.8.05z"/></svg>
-        </span>
-        <h2>Physics</h2><p>ရူပဗေဒ</p>
-      </button>
-
-      <button class="subject" type="button" data-subject="Biology">
-        <span class="icon">
-          <svg viewBox="0 0 24 24"><path d="M12 20c-3.8-2.2-6-5.4-6-9.2C6 6.5 8.7 4 12 4s6 2.5 6 6.8c0 3.8-2.2 7-6 9.2z"/><path d="M12 4c0 5.5-2.5 9.3-7 11M12 8c2.5 0 4.5 1 6 3"/></svg>
-        </span>
-        <h2>Biology</h2><p>ဇီဝဗေဒ</p>
-      </button>
-    </section>
-
-    <p class="footer">Select a subject to continue</p>
-  </main>
-
-  <script>
-    document.querySelectorAll(".subject").forEach(button => {
-      button.addEventListener("click", () => {
-        document.querySelectorAll(".subject").forEach(item => item.classList.remove("selected"));
-        button.classList.add("selected");
-        window.dispatchEvent(new CustomEvent("subjectSelected", {
-          detail: { subject: button.dataset.subject }
-        }));
-      });
-    });
-  </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const home=document.getElementById("home"),app=document.getElementById("app"),papers=document.getElementById("papers");
+let subject="";let subjectMM="";
+const defaults=[
+"၁။ ____________________________________________________________\n\n၂။ ____________________________________________________________\n\n၃။ ____________________________________________________________",
+"၄။ ____________________________________________________________\n\n၅။ ____________________________________________________________\n\n၆။ ____________________________________________________________",
+"၇။ ____________________________________________________________\n\n၈။ ____________________________________________________________\n\n၉။ ____________________________________________________________",
+"၁၀။ ___________________________________________________________\n\n၁၁။ ___________________________________________________________\n\n၁၂။ ___________________________________________________________"
+];
+function val(id){return document.getElementById(id).value}
+function render(){
+papers.innerHTML="";
+for(let i=1;i<=4;i++){
+ const p=document.createElement("article");p.className="paper";p.id="paper"+i;
+ p.innerHTML=`<div class="paper-head"><div class="school"></div><div class="exam"></div><div class="subject-name"></div><div class="meta"><span class="date"></span><span class="duration"></span><span class="marks"></span></div></div><div class="instructions"></div><div class="questions" contenteditable="true"></div><div class="page-num">Page ${i} / 4</div>`;
+ p.querySelector(".questions").textContent=defaults[i-1];papers.appendChild(p);
+}
+sync();
+}
+function sync(){
+document.querySelectorAll(".paper").forEach(p=>{
+p.querySelector(".school").textContent=val("school");p.querySelector(".exam").textContent=val("exam");
+p.querySelector(".subject-name").textContent=subject+" / "+subjectMM;p.querySelector(".date").textContent="Date: "+(val("date")||"____________");
+p.querySelector(".duration").textContent="Duration: "+val("duration");p.querySelector(".marks").textContent="Marks: "+val("marks");
+p.querySelector(".instructions").textContent="Instructions: "+val("instructions");
+});
+}
+document.querySelectorAll(".subject").forEach(b=>b.onclick=()=>{subject=b.dataset.subject;subjectMM=b.dataset.mm;document.getElementById("selectedTitle").textContent=subject+" / "+subjectMM;home.classList.add("hidden");app.classList.remove("hidden");render()});
+document.querySelectorAll(".settings input").forEach(x=>x.addEventListener("input",sync));
+document.getElementById("back").onclick=()=>{app.classList.add("hidden");home.classList.remove("hidden")};
+document.getElementById("print").onclick=()=>window.print();
+document.getElementById("pdf").onclick=async()=>{
+const {jsPDF}=window.jspdf;const pdf=new jsPDF("p","mm","a4");
+for(let i=1;i<=4;i++){if(i>1)pdf.addPage();const c=await html2canvas(document.getElementById("paper"+i),{scale:2,backgroundColor:"#fff",useCORS:true});pdf.addImage(c.toDataURL("image/jpeg",.95),"JPEG",0,0,210,297);}
+pdf.save((subject||"Exam")+"-Exam-Paper.pdf");
+};
+document.getElementById("png").onclick=async()=>{
+for(let i=1;i<=4;i++){const c=await html2canvas(document.getElementById("paper"+i),{scale:2,backgroundColor:"#fff",useCORS:true});const a=document.createElement("a");a.href=c.toDataURL("image/png");a.download=(subject||"Exam")+"-Page-"+i+".png";a.click();await new Promise(r=>setTimeout(r,250));}
+};
+</script>
 </body>
 </html>
