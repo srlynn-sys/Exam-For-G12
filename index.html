@@ -14,7 +14,9 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 
 .app{min-height:100vh}.toolbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #dfe5ee;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.toolbar h2{margin:0 10px 0 0;font-size:18px}.btn{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}.back{background:#edf1f7}.primary{background:#315bc7;color:#fff}.green{background:#197a4b;color:#fff}.dark{background:#202938;color:#fff}
 .editor{max-width:1100px;margin:18px auto;padding:0 14px}.settings{background:#fff;border:1px solid #dfe5ee;border-radius:14px;padding:14px;margin-bottom:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.field label{display:block;font-size:12px;color:#68758a;margin-bottom:5px}.field input{width:100%;padding:10px;border:1px solid #ccd5e3;border-radius:8px}
-.paper-list{display:flex;flex-direction:column;gap:22px;align-items:center}.paper{width:210mm;min-height:297mm;background:#fff;padding:16mm 15mm;box-shadow:0 4px 20px #1720331a;position:relative;color:#111}.paper-head{text-align:center;padding-bottom:8px;margin-bottom:12px;position:relative}.paper:not(:first-child) .paper-head{display:none}.paper:not(:first-child) .instructions{display:none}.paper-head .pto{position:absolute;right:-11mm;top:0;font-size:13px;font-weight:800;white-space:nowrap}.paper:first-child>.pto{position:absolute;right:10mm;bottom:8mm;top:auto;font-size:13px;font-weight:800;white-space:nowrap}.paper-head .year{font-size:18px;font-weight:900}.paper-head .school{font-size:18px;font-weight:800}.paper-head .exam{font-size:20px;font-weight:900;margin:3px 0}.paper-head .subject-name{font-size:17px;font-weight:800;margin-top:3px}.paper-head .time-allowed{font-size:14px;font-weight:800;margin-top:5px}.paper-head .department{font-size:15px;font-weight:800;margin:2px 0}.paper-head .pto{color:#111}.meta{display:flex;justify-content:space-between;font-size:12px;margin-top:8px;gap:12px}.instructions{margin:12px 0;font-size:13px}.questions{min-height:220mm;outline:none;white-space:pre-wrap;line-height:1.75;font-size:14px}.page-num{position:absolute;bottom:8mm;left:0;right:0;text-align:center;font-size:11px;color:#555}
+.paper-list{display:flex;flex-direction:column;gap:22px;align-items:center}.paper{width:210mm;min-height:297mm;background:#fff;padding:14mm 15mm;box-shadow:0 4px 20px #1720331a;position:relative;color:#111}.paper-head{text-align:center;padding-bottom:7px;margin-bottom:9px;position:relative}.paper-head .year{font-size:18px;font-weight:900}.paper-head .school{font-size:18px;font-weight:800}.paper-head .exam{font-size:20px;font-weight:900;margin:3px 0}.paper-head .subject-name{font-size:17px;font-weight:800;margin-top:3px}.paper-head .time-allowed{font-size:14px;font-weight:800;margin-top:5px}.paper-head .department{font-size:15px;font-weight:800;margin:2px 0}.instructions{margin:8px 0 12px;font-size:13px}.questions{outline:none;white-space:pre-wrap;line-height:1.62;font-size:13.5px}.page-num{position:absolute;bottom:7mm;left:0;right:0;text-align:center;font-size:11px;color:#555}.pto{position:absolute;right:10mm;bottom:7mm;font-size:13px;font-weight:800;white-space:nowrap}
+.section{margin:8px 0 12px}.section-title{font-weight:900;font-size:14px;margin-bottom:5px}.section-marks{font-weight:700;font-size:12px;margin-left:6px}.section-help{font-size:12px;color:#333;margin-bottom:5px}
+.english-paper .questions{min-height:235mm}.english-paper .paper-head{margin-bottom:5px}.english-paper .instructions{margin-bottom:8px}
 .note{font-size:12px;color:#657188;text-align:center;margin:12px 0 25px}
 @media(max-width:900px){.subjects{grid-template-columns:repeat(2,1fr)}.paper{transform-origin:top center;zoom:.72}.paper-list{overflow-x:auto;align-items:flex-start}.settings{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.subjects{gap:10px}.subject{min-height:145px;padding:17px}.icon{width:58px;height:58px}.settings{grid-template-columns:1fr}.toolbar h2{width:100%}.paper{zoom:.48}}
@@ -27,7 +29,12 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <div class="badge">🎓 Grade 12 Examination</div>
 <h1>Choose a Subject</h1><p class="sub">ဘာသာရပ်ရွေးပြီး Exam Paper ဖန်တီးပါ</p>
 <div class="subjects">
-<button class="subject" data-subject="Myanmar" data-mm="မြန်မာစာ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M7 9h10M7 13h7M7 17h5"/></svg></div><h2>Myanmar</h2><p>မြန်မာစာ</p></button><button class="subject" data-subject="English" data-mm="အင်္ဂလိပ်စာ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h6M8 16h8"/></svg></div><h2>English</h2><p>အင်္ဂလိပ်စာ</p></button><button class="subject" data-subject="Mathematics" data-mm="သင်္ချာ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M8 9h8M12 7v4M8 15h3M15 13l-4 4M15 17l-4-4"/></svg></div><h2>Mathematics</h2><p>သင်္ချာ</p></button><button class="subject" data-subject="Chemistry" data-mm="ဓာတုဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-9V3"/><path d="M8 15h8"/></svg></div><h2>Chemistry</h2><p>ဓာတုဗေဒ</p></button><button class="subject" data-subject="Physics" data-mm="ရူပဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="4" ry="8"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(-60 12 12)"/></svg></div><h2>Physics</h2><p>ရူပဗေဒ</p></button><button class="subject" data-subject="Biology" data-mm="ဇီဝဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 20c-3.8-2.2-6-5.4-6-9.2C6 6.5 8.7 4 12 4s6 2.5 6 6.8c0 3.8-2.2 7-6 9.2z"/><path d="M12 4c0 5.5-2.5 9.3-7 11M12 8c2.5 0 4.5 1 6 3"/></svg></div><h2>Biology</h2><p>ဇီဝဗေဒ</p></button>
+<button class="subject" data-subject="Myanmar" data-mm="မြန်မာစာ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M7 9h10M7 13h7M7 17h5"/></svg></div><h2>Myanmar</h2><p>မြန်မာစာ</p></button>
+<button class="subject" data-subject="English" data-mm="အင်္ဂလိပ်စာ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h6M8 16h8"/></svg></div><h2>English</h2><p>အင်္ဂလိပ်စာ</p></button>
+<button class="subject" data-subject="Mathematics" data-mm="သင်္ချာ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M8 9h8M12 7v4M8 15h3M15 13l-4 4M15 17l-4-4"/></svg></div><h2>Mathematics</h2><p>သင်္ချာ</p></button>
+<button class="subject" data-subject="Chemistry" data-mm="ဓာတုဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-9V3"/><path d="M8 15h8"/></svg></div><h2>Chemistry</h2><p>ဓာတုဗေဒ</p></button>
+<button class="subject" data-subject="Physics" data-mm="ရူပဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="4" ry="8"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(-60 12 12)"/></svg></div><h2>Physics</h2><p>ရူပဗေဒ</p></button>
+<button class="subject" data-subject="Biology" data-mm="ဇီဝဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 20c-3.8-2.2-6-5.4-6-9.2C6 6.5 8.7 4 12 4s6 2.5 6 6.8c0 3.8-2.2 7-6 9.2z"/><path d="M12 4c0 5.5-2.5 9.3-7 11M12 8c2.5 0 4.5 1 6 3"/></svg></div><h2>Biology</h2><p>ဇီဝဗေဒ</p></button>
 </div>
 </div>
 </section>
@@ -35,9 +42,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <section id="app" class="app hidden">
 <div class="toolbar">
 <button class="btn back" id="back">← Subjects</button><h2 id="selectedTitle">Exam Paper</h2>
-<button class="btn primary" id="pdf">📄 Export PDF</button>
-<button class="btn green" id="png">🖼 Export PNGs</button>
-<button class="btn dark" id="print">🖨 Print</button>
+<button class="btn primary" id="pdf">📄 Export PDF</button><button class="btn green" id="png">🖼 Export PNGs</button><button class="btn dark" id="print">🖨 Print</button>
 </div>
 <div class="editor">
 <div class="settings">
@@ -48,7 +53,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <div class="field"><label>Total Marks</label><input id="marks" value="50 Marks"></div>
 <div class="field"><label>Instructions</label><input id="instructions" value="WRITE YOUR ANSWERS IN THE ANSWER BOOKLET. ANSWER ALL QUESTIONS."></div>
 </div>
-<p class="note">အောက်က စာမျက်နှာ ၄ ခုထဲမှာ မေးခွန်းတွေကို တိုက်ရိုက်ရေးနိုင်ပါတယ်။ PDF တစ်ဖိုင်အဖြစ် သို့မဟုတ် PNG ၄ ပုံအဖြစ် ထုတ်နိုင်ပါတယ်။</p>
+<p class="note">အောက်က စာမျက်နှာတွေမှာ မေးခွန်းတွေကို နောက်မှ တိုက်ရိုက်ထည့်နိုင်ပါတယ်။</p>
 <div id="papers" class="paper-list"></div>
 </div>
 </section>
@@ -57,31 +62,76 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 const home=document.getElementById("home"),app=document.getElementById("app"),papers=document.getElementById("papers");
-let subject="";let subjectMM="";
-const defaults=[
+let subject="",subjectMM="";
+const genericDefaults=[
 "၁။ ____________________________________________________________\n\n၂။ ____________________________________________________________\n\n၃။ ____________________________________________________________",
 "၄။ ____________________________________________________________\n\n၅။ ____________________________________________________________\n\n၆။ ____________________________________________________________",
 "၇။ ____________________________________________________________\n\n၈။ ____________________________________________________________\n\n၉။ ____________________________________________________________",
 "၁၀။ ___________________________________________________________\n\n၁၁။ ___________________________________________________________\n\n၁၂။ ___________________________________________________________"
 ];
+
 function val(id){return document.getElementById(id).value}
-function render(){
+
+function englishTemplate(){
+return [
+[
+["I. Complete the sentences with the appropriate words. The initial letters are given.","10 marks","(1) ________________________________________________\n\n(2) ________________________________________________\n\n(3) ________________________________________________\n\n(4) ________________________________________________\n\n(5) ________________________________________________\n\n(6) ________________________________________________\n\n(7) ________________________________________________\n\n(8) ________________________________________________\n\n(9) ________________________________________________\n\n(10) _______________________________________________"],
+["II. Choose the appropriate words or phrases to complete the sentences.","10 marks","(1) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________\n\n(2) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________\n\n(3) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________\n\n(4) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________\n\n(5) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________"]
+],
+[
+["III. Rewrite the sentences according to the instructions given in brackets.","10 marks","(1) ______________________________________________________________\n\n(2) ______________________________________________________________\n\n(3) ______________________________________________________________\n\n(4) ______________________________________________________________\n\n(5) ______________________________________________________________\n\n(6) ______________________________________________________________\n\n(7) ______________________________________________________________\n\n(8) ______________________________________________________________\n\n(9) ______________________________________________________________\n\n(10) _____________________________________________________________"],
+["IV. Complete the lines of poetry with appropriate words.","5 marks","(1) ______________________________________________________________\n\n(2) ______________________________________________________________\n\n(3) ______________________________________________________________\n\n(4) ______________________________________________________________\n\n(5) ______________________________________________________________"]
+],
+[
+["VI. Read the passage.","10 marks","[PASSAGE TEXT WILL BE ADDED LATER]\n\n(A) Find the bold-faced words in the passage that are similar in meaning to the following. There is an extra.\n\n(1) ______________________________________________________________\n(2) ______________________________________________________________\n(3) ______________________________________________________________\n(4) ______________________________________________________________\n(5) ______________________________________________________________\n\n(B) Answer the following questions. Give complete answers.\n\n(6) ______________________________________________________________\n(7) ______________________________________________________________\n(8) ______________________________________________________________\n(9) ______________________________________________________________\n(10) _____________________________________________________________"]
+],
+[
+["VII. (A) Complete the dialogue with the expressions given in the box. There is an extra.","5 marks","EXPRESSIONS BOX\n_______________________________________________________________\n\n(1) ______________________________________________________________\n(2) ______________________________________________________________\n(3) ______________________________________________________________\n(4) ______________________________________________________________\n(5) ______________________________________________________________"],
+["VII. (B) Complete the exchanges, using the expressions given in the box. There is an extra.","5 marks","EXPRESSIONS BOX\n_______________________________________________________________\n\n(6) ______________________________________________________________\n(7) ______________________________________________________________\n(8) ______________________________________________________________\n(9) ______________________________________________________________\n(10) _____________________________________________________________"]
+]
+];
+}
+
+function makeSection(sec){
+const [title,marks,body]=sec;
+return '<div class="section"><div class="section-title">'+title+' <span class="section-marks">('+marks+')</span></div><div class="section-help"></div><div class="section-body" contenteditable="true">'+body+'</div></div>';
+}
+
+function renderEnglish(){
+papers.innerHTML="";
+const pages=englishTemplate();
+pages.forEach((sections,i)=>{
+const p=document.createElement("article");p.className="paper english-paper";p.id="paper"+(i+1);
+p.innerHTML='<div class="paper-head"><div class="year">2027</div><div class="exam">MATRICULATION EXAMINATIONS</div><div class="department">DEPARTMENTS OF MYANMAR EXAMINATIONS</div><div class="subject-name">ENGLISH</div><div class="time-allowed">TIME ALLOWED : '+val("duration").toUpperCase()+'</div></div><div class="instructions">'+val("instructions")+'</div><div class="questions">'+sections.map(makeSection).join("")+'</div><div class="pto">P.T.O&gt;</div><div class="page-num">Page '+(i+1)+' / 4</div>';
+papers.appendChild(p);
+});
+}
+
+function renderGeneric(){
 papers.innerHTML="";
 for(let i=1;i<=4;i++){
- const p=document.createElement("article");p.className="paper";p.id="paper"+i;
- p.innerHTML=`<div class="paper-head"><div class="pto">P.T.O&gt;</div><div class="year">2027</div><div class="exam">MATRICULATION EXAMINATIONS</div><div class="department">DEPARTMENTS OF MYANMAR EXAMINATIONS</div><div class="subject-name"></div><div class="time-allowed"></div></div><div class="instructions"><div>WRITE YOUR ANSWERS IN THE ANSWER BOOKLET.</div><div>ANSWER ALL QUESTIONS.</div></div><div class="questions" contenteditable="true"></div><div class="page-num">Page ${i} / 4</div>`;
- p.querySelector(".questions").textContent=defaults[i-1];papers.appendChild(p);
+const p=document.createElement("article");p.className="paper";p.id="paper"+i;
+p.innerHTML='<div class="paper-head"><div class="year">2027</div><div class="exam">MATRICULATION EXAMINATIONS</div><div class="department">DEPARTMENTS OF MYANMAR EXAMINATIONS</div><div class="subject-name"></div><div class="time-allowed"></div></div><div class="instructions">'+val("instructions")+'</div><div class="questions" contenteditable="true"></div><div class="pto">P.T.O&gt;</div><div class="page-num">Page '+i+' / 4</div>';
+p.querySelector(".questions").textContent=genericDefaults[i-1];papers.appendChild(p);
 }
 sync();
 }
+
+function render(){if(subject==="English")renderEnglish();else renderGeneric();}
+
 function sync(){
 document.querySelectorAll(".paper").forEach(p=>{
 p.querySelector(".subject-name").textContent=subject==="Myanmar"?"မြန်မာစာ":subject.toUpperCase();
-p.querySelector(".time-allowed").textContent="TIME ALLOWED : "+val("duration").toUpperCase();p.querySelector(".instructions").textContent=val("instructions");
+p.querySelector(".time-allowed").textContent="TIME ALLOWED : "+val("duration").toUpperCase();
 });
 }
-document.querySelectorAll(".subject").forEach(b=>b.onclick=()=>{subject=b.dataset.subject;subjectMM=b.dataset.mm;document.getElementById("selectedTitle").textContent=subject+" / "+subjectMM;home.classList.add("hidden");app.classList.remove("hidden");render()});
-document.querySelectorAll(".settings input").forEach(x=>x.addEventListener("input",sync));
+
+document.querySelectorAll(".subject").forEach(b=>b.onclick=()=>{
+subject=b.dataset.subject;subjectMM=b.dataset.mm;
+document.getElementById("selectedTitle").textContent=subject+" / "+subjectMM;
+home.classList.add("hidden");app.classList.remove("hidden");render();
+});
+document.querySelectorAll(".settings input").forEach(x=>x.addEventListener("input",()=>{if(subject==="English"){document.querySelectorAll(".time-allowed").forEach(x=>x.textContent="TIME ALLOWED : "+val("duration").toUpperCase());document.querySelector(".instructions").textContent=val("instructions")}else sync()}));
 document.getElementById("back").onclick=()=>{app.classList.add("hidden");home.classList.remove("hidden")};
 document.getElementById("print").onclick=()=>window.print();
 document.getElementById("pdf").onclick=async()=>{
