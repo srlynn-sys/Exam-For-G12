@@ -131,7 +131,7 @@ pages.forEach((sections,i)=>{
 const p=document.createElement("article");
 p.className="paper"+(subject==="Myanmar"?" myanmar-paper":"");
 p.id="paper"+(i+1);
-const header=i===0?(subject==="Myanmar"?'<div class="paper-head myanmar-head"><div class="year">၂၀၂၇ ခုနှစ်</div><div class="exam">တက္ကသိုလ်ဝင်စာမေးပွဲ</div><div class="department">မြန်မာနိုင်ငံစာစစ်ဦးစီးဌာန</div><div class="myanmar-meta"><span>မြန်မာစာ</span><span>ခွင့်ပြုချိန် ၃ နာရီ</span></div></div><div class="instructions">မေးခွန်းအားလုံးဖြေဆိုပါ။</div>':'<div class="paper-head myanmar-head"><div class="year">၂၀၂၇ ခုနှစ်</div><div class="exam">တက္ကသိုလ်ဝင်စာမေးပွဲ</div><div class="department">မြန်မာနိုင်ငံစာစစ်ဦးစီးဌာန</div><div class="myanmar-meta"><span>'+subjectMM+'</span><span>Allow time 3 hours</span></div></div><div class="instructions">မေးခွန်းအားလုံးဖြေဆိုပါ။</div>'):"";
+const header=i===0?(subject==="Myanmar"?'<div class="paper-head myanmar-head"><div class="year">၂၀၂၇ ခုနှစ်</div><div class="exam">တက္ကသိုလ်ဝင်စာမေးပွဲ</div><div class="department">မြန်မာနိုင်ငံစာစစ်ဦးစီးဌာန</div><div class="myanmar-meta"><span>မြန်မာစာ</span><span>ခွင့်ပြုချိန် ၃ နာရီ</span></div></div><div class="instructions">မေးခွန်းအားလုံးဖြေဆိုပါ။</div>':'<div class="paper-head myanmar-head"><div class="year">2027</div><div class="exam">MATRICULATION EXAMINATIONS</div><div class="department">DEPARTMENT OF MYANMAR EXAMINATIONS</div><div class="myanmar-meta"><span>'+subject.toUpperCase()+'</span><span>TIME ALLOWED : 3 HOUR</span></div></div><div class="instructions">WRITE YOUR ANSWERS IN THE ANSWER BOOKLET.<br>ANSWER ALL QUESTIONS.</div>'):"";
 p.innerHTML=header+'<div class="questions">'+sections.map(makeSection).join("")+'</div>';
 papers.appendChild(p);
 });
