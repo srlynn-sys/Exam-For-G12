@@ -72,25 +72,64 @@ const genericDefaults=[
 
 function val(id){return document.getElementById(id).value}
 
-function englishTemplate(){
-return [
-[
-["I. Complete the sentences with the appropriate words. The initial letters are given.","10 marks","(1) ________________________________________________\n\n(2) ________________________________________________\n\n(3) ________________________________________________\n\n(4) ________________________________________________\n\n(5) ________________________________________________\n\n(6) ________________________________________________\n\n(7) ________________________________________________\n\n(8) ________________________________________________\n\n(9) ________________________________________________\n\n(10) _______________________________________________"],
-["II. Choose the appropriate words or phrases to complete the sentences.","10 marks","(1) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________\n\n(2) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________\n\n(3) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________\n\n(4) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________\n\n(5) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________"]
+
+function subjectTemplate(key){
+const B=(title,marks,body)=>[title,marks,body];
+const line="______________________________________________________________";
+const many=(n)=>Array.from({length:n},(_,i)=>"("+(i+1)+") "+line).join("\n\n");
+const science={
+Chemistry:[
+ [B("SECTION (A) — Answer ALL questions.","36 marks","1. TRUE / FALSE — 10 items (1 mark each)\n\n"+many(10)),
+  B("2. Fill in the blanks with the correct word(s), notation(s), term(s), unit(s), etc.","10 marks",many(10)),
+  B("3. Choose the best answer for each question.","10 marks",many(10)),
+  B("4. Definitions / explanations / statements.","8 marks",many(8))],
+ [B("SECTION (B) — Answer ALL questions.","64 marks","6. Short questions — 6 questions × 2 marks = 12 marks\n\n"+many(6)),
+  B("7. Medium questions — answer any FIVE.","20 marks","8 questions × 4 marks; answer any 5.\n\n"+many(8)),
+  B("8. Long questions — answer any FOUR.","32 marks","6 questions × 8 marks; answer any 4.\n\n"+many(6))]
 ],
-[
-["II. Choose the appropriate words or phrases to complete the sentences. (Continued)","10 marks","(6) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________\n\n(7) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________\n\n(8) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________\n\n(9) ________________________________________________\n(A) __________________  (B) __________________  (C) __________________\n\n(10) _______________________________________________\n(A) __________________  (B) __________________  (C) __________________"],
-["III. Rewrite the sentences according to the instructions given in brackets.","10 marks","(1) ______________________________________________________________\n\n(2) ______________________________________________________________\n\n(3) ______________________________________________________________\n\n(4) ______________________________________________________________\n\n(5) ______________________________________________________________\n\n(6) ______________________________________________________________\n\n(7) ______________________________________________________________\n\n(8) ______________________________________________________________\n\n(9) ______________________________________________________________\n\n(10) _____________________________________________________________"],
-["IV. Complete the lines of poetry with appropriate words.","5 marks","(1) ______________________________________________________________\n\n(2) ______________________________________________________________\n\n(3) ______________________________________________________________\n\n(4) ______________________________________________________________\n\n(5) ______________________________________________________________"]
+Physics:[
+ [B("SECTION (A) — Answer ALL questions.","40 marks","1. TRUE / FALSE — 10 items (1 mark each)\n\n"+many(10)),
+  B("2. Fill in the blanks.","15 marks",many(15)),
+  B("3. Multiple Choice Questions — choose the correct answer.","15 marks",many(15))],
+ [B("SECTION (B) — Answer any FOUR questions.","60 marks","6 long/structured questions × 15 marks; answer any 4.\n\n"+many(6))]
 ],
-[
-["VI. Read the passage.","10 marks","[PASSAGE TEXT WILL BE ADDED LATER]\n\n(A) Find the bold-faced words in the passage that are similar in meaning to the following. There is an extra.\n\n(1) ______________________________________________________________\n(2) ______________________________________________________________\n(3) ______________________________________________________________\n(4) ______________________________________________________________\n(5) ______________________________________________________________\n\n(B) Answer the following questions. Give complete answers.\n\n(6) ______________________________________________________________\n(7) ______________________________________________________________\n(8) ______________________________________________________________\n(9) ______________________________________________________________\n(10) _____________________________________________________________"]
+Biology:[
+ [B("SECTION (A) — Answer ALL questions. No choice.","30 marks","1. TRUE / FALSE — 10 items × 1 mark\n\n"+many(10)),
+  B("2. Completion — one correct word.","10 marks",many(10)),
+  B("3. Multiple Choice — choose A, B, C or D.","10 marks",many(10))],
+ [B("SECTION (B) — Question 4: Answer ALL.","30 marks","4. Short questions — 6 questions × 5 marks.\n\n"+many(6)),
+  B("Question 5: Answer any FOUR.","40 marks","6 long questions × 10 marks; answer any 4.\n\n"+many(6))]
 ],
-[
-["VII. (A) Complete the dialogue with the expressions given in the box. There is an extra.","5 marks","EXPRESSIONS BOX\n_______________________________________________________________\n\n(1) ______________________________________________________________\n(2) ______________________________________________________________\n(3) ______________________________________________________________\n(4) ______________________________________________________________\n(5) ______________________________________________________________"],
-["VII. (B) Complete the exchanges, using the expressions given in the box. There is an extra.","5 marks","EXPRESSIONS BOX\n_______________________________________________________________\n\n(6) ______________________________________________________________\n(7) ______________________________________________________________\n(8) ______________________________________________________________\n(9) ______________________________________________________________\n(10) _____________________________________________________________"]
+Mathematics:[
+ [B("SECTION A — Objective.","10 marks","Questions 1–10. Each carries 1 mark. Choose the correct / most appropriate answer.\n\n"+many(10)),
+  B("SECTION B — Answer only the solution.","20 marks","Questions 11–20. Each carries 2 marks. No working is required.\n\n"+many(10))],
+ [B("SECTION C — Show systematic working.","30 marks","Questions 21–30. Each carries 3 marks.\n\n"+many(10))],
+ [B("SECTION D — Show systematic working.","40 marks","Questions 31–38. Each carries 5 marks.\n\n"+many(8))]
+],
+Myanmar:[
+ [B("၁။ ဓမ္မဓိဋ္ဌာန် မေးခွန်းကြီး","30 မှတ်","(က) မှား / မှန် — ၁၀ မှတ်\n\n"+many(10)+"\n\n(ခ) ကွက်လပ်ဖြည့် — ၁၀ မှတ်\n\n"+many(10)+"\n\n(ဂ) ရွေးချယ်စရာ ၃ ခုမှ အဖြေမှန်ရွေး — ၁၀ မှတ်\n\n"+many(10))],
+ [B("၂။ မေးခွန်းတိုများ","20 မှတ်","(က) ခက်ဆစ် — စကားလုံး ၇ ခုမှ ၅ ခု ဖြေ (၅ မှတ်)\n\n(ခ) အလင်္ကာ — ၇ ခုမှ ၅ ခု ဖြေ (၅ မှတ်)\n\n(ဂ) ရေသည်ပြဇာတ် စကားစပ် — ၅ မှတ်\n\n(ဃ) အပြောသင်ခန်းစာ မေးခွန်းတို — ၅ မှတ်\n\n"+many(4))],
+ [B("၃။ ကဗျာ မေးခွန်းရှည်","10 မှတ်","အဖတ်အရွတ်သင်ခန်းစာရှိ ကဗျာများမှ မေးမြန်းခြင်း။ လေ့လာမှတ်သားမှု + ကိုယ်ပိုင်အရေးအသား/တင်ပြမှုကို အကဲဖြတ်ရန်။\n\n"+line)],
+ [B("၄။ စကားပြေ မေးခွန်းရှည်","10 မှတ်","အဖတ်အရွတ်သင်ခန်းစာရှိ စကားပြေများမှ မေးမြန်းခြင်း။ မေးခွန်း၏ ရှုထောင့်နှင့်ကိုက်ညီစွာ ဖြေဆိုရန်။\n\n"+line)],
+ [B("၅။ ရေသည်ပြဇာတ် မေးခွန်းရှည်","10 မှတ်","ရေသည်ပြဇာတ်မှ အကြောင်းအရာ သို့မဟုတ် အရေးအသားဆိုင်ရာ မေးခွန်း။\n\n"+line),
+  B("၆။ စာစီစာကုံး","10 မှတ်","ခေါင်းစဉ် ၂ ခုမှ ၁ ခုရွေး။ ပုံကြမ်းအချက် ၅ ချက်ကို အခြေခံရေးသားရန်။\n\n"+many(5))],
+ [B("၇။ အဆိုဆွေးနွေးချက်","10 မှတ်","အဆို ၂ ခုအနက် ၁ ခုကို ထောက်ခံ၍ဖြစ်စေ၊ ကန့်ကွက်၍ဖြစ်စေ ဆွေးနွေးရန်။\n\nနိဒါန်း — စာကိုယ် — စာကိုယ် — နိဂုံး\n\n"+many(4))]
+],
+English:[
+ [B("I. Complete the sentences with the appropriate words. The initial letters are given.","10 marks",many(10)),
+  B("II. Choose the appropriate words or phrases to complete the sentences.","10 marks",many(10))],
+ [B("III. (A) Rewrite the sentences according to the instructions.","10 marks",many(10)),
+  B("III. (B) Complete the lines of poetry with appropriate words.","5 marks",many(5)),
+  B("IV. Give complete answers to the questions.","10 marks",many(10))],
+ [B("V. Read the passage. Answer the questions. Give complete answers.","10 marks","UNSEEN PASSAGE\n\n(A) Vocabulary / meaning questions — 5 marks\n"+many(5)+"\n(B) Comprehension / complete answers — 5 marks\n"+many(5))],
+ [B("VI. Read the passage / extract and answer as required.","10 marks","Passage / task to be inserted here.\n\n"+many(10)),
+  B("VII. (A) Finish each sentence so that it means exactly the same.","10 marks",many(10))],
+ [B("VII. (B) Write a very short paragraph using the prompts.","10 marks",many(5)),
+  B("VIII. Letter Writing — choose ONE situation.","10 marks","Write a letter. Do not write more than 300 words.\n\nOption 1: "+line+"\n\nOR\n\nOption 2: "+line)],
+ [B("IX. Essay Writing — choose ONE topic.","15 marks","Write an essay on ONE of the given topics. Do not write more than 500 words.\n\n(1) "+line+"\n\n(2) "+line+"\n\n(3) "+line)]
 ]
-];
+};
+return science[key]||[];
 }
 
 function makeSection(sec){
@@ -98,42 +137,23 @@ const [title,marks,body]=sec;
 return '<div class="section"><div class="section-title">'+title+' <span class="section-marks">('+marks+')</span></div><div class="section-body" contenteditable="true">'+body+'</div></div>';
 }
 
-function renderEnglish(){
+function renderSubject(){
 papers.innerHTML="";
-const pages=englishTemplate();
+const pages=subjectTemplate(subject);
+if(!pages.length){return;}
+const total=pages.length;
 pages.forEach((sections,i)=>{
 const p=document.createElement("article");
-p.className="paper english-paper";
+p.className="paper";
 p.id="paper"+(i+1);
-const header=i===0?'<div class="paper-head"><div class="year">2027</div><div class="exam">MATRICULATION EXAMINATIONS</div><div class="department">DEPARTMENTS OF MYANMAR EXAMINATIONS</div><div class="subject-name">ENGLISH</div><div class="time-allowed">TIME ALLOWED : '+val("duration").toUpperCase()+'</div></div><div class="instructions">'+val("instructions")+'</div>':'';
-p.innerHTML=header+'<div class="questions english-content">'+sections.map(makeSection).join("")+'</div><div class="pto">P.T.O&gt;</div><div class="page-num">Page '+(i+1)+' / 4</div>';
+const header=i===0?'<div class="paper-head"><div class="year">2027</div><div class="exam"></div><div class="department">DEPARTMENT OF MYANMAR EXAMINATIONS</div><div class="subject-name"></div><div class="time-allowed"></div></div><div class="instructions"></div>':"";
+p.innerHTML=header+'<div class="questions">'+sections.map(makeSection).join("")+'</div><div class="pto">P.T.O&gt;</div><div class="page-num">Page '+(i+1)+' / '+total+'</div>';
 papers.appendChild(p);
 });
-}
-
-function renderGeneric(){
-papers.innerHTML="";
-for(let i=1;i<=4;i++){
-const p=document.createElement("article");p.className="paper";p.id="paper"+i;
-const header=i===1?'<div class="paper-head"><div class="year">2027</div><div class="exam"></div><div class="department">DEPARTMENTS OF MYANMAR EXAMINATIONS</div><div class="subject-name"></div><div class="time-allowed"></div></div><div class="instructions"></div>':"";
-p.innerHTML=header+'<div class="questions" contenteditable="true"></div><div class="pto">P.T.O&gt;</div><div class="page-num">Page '+i+' / 4</div>';
-p.querySelector(".questions").textContent=genericDefaults[i-1];papers.appendChild(p);
-}
 sync();
 }
 
-function render(){if(subject==="English")renderEnglish();else renderGeneric();}
-
-function sync(){
-const names={Myanmar:"မြန်မာစာ",English:"ENGLISH",Mathematics:"သင်္ချာ",Chemistry:"ဓာတုဗေဒ",Physics:"ရူပဗေဒ",Biology:"ဇီဝဗေဒ"};
-document.querySelectorAll(".paper").forEach(p=>{
-const n=p.querySelector(".subject-name"); if(n) n.textContent=names[subject]||subject;
-const t=p.querySelector(".time-allowed"); if(t) t.textContent="TIME ALLOWED : "+val("duration").toUpperCase();
-const e=p.querySelector(".exam"); if(e) e.textContent=val("exam");
-const ins=p.querySelector(".instructions"); if(ins) ins.textContent=val("instructions");
-});
-}
-
+function render(){renderSubject();}
 document.querySelectorAll(".subject").forEach(b=>b.onclick=()=>{
 subject=b.dataset.subject;subjectMM=b.dataset.mm;
 document.getElementById("selectedTitle").textContent=subject+" / "+subjectMM;
@@ -182,7 +202,7 @@ return canvas;
 }
 document.getElementById("pdf").onclick=async()=>{
 const {jsPDF}=window.jspdf;const pdf=new jsPDF("p","mm","a4");
-for(let i=1;i<=4;i++){
+for(let i=1;i<=papers.querySelectorAll(".paper").length;i++){
 if(i>1)pdf.addPage();
 const c=await capturePaper(i);
 pdf.addImage(c.toDataURL("image/jpeg",.95),"JPEG",0,0,210,297);
@@ -190,7 +210,7 @@ pdf.addImage(c.toDataURL("image/jpeg",.95),"JPEG",0,0,210,297);
 pdf.save((subject||"Exam")+"-Exam-Paper.pdf");
 };
 document.getElementById("png").onclick=async()=>{
-for(let i=1;i<=4;i++){
+for(let i=1;i<=papers.querySelectorAll(".paper").length;i++){
 const c=await capturePaper(i);
 const a=document.createElement("a");
 a.href=c.toDataURL("image/png");
