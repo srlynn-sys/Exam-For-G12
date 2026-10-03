@@ -138,13 +138,55 @@ home.classList.add("hidden");app.classList.remove("hidden");render();
 document.querySelectorAll(".settings input").forEach(x=>x.addEventListener("input",()=>{if(subject==="English"){document.querySelectorAll(".time-allowed").forEach(x=>x.textContent="TIME ALLOWED : "+val("duration").toUpperCase());document.querySelectorAll(".instructions").forEach((x,i)=>x.textContent=i===0?val("instructions"):"")}else sync()}));
 document.getElementById("back").onclick=()=>{app.classList.add("hidden");home.classList.remove("hidden")};
 document.getElementById("print").onclick=()=>window.print();
+async function capturePaper(index){
+const source=document.getElementById("paper"+index);
+const clone=source.cloneNode(true);
+clone.style.setProperty("zoom","1","important");
+clone.style.setProperty("transform","none","important");
+clone.style.setProperty("width","210mm","important");
+clone.style.setProperty("height","297mm","important");
+clone.style.setProperty("min-height","297mm","important");
+clone.style.setProperty("max-height","297mm","important");
+clone.style.setProperty("margin","0","important");
+clone.style.setProperty("box-shadow","none","important");
+clone.style.setProperty("position","fixed","important");
+clone.style.setProperty("left","-10000px","important");
+clone.style.setProperty("top","0","important");
+clone.style.setProperty("overflow","hidden","important");
+clone.style.setProperty("background","#fff","important");
+document.body.appendChild(clone);
+await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+const canvas=await html2canvas(clone,{
+scale:2,
+backgroundColor:"#fff",
+useCORS:true,
+logging:false,
+width:794,
+height:1123,
+windowWidth:794,
+windowHeight:1123
+});
+clone.remove();
+return canvas;
+}
 document.getElementById("pdf").onclick=async()=>{
 const {jsPDF}=window.jspdf;const pdf=new jsPDF("p","mm","a4");
-for(let i=1;i<=4;i++){if(i>1)pdf.addPage();const c=await html2canvas(document.getElementById("paper"+i),{scale:2,backgroundColor:"#fff",useCORS:true});pdf.addImage(c.toDataURL("image/jpeg",.95),"JPEG",0,0,210,297);}
+for(let i=1;i<=4;i++){
+if(i>1)pdf.addPage();
+const c=await capturePaper(i);
+pdf.addImage(c.toDataURL("image/jpeg",.95),"JPEG",0,0,210,297);
+}
 pdf.save((subject||"Exam")+"-Exam-Paper.pdf");
 };
 document.getElementById("png").onclick=async()=>{
-for(let i=1;i<=4;i++){const c=await html2canvas(document.getElementById("paper"+i),{scale:2,backgroundColor:"#fff",useCORS:true});const a=document.createElement("a");a.href=c.toDataURL("image/png");a.download=(subject||"Exam")+"-Page-"+i+".png";a.click();await new Promise(r=>setTimeout(r,250));}
+for(let i=1;i<=4;i++){
+const c=await capturePaper(i);
+const a=document.createElement("a");
+a.href=c.toDataURL("image/png");
+a.download=(subject||"Exam")+"-Page-"+i+".png";
+a.click();
+await new Promise(r=>setTimeout(r,250));
+}
 };
 </script>
 </body>
