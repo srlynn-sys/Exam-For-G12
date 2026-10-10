@@ -54,7 +54,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <section id="app" class="app hidden">
 <div class="toolbar">
 <button class="btn back" id="back">← Subjects</button><h2 id="selectedTitle">Exam Paper</h2>
-<button class="btn primary" id="pdf">📄 Export PDF</button><button class="btn green" id="png">🖼 Export PNGs</button><button class="btn dark" id="print">🖨 Print</button>
+<button class="btn primary" id="pdf">📄 Export PDF</button><button class="btn green" id="png">🖼 Export All PNGs (ZIP)</button><button class="btn dark" id="print">🖨 Print</button>
 </div>
 <div class="editor">
 <div class="settings">
@@ -72,6 +72,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 const home=document.getElementById("home"),app=document.getElementById("app"),papers=document.getElementById("papers");
 let subject="",subjectMM="";
@@ -209,14 +210,24 @@ pdf.addImage(c.toDataURL("image/jpeg",.95),"JPEG",0,0,210,297);
 pdf.save((subject||"Exam")+"-Exam-Paper.pdf");
 };
 document.getElementById("png").onclick=async()=>{
-for(let i=1;i<=papers.querySelectorAll(".paper").length;i++){
-const c=await capturePaper(i);
-const a=document.createElement("a");
-a.href=c.toDataURL("image/png");
-a.download=(subject||"Exam")+"-Page-"+i+".png";
-a.click();
-await new Promise(r=>setTimeout(r,250));
-}
+const button=document.getElementById("png"), originalLabel=button.textContent;
+button.disabled=true; button.textContent="Preparing all pages…";
+try{
+ const zip=new JSZip(), pageCount=papers.querySelectorAll(".paper").length;
+ for(let i=1;i<=pageCount;i++){
+  button.textContent="Preparing page "+i+" / "+pageCount+"…";
+  const canvas=await capturePaper(i);
+  const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error("PNG creation failed")),"image/png"));
+  zip.file((subject||"Exam")+"-Page-"+String(i).padStart(2,"0")+".png",blob);
+ }
+ button.textContent="Creating ZIP…";
+ const archive=await zip.generateAsync({type:"blob",compression:"DEFLATE",compressionOptions:{level:4}});
+ const url=URL.createObjectURL(archive), a=document.createElement("a");
+ a.href=url; a.download=(subject||"Exam")+"-All-Pages-PNG.zip";
+ document.body.appendChild(a); a.click(); a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),2000);
+}catch(error){console.error(error);alert("PNG ထုတ်ရာတွင် အမှားဖြစ်နေပါသည်။ အင်တာနက်ချိတ်ဆက်မှုကို စစ်ဆေးပြီး ထပ်မံကြိုးစားပါ။");}
+finally{button.disabled=false;button.textContent=originalLabel;}
 };
 </script>
 </body>
