@@ -54,7 +54,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <section id="app" class="app hidden">
 <div class="toolbar">
 <button class="btn back" id="back">← Subjects</button><h2 id="selectedTitle">Exam Paper</h2>
-<button class="btn primary" id="pdf">📄 Export PDF</button><button class="btn green" id="png">🖼 Export All Pages as PNG</button><button class="btn dark" id="print">🖨 Print</button>
+<button class="btn primary" id="pdf">📄 Export PDF</button><button class="btn green" id="png">🖼 Export Separate Page PNGs (ZIP)</button><button class="btn dark" id="print">🖨 Print</button>
 </div>
 <div class="editor">
 <div class="settings">
@@ -207,43 +207,37 @@ if(i>1)pdf.addPage();
 const c=await capturePaper(i);
 pdf.addImage(c.toDataURL("image/jpeg",.95),"JPEG",0,0,210,297);
 }
-pdf.save((subject||"Exam")+"-Exam-Paper.pdf");
-};
-document.getElementById("png").onclick=async()=>{
+pdf.save((subject||"Exam")+"-Exam-Paper.pddocument.getElementById("png").onclick=async()=>{
 const button=document.getElementById("png"), originalLabel=button.textContent;
 button.disabled=true;
-let combined=null;
 try{
  const pageCount=papers.querySelectorAll(".paper").length;
  if(!pageCount) throw new Error("No pages to export");
- let pageCanvases=[];
+ if(typeof window.JSZip==="undefined") throw new Error("ZIP library could not load");
+ const zip=new window.JSZip();
  for(let i=1;i<=pageCount;i++){
   button.textContent="Preparing page "+i+" / "+pageCount+"…";
-  pageCanvases.push(await capturePaper(i));
+  const canvas=await capturePaper(i);
+  const blob=await new Promise((resolve,reject)=>{
+   if(!canvas.toBlob){reject(new Error("PNG export is unsupported in this browser"));return;}
+   canvas.toBlob(b=>b?resolve(b):reject(new Error("PNG creation failed")),"image/png");
+  });
+  zip.file((subject||"Exam")+"-Page-"+String(i).padStart(2,"0")+".png",blob,{binary:true});
+  canvas.width=1;canvas.height=1;
  }
- const pageWidth=pageCanvases[0].width, pageHeight=pageCanvases[0].height;
- combined=document.createElement("canvas");
- combined.width=pageWidth;
- combined.height=pageHeight*pageCount;
- const ctx=combined.getContext("2d");
- if(!ctx) throw new Error("Could not create image canvas");
- ctx.fillStyle="#fff";ctx.fillRect(0,0,combined.width,combined.height);
- pageCanvases.forEach((page,index)=>ctx.drawImage(page,0,index*pageHeight));
- pageCanvases.forEach(page=>{page.width=1;page.height=1;});
- button.textContent="Saving PNG…";
- const blob=await new Promise((resolve,reject)=>{
-  if(!combined.toBlob){reject(new Error("PNG export is unsupported in this browser"));return;}
-  combined.toBlob(b=>b?resolve(b):reject(new Error("PNG creation failed")),"image/png");
- });
- const url=URL.createObjectURL(blob), a=document.createElement("a");
- a.href=url; a.download=(subject||"Exam")+"-All-Pages.png"; a.style.display="none";
- document.body.appendChild(a); a.click();
- setTimeout(()=>{a.remove();URL.revokeObjectURL(url);},60000);
+ button.textContent="Packing separate PNG files…";
+ const archive=await zip.generateAsync({type:"blob",compression:"STORE"});
+ const url=URL.createObjectURL(archive);
+ const a=document.createElement("a");
+ a.href=url;a.download=(subject||"Exam")+"-Separate-Page-PNGs.zip";
+ a.style.position="fixed";a.style.left="-9999px";
+ document.body.appendChild(a);
+ a.click();
+ setTimeout(()=>{a.remove();URL.revokeObjectURL(url);},120000);
 }catch(error){
  console.error("PNG export failed:",error);
- alert("PNG မထုတ်နိုင်ပါ။ "+(error&&error.message?error.message:"Browser ပြဿနာရှိနိုင်ပါသည်.")+"\nစာမျက်နှာကို refresh လုပ်ပြီး ထပ်စမ်းကြည့်ပါ။");
+ alert("PNG မထုတ်နိုင်ပါ။ "+(error&&error.message?error.message:"Browser ပြဿနာရှိနိုင်ပါသည်။")+"\nRefresh လုပ်ပြီး ထပ်စမ်းကြည့်ပါ။");
 }finally{
- if(combined){combined.width=1;combined.height=1;}
  button.disabled=false;button.textContent=originalLabel;
 }
 };
