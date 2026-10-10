@@ -72,7 +72,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js'"></script>
 <script>
 const home=document.getElementById("home"),app=document.getElementById("app"),papers=document.getElementById("papers");
 let subject="",subjectMM="";
@@ -211,23 +211,31 @@ pdf.save((subject||"Exam")+"-Exam-Paper.pdf");
 };
 document.getElementById("png").onclick=async()=>{
 const button=document.getElementById("png"), originalLabel=button.textContent;
-button.disabled=true; button.textContent="Preparing all pages…";
+button.disabled=true;
 try{
- const zip=new JSZip(), pageCount=papers.querySelectorAll(".paper").length;
+ const pageCount=papers.querySelectorAll(".paper").length;
+ if(!pageCount) throw new Error("No pages to export");
+ if(typeof window.JSZip==="undefined") throw new Error("ZIP library could not load");
+ const zip=new window.JSZip();
  for(let i=1;i<=pageCount;i++){
   button.textContent="Preparing page "+i+" / "+pageCount+"…";
   const canvas=await capturePaper(i);
-  const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error("PNG creation failed")),"image/png"));
+  const blob=await new Promise((resolve,reject)=>{
+   if(!canvas.toBlob){reject(new Error("PNG export is unsupported in this browser"));return;}
+   canvas.toBlob(b=>b?resolve(b):reject(new Error("PNG creation failed")),"image/png");
+  });
   zip.file((subject||"Exam")+"-Page-"+String(i).padStart(2,"0")+".png",blob);
  }
  button.textContent="Creating ZIP…";
- const archive=await zip.generateAsync({type:"blob",compression:"DEFLATE",compressionOptions:{level:4}});
+ const archive=await zip.generateAsync({type:"blob",compression:"DEFLATE",compressionOptions:{level:3}});
  const url=URL.createObjectURL(archive), a=document.createElement("a");
- a.href=url; a.download=(subject||"Exam")+"-All-Pages-PNG.zip";
- document.body.appendChild(a); a.click(); a.remove();
- setTimeout(()=>URL.revokeObjectURL(url),2000);
-}catch(error){console.error(error);alert("PNG ထုတ်ရာတွင် အမှားဖြစ်နေပါသည်။ အင်တာနက်ချိတ်ဆက်မှုကို စစ်ဆေးပြီး ထပ်မံကြိုးစားပါ။");}
-finally{button.disabled=false;button.textContent=originalLabel;}
+ a.href=url; a.download=(subject||"Exam")+"-All-Pages-PNG.zip"; a.style.display="none";
+ document.body.appendChild(a); a.click();
+ setTimeout(()=>{a.remove();URL.revokeObjectURL(url);},60000);
+}catch(error){
+ console.error("PNG export failed:",error);
+ alert("PNG မထုတ်နိုင်ပါ။ "+(error&&error.message?error.message:"Browser သို့မဟုတ် အင်တာနက်ပြဿနာရှိနိုင်ပါသည်။")+"\nစာမျက်နှာကို refresh လုပ်ပြီး ထပ်စမ်းကြည့်ပါ။");
+}finally{button.disabled=false;button.textContent=originalLabel;}
 };
 </script>
 </body>
