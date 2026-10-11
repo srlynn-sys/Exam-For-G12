@@ -195,21 +195,7 @@ home.classList.add("hidden");app.classList.remove("hidden");if(customMode){custo
 document.querySelectorAll(".settings input").forEach(x=>x.addEventListener("input",()=>sync()));document.getElementById("customSubject").addEventListener("input",syncCustom);document.getElementById("customGrade").addEventListener("input",syncCustom);document.getElementById("customTime").addEventListener("input",syncCustom);document.getElementById("addPage").onclick=()=>{if(customMode){customPageCount++;renderCustomPages();}};document.getElementById("removePage").onclick=()=>{if(customMode&&customPageCount>1){customPageCount--;renderCustomPages();}};
 
 // Blank exam pages use normal text editing; no free-positioned text blocks.
-// Press Enter in a dialogue box to create the next dialogue box; Shift+Enter adds a line inside the current box.
-papers.addEventListener("keydown",event=>{
-  const current=event.target.closest(".dialogue-box");
-  if(!current || event.key!=="Enter") return;
-  if(event.shiftKey) return;
-  event.preventDefault();
-  const next=document.createElement("div");
-  next.className="dialogue-box";
-  next.contentEditable="true";
-  next.spellcheck=false;
-  next.setAttribute("aria-label","Blank dialogue answer box — type the answer here");
-  next.textContent="";
-  current.insertAdjacentElement("afterend",next);
-  next.focus();
-});
+// Keep Enter inside a dialogue box; never create a new dialogue box automatically.
 // Rich-text tools apply to selected editable question text and are included in PDF/PNG exports.
 document.querySelectorAll(".format-btn").forEach(button=>{
   button.addEventListener("mousedown",event=>event.preventDefault());
