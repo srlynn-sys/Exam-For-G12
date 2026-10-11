@@ -214,14 +214,14 @@ function insertDialogueBox(){
   const activeNode=selection && selection.anchorNode ? (selection.anchorNode.nodeType===1?selection.anchorNode:selection.anchorNode.parentElement) : null;
   const editable=activeNode && activeNode.closest('[contenteditable="true"]');
   if(!editable || !papers.contains(editable)){
-    alert("Dialogue Box ထည့်ချင်တဲ့ မေးခွန်းနေရာကို အရင်နှိပ်ပါ။");
+    alert("Dialogue Box ထည့်ချင်တဲ့ အဖြေစာသားနေရာကို အရင်နှိပ်ပါ။");
     return;
   }
   const box=document.createElement("div");
   box.className="dialogue-box";
   box.contentEditable="true";
-  box.setAttribute("aria-label","Dialogue box — type the conversation here");
-  box.textContent="A: ________________________________________________\\nB: ________________________________________________\\nA: ________________________________________________\\nB: ________________________________________________";
+  box.setAttribute("aria-label","Blank dialogue answer box — type the answer here");
+  box.textContent="";
   const range=selection.getRangeAt(0);
   range.deleteContents();
   range.insertNode(box);
