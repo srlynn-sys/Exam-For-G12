@@ -155,7 +155,19 @@ sync();
 let customMode=false,customPageCount=1;
 function syncCustom(){const subj=document.getElementById("customSubject")?.value||"",time=document.getElementById("customTime")?.value||"",meta=document.querySelector("#paper1 .custom-meta");if(meta){meta.querySelector(".custom-subject-value").textContent=subj||"________________________";meta.querySelector(".custom-time-value").textContent=time||"________________________";}}
 function sync(){if(customMode)syncCustom();}
-function renderCustomPages(){papers.innerHTML="";for(let i=1;i<=customPageCount;i++){const p=document.createElement("article");p.className="paper custom-paper";p.id="paper"+i;p.innerHTML=(i===1?'<div class="custom-school-head"><img src="assets/phoenix-spring-logo.svg" alt="Phoenix Spring High School logo"><div class="custom-school-name">Phoenix Spring High School</div><div class="custom-meta"><span>Subject: <b class="custom-subject-value">________________________</b></span><span style="text-align:right">Time Allowed: <b class="custom-time-value">________________________</b></span></div></div>':'')+'<div class="custom-writing" contenteditable="plaintext-only" spellcheck="false" aria-label="Exam paper page '+i+'">Write your questions here…</div><div class="page-num">Page '+i+'</div>';const writing=p.querySelector(".custom-writing");writing.addEventListener("focus",()=>{if(writing.textContent.trim()==="Write your questions here…")writing.textContent="";});papers.appendChild(p);}syncCustom();}
+function renderCustomPages(){
+ const oldTexts=Array.from(papers.querySelectorAll(".custom-writing")).map(el=>el.innerHTML);
+ papers.innerHTML="";
+ for(let i=1;i<=customPageCount;i++){
+  const p=document.createElement("article");p.className="paper custom-paper";p.id="paper"+i;
+  p.innerHTML=(i===1?'<div class="custom-school-head"><img src="assets/phoenix-spring-logo.svg" alt="Phoenix Spring High School logo"><div class="custom-school-name">Phoenix Spring High School</div><div class="custom-meta"><span>Subject: <b class="custom-subject-value">________________________</b></span><span style="text-align:right">Time Allowed: <b class="custom-time-value">________________________</b></span></div></div>':'')+'<div class="custom-writing" contenteditable="plaintext-only" spellcheck="false" aria-label="Exam paper page '+i+'">Write your questions here…</div><div class="page-num">Page '+i+'</div>';
+  const writing=p.querySelector(".custom-writing");
+  if(oldTexts[i-1]!==undefined) writing.innerHTML=oldTexts[i-1];
+  writing.addEventListener("focus",()=>{if(writing.textContent.trim()==="Write your questions here…")writing.textContent="";});
+  papers.appendChild(p);
+ }
+ syncCustom();
+}
 function render(){renderSubject();}
 document.querySelectorAll(".subject").forEach(b=>b.onclick=()=>{
 subject=b.dataset.subject;subjectMM=b.dataset.mm;customMode=subject==="PhoenixPaper";
