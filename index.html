@@ -33,7 +33,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 @media(max-width:900px){.subjects{grid-template-columns:repeat(2,1fr)}.paper{transform-origin:top center;zoom:.72}.paper-list{overflow-x:auto;align-items:flex-start}.settings{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.subjects{gap:10px}.subject{min-height:145px;padding:17px}.icon{width:58px;height:58px}.settings{grid-template-columns:1fr}.toolbar h2{width:100%}.paper{zoom:.48}}
 @media print{body{background:#fff}.toolbar,.settings,.note{display:none!important}.editor{margin:0;padding:0}.paper-list{gap:0}.paper{box-shadow:none;margin:0;break-after:page;page-break-after:always}.paper:last-child{break-after:auto}}
-</style>
+.custom-paper .custom-school-head{text-align:center;color:#102d68;border-bottom:2px solid #102d68;padding-bottom:9px;margin-bottom:12px}.custom-paper .custom-school-head img{width:78px;height:78px;object-fit:contain;display:block;margin:0 auto 5px}.custom-paper .custom-school-name{font-size:23px;font-weight:900;letter-spacing:.2px}.custom-paper .custom-meta{display:flex;justify-content:space-between;gap:22px;margin-top:12px;font-size:14px;font-weight:700;color:#111}.custom-paper .custom-meta span{min-width:35%;border-bottom:1px solid #555;padding:0 0 5px}.custom-paper .custom-writing{white-space:pre-wrap;outline:none;min-height:820px;font-size:14px;line-height:1.7;overflow-wrap:anywhere}.custom-paper .custom-writing:focus{outline:none}.custom-paper .custom-school-head [contenteditable=true]{outline:none}@media print{#addPage,#removePage{display:none!important}}\n</style>
 </head>
 <body>
 <section id="home" class="home">
@@ -46,6 +46,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <button class="subject" data-subject="Mathematics" data-mm="သင်္ချာ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M8 9h8M12 7v4M8 15h3M15 13l-4 4M15 17l-4-4"/></svg></div><h2>Mathematics</h2><p>သင်္ချာ</p></button>
 <button class="subject" data-subject="Chemistry" data-mm="ဓာတုဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-9V3"/><path d="M8 15h8"/></svg></div><h2>Chemistry</h2><p>ဓာတုဗေဒ</p></button>
 <button class="subject" data-subject="Physics" data-mm="ရူပဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="4" ry="8"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(-60 12 12)"/></svg></div><h2>Physics</h2><p>ရူပဗေဒ</p></button>
+<button class="subject" data-subject="PhoenixPaper" data-mm="Exam Paper"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 5 7v10l7 4 7-4V7z"/><path d="M8 13l4-5 4 5-4 3z"/></svg></div><h2>Phoenix Spring</h2><p>Custom Exam Paper</p></button>
 <button class="subject" data-subject="Biology" data-mm="ဇီဝဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 20c-3.8-2.2-6-5.4-6-9.2C6 6.5 8.7 4 12 4s6 2.5 6 6.8c0 3.8-2.2 7-6 9.2z"/><path d="M12 4c0 5.5-2.5 9.3-7 11M12 8c2.5 0 4.5 1 6 3"/></svg></div><h2>Biology</h2><p>ဇီဝဗေဒ</p></button>
 </div>
 </div>
@@ -54,7 +55,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <section id="app" class="app hidden">
 <div class="toolbar">
 <button class="btn back" id="back">← Subjects</button><h2 id="selectedTitle">Exam Paper</h2>
-<button class="btn primary" id="pdf">📄 Export PDF</button><button class="btn green" id="png">🖼 Export Separate Page PNGs (ZIP)</button><button class="btn dark" id="print">🖨 Print</button>
+<button class="btn primary" id="pdf">📄 Export PDF</button><button class="btn back hidden" id="addPage">＋ Add Page</button><button class="btn back hidden" id="removePage">− Remove Page</button><button class="btn green" id="png">🖼 Export Separate Page PNGs (ZIP)</button><button class="btn dark" id="print">🖨 Print</button>
 </div>
 <div class="editor">
 <div class="settings">
@@ -65,7 +66,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <div class="field"><label>Total Marks</label><input id="marks" value="100 Marks"></div>
 <div class="field"><label>Instructions</label><input id="instructions" value="WRITE YOUR ANSWERS IN THE ANSWER BOOKLET. ANSWER ALL QUESTIONS."></div>
 </div>
-<p class="note">အောက်က စာမျက်နှာတွေမှာ မေးခွန်းတွေကို နောက်မှ တိုက်ရိုက်ထည့်နိုင်ပါတယ်။</p>
+<div id="customFields" class="settings hidden"><div class="field"><label>Subject / ဘာသာရပ်</label><input id="customSubject" placeholder="e.g. Physics / မြန်မာစာ"></div><div class="field"><label>Time Allowed / ခွင့်ပြုချိန်</label><input id="customTime" placeholder="e.g. 2 Hours"></div></div><p class="note">အောက်က စာမျက်နှာတွေမှာ မေးခွန်းတွေကို နောက်မှ တိုက်ရိုက်ထည့်နိုင်ပါတယ်။</p>
 <div id="papers" class="paper-list"></div>
 </div>
 </section>
@@ -151,13 +152,19 @@ papers.appendChild(p);
 sync();
 }
 
+let customMode=false,customPageCount=1;
+function syncCustom(){const subj=document.getElementById("customSubject")?.value||"",time=document.getElementById("customTime")?.value||"",meta=document.querySelector("#paper1 .custom-meta");if(meta){meta.querySelector(".custom-subject-value").textContent=subj||"________________________";meta.querySelector(".custom-time-value").textContent=time||"________________________";}}
+function sync(){if(customMode)syncCustom();}
+function renderCustomPages(){papers.innerHTML="";for(let i=1;i<=customPageCount;i++){const p=document.createElement("article");p.className="paper custom-paper";p.id="paper"+i;p.innerHTML=(i===1?'<div class="custom-school-head"><img src="assets/phoenix-spring-logo.jpg" alt="Phoenix Spring High School logo"><div class="custom-school-name">Phoenix Spring High School</div><div class="custom-meta"><span>Subject: <b class="custom-subject-value">________________________</b></span><span style="text-align:right">Time Allowed: <b class="custom-time-value">________________________</b></span></div></div>':'')+'<div class="custom-writing" contenteditable="plaintext-only" spellcheck="false" aria-label="Exam paper page '+i+'">Write your questions here…</div><div class="page-num">Page '+i+'</div>';const writing=p.querySelector(".custom-writing");writing.addEventListener("focus",()=>{if(writing.textContent.trim()==="Write your questions here…")writing.textContent="";});papers.appendChild(p);}syncCustom();}
 function render(){renderSubject();}
 document.querySelectorAll(".subject").forEach(b=>b.onclick=()=>{
-subject=b.dataset.subject;subjectMM=b.dataset.mm;
-document.getElementById("selectedTitle").textContent=subject+" / "+subjectMM;
-home.classList.add("hidden");app.classList.remove("hidden");render();
+subject=b.dataset.subject;subjectMM=b.dataset.mm;customMode=subject==="PhoenixPaper";
+document.getElementById("selectedTitle").textContent=customMode?"Phoenix Spring High School — Exam Paper":subject+" / "+subjectMM;
+document.getElementById("customFields").classList.toggle("hidden",!customMode);document.getElementById("addPage").classList.toggle("hidden",!customMode);document.getElementById("removePage").classList.toggle("hidden",!customMode);
+document.querySelector(".editor .settings:not(#customFields)").classList.toggle("hidden",customMode);document.querySelector(".editor .note").classList.toggle("hidden",customMode);
+home.classList.add("hidden");app.classList.remove("hidden");if(customMode){customPageCount=1;renderCustomPages();}else render();
 });
-document.querySelectorAll(".settings input").forEach(x=>x.addEventListener("input",()=>sync()));
+document.querySelectorAll(".settings input").forEach(x=>x.addEventListener("input",()=>sync()));document.getElementById("customSubject").addEventListener("input",syncCustom);document.getElementById("customTime").addEventListener("input",syncCustom);document.getElementById("addPage").onclick=()=>{if(customMode){customPageCount++;renderCustomPages();}};document.getElementById("removePage").onclick=()=>{if(customMode&&customPageCount>1){customPageCount--;renderCustomPages();}};
 document.getElementById("back").onclick=()=>{app.classList.add("hidden");home.classList.remove("hidden")};
 document.getElementById("print").onclick=()=>window.print();
 async function capturePaper(index){
@@ -207,7 +214,9 @@ if(i>1)pdf.addPage();
 const c=await capturePaper(i);
 pdf.addImage(c.toDataURL("image/jpeg",.95),"JPEG",0,0,210,297);
 }
-pdf.save((subject||"Exam")+"-Exam-Paper.pddocument.getElementById("png").onclick=async()=>{
+pdf.save((subject||"Exam")+"-Exam-Paper.pdf");
+};
+document.getElementById("png").onclick=async()=>{
 const button=document.getElementById("png"), originalLabel=button.textContent;
 button.disabled=true;
 try{
