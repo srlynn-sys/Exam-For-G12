@@ -196,6 +196,23 @@ document.querySelectorAll(".settings input").forEach(x=>x.addEventListener("inpu
 
 // Blank exam pages use normal text editing; no free-positioned text blocks.
 // Keep Enter inside a dialogue box; never create a new dialogue box automatically.
+// Prevent the browser from splitting a dialogue-box into a second box on Enter.
+papers.addEventListener("keydown",event=>{
+  const box=event.target.closest(".dialogue-box");
+  if(!box || event.key!=="Enter") return;
+  event.preventDefault();
+  const selection=window.getSelection();
+  if(!selection || selection.rangeCount===0) return;
+  const range=selection.getRangeAt(0);
+  if(!box.contains(range.startContainer) && range.startContainer!==box) return;
+  range.deleteContents();
+  const br=document.createElement("br");
+  range.insertNode(br);
+  range.setStartAfter(br);
+  range.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(range);
+});
 // Rich-text tools apply to selected editable question text and are included in PDF/PNG exports.
 document.querySelectorAll(".format-btn").forEach(button=>{
   button.addEventListener("mousedown",event=>event.preventDefault());
