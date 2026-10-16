@@ -178,7 +178,25 @@ function syncCustom(){
  const first=document.getElementById("paper1"); if(!first)return;
  const meta=first.querySelector(".custom-meta"),name=first.querySelector(".custom-school-name"),img=first.querySelector(".custom-school-head img");
  if(name)name.textContent=school||"School Name";
- if(img){img.src=logo;img.classList.toggle("logo-empty",!logo);img.onerror=()=>{img.classList.add("logo-empty");};img.onload=()=>{img.classList.remove("logo-empty");};}
+ if(img){
+ img.onerror=null;img.onload=null;
+ img.classList.toggle("logo-empty",!logo);
+ if(!logo){img.removeAttribute("src");}
+ else{
+  const cleanLogo=logo.replace(/\\/+$/,"");
+  let triedFallback=false;
+  img.onload=()=>{img.classList.remove("logo-empty");};
+  img.onerror=()=>{
+   if(!triedFallback){
+    triedFallback=true;
+    const match=cleanLogo.match(/^https?:\\/\\/lh3\\.googleusercontent\\.com\\/d\\/([^/?#]+)/i);
+    if(match){img.src="https://drive.google.com/thumbnail?id="+encodeURIComponent(match[1])+"&sz=w1000";return;}
+   }
+   img.classList.add("logo-empty");
+  };
+  img.src=cleanLogo;
+ }
+}
  if(meta){meta.querySelector(".custom-subject-value").textContent=subj||"________________";meta.querySelector(".custom-grade-value").textContent=grade||"__________";meta.querySelector(".custom-time-value").textContent=time||"________________";}
 }
 function sync(){if(customMode)syncCustom();}
