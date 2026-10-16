@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <title>Grade 12 Exam Paper Generator</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans Myanmar","Myanmar Text",sans-serif;background:#eef2f7;color:#172033}
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans Myanmar","Myanmar Text","Noto Sans",system-ui,sans-serif;background:#eef2f7;color:#172033}
 button,input,textarea{font:inherit}.hidden{display:none!important}
 .home{min-height:100vh;padding:32px 18px;display:flex;justify-content:center;align-items:center}.home-inner{width:min(1000px,100%);text-align:center}
 .badge{display:inline-block;background:#fff;border:1px solid #e1e6ef;padding:8px 14px;border-radius:999px;font-size:13px;color:#59677d;margin-bottom:14px}
@@ -29,12 +32,12 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 .physics-paper .physics-sub{text-align:center;font-size:11pt;font-style:italic;font-weight:400;margin:0 0 9px}
 .physics-paper .section-title{font-size:12.5pt;font-weight:700;text-align:left}
 .physics-paper .section-marks{float:right;font-size:10.5pt;font-weight:400}
-.physics-paper .section-body{font-family:Arial,Helvetica,sans-serif;font-size:11pt;font-weight:400;line-height:1.45;text-align:left}
+.physics-paper .section-body{font-family:"Noto Sans Myanmar","Noto Sans",Arial,Helvetica,sans-serif;font-size:11pt;font-weight:400;line-height:1.45;text-align:left}
 .note{font-size:12px;color:#657188;text-align:center;margin:12px 0 25px}
 @media(max-width:900px){.subjects{grid-template-columns:repeat(2,1fr)}.paper{transform-origin:top center;zoom:.72}.paper-list{overflow-x:auto;align-items:flex-start}.settings{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.subjects{gap:10px}.subject{min-height:145px;padding:17px}.icon{width:58px;height:58px}.settings{grid-template-columns:1fr}.toolbar h2{width:100%}.paper{zoom:.48}}
 @media print{body{background:#fff}.toolbar,.settings,.note{display:none!important}.editor{margin:0;padding:0}.paper-list{gap:0}.paper{box-shadow:none;margin:0;break-after:page;page-break-after:always}.paper:last-child{break-after:auto}}
-.custom-paper .custom-school-head{text-align:center;color:#102d68;border-bottom:2px solid #102d68;padding-bottom:9px;margin-bottom:12px}.custom-paper .custom-school-head img{width:78px;height:78px;object-fit:contain;display:block;margin:0 auto 5px}.custom-paper .custom-school-name{font-size:23px;font-weight:900;letter-spacing:.2px}.custom-paper .custom-meta{display:grid;grid-template-columns:1fr .7fr 1fr;align-items:end;gap:12px;margin-top:12px;font-size:14px;font-weight:700;color:#111}.custom-paper .custom-meta span{min-width:0;border-bottom:1px solid #555;padding:0 0 5px}.custom-paper .custom-writing{white-space:pre-wrap;outline:none;min-height:820px;font-size:14px;line-height:1.7;overflow-wrap:anywhere}.custom-paper .custom-writing:focus{outline:none}.custom-paper .custom-school-head [contenteditable=true]{outline:none}@media print{#addPage,#removePage{display:none!important}}\n</style>
+.custom-paper .custom-school-head{text-align:center;color:#102d68;border-bottom:2px solid #102d68;padding-bottom:9px;margin-bottom:12px}.custom-paper .custom-school-head img{width:78px;height:78px;object-fit:contain;display:block;margin:0 auto 5px}.custom-paper .custom-school-head img.logo-empty{display:none}.custom-paper .custom-meta{font-family:"Noto Sans Myanmar","Myanmar Text","Noto Sans",sans-serif}.custom-paper .custom-school-name{font-size:23px;font-weight:900;letter-spacing:.2px}.custom-paper .custom-meta{display:grid;grid-template-columns:1fr .7fr 1fr;align-items:end;gap:12px;margin-top:12px;font-size:14px;font-weight:700;color:#111}.custom-paper .custom-meta span{min-width:0;border-bottom:1px solid #555;padding:0 0 5px}.custom-paper .custom-writing{white-space:pre-wrap;outline:none;min-height:820px;font-size:14px;line-height:1.7;overflow-wrap:anywhere}.custom-paper .custom-writing:focus{outline:none}.custom-paper .custom-school-head [contenteditable=true]{outline:none}@media print{#addPage,#removePage{display:none!important}}\n</style>
 </head>
 <body>
 <section id="home" class="home">
@@ -48,6 +51,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <button class="subject" data-subject="Chemistry" data-mm="ဓာတုဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-9V3"/><path d="M8 15h8"/></svg></div><h2>Chemistry</h2><p>ဓာတုဗေဒ</p></button>
 <button class="subject" data-subject="Physics" data-mm="ရူပဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="4" ry="8"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(-60 12 12)"/></svg></div><h2>Physics</h2><p>ရူပဗေဒ</p></button>
 <button class="subject" data-subject="PhoenixPaper" data-mm="Exam Paper"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 5 7v10l7 4 7-4V7z"/><path d="M8 13l4-5 4 5-4 3z"/></svg></div><h2>Phoenix Spring</h2><p>Custom Exam Paper</p></button>
+<button class="subject" data-subject="CustomPaper" data-mm="Custom Exam Paper"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h5M8 16h8"/></svg></div><h2>Custom Exam Paper</h2><p>ကိုယ်ပိုင် Logo / Grade / Subject</p></button>
 <button class="subject" data-subject="Biology" data-mm="ဇီဝဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 20c-3.8-2.2-6-5.4-6-9.2C6 6.5 8.7 4 12 4s6 2.5 6 6.8c0 3.8-2.2 7-6 9.2z"/><path d="M12 4c0 5.5-2.5 9.3-7 11M12 8c2.5 0 4.5 1 6 3"/></svg></div><h2>Biology</h2><p>ဇီဝဗေဒ</p></button>
 </div>
 </div>
@@ -80,7 +84,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <div class="field"><label>Total Marks</label><input id="marks" value="100 Marks"></div>
 <div class="field"><label>Instructions</label><input id="instructions" value="WRITE YOUR ANSWERS IN THE ANSWER BOOKLET. ANSWER ALL QUESTIONS."></div>
 </div>
-<div id="customFields" class="settings hidden"><div class="field"><label>Subject / ဘာသာရပ်</label><input id="customSubject" placeholder="e.g. Physics / မြန်မာစာ"></div><div class="field"><label>Grade / အတန်း</label><input id="customGrade" placeholder="e.g. Grade 12"></div><div class="field"><label>Time Allowed / ခွင့်ပြုချိန်</label><input id="customTime" placeholder="e.g. 2 Hours"></div></div><p class="note">အောက်က စာမျက်နှာတွေမှာ မေးခွန်းတွေကို နောက်မှ တိုက်ရိုက်ထည့်နိုင်ပါတယ်။</p>
+<div id="customFields" class="settings hidden"><div class="field"><label>Logo URL / Logo ပုံလင့်ခ်</label><input id="customLogo" type="url" placeholder="https://example.com/logo.png"></div><div class="field"><label>School Name / ကျောင်းအမည်</label><input id="customSchool" placeholder="School Name"></div><div class="field"><label>Subject / ဘာသာရပ်</label><input id="customSubject" placeholder="e.g. Physics / မြန်မာစာ"></div><div class="field"><label>Grade / အတန်း</label><input id="customGrade" placeholder="e.g. Grade 12"></div><div class="field"><label>Time Allowed / ခွင့်ပြုချိန်</label><input id="customTime" placeholder="e.g. 2 Hours"></div></div><p class="note">အောက်က စာမျက်နှာတွေမှာ မေးခွန်းတွေကို နောက်မှ တိုက်ရိုက်ထည့်နိုင်ပါတယ်။</p>
 <div id="papers" class="paper-list"></div>
 </div>
 </section>
@@ -169,14 +173,21 @@ sync();
 }
 
 let customMode=false,customPageCount=1;
-function syncCustom(){const subj=document.getElementById("customSubject")?.value||"",grade=document.getElementById("customGrade")?.value||"",time=document.getElementById("customTime")?.value||"",meta=document.querySelector("#paper1 .custom-meta");if(meta){meta.querySelector(".custom-subject-value").textContent=subj||"________________";meta.querySelector(".custom-grade-value").textContent=grade||"__________";meta.querySelector(".custom-time-value").textContent=time||"________________";}}
+function syncCustom(){
+ const subj=document.getElementById("customSubject")?.value||"",grade=document.getElementById("customGrade")?.value||"",time=document.getElementById("customTime")?.value||"",school=document.getElementById("customSchool")?.value||"",logo=document.getElementById("customLogo")?.value.trim()||"";
+ const first=document.getElementById("paper1"); if(!first)return;
+ const meta=first.querySelector(".custom-meta"),name=first.querySelector(".custom-school-name"),img=first.querySelector(".custom-school-head img");
+ if(name)name.textContent=school||"School Name";
+ if(img){img.src=logo;img.classList.toggle("logo-empty",!logo);img.onerror=()=>{img.classList.add("logo-empty");};img.onload=()=>{img.classList.remove("logo-empty");};}
+ if(meta){meta.querySelector(".custom-subject-value").textContent=subj||"________________";meta.querySelector(".custom-grade-value").textContent=grade||"__________";meta.querySelector(".custom-time-value").textContent=time||"________________";}
+}
 function sync(){if(customMode)syncCustom();}
 function renderCustomPages(){
  const oldTexts=Array.from(papers.querySelectorAll(".custom-writing")).map(el=>el.innerHTML);
  papers.innerHTML="";
  for(let i=1;i<=customPageCount;i++){
   const p=document.createElement("article");p.className="paper custom-paper";p.id="paper"+i;
-  p.innerHTML=(i===1?'<div class="custom-school-head"><img src="assets/phoenix-spring-logo.svg" alt="Phoenix Spring High School logo"><div class="custom-school-name">Phoenix Spring High School</div><div class="custom-meta"><span>Subject: <b class="custom-subject-value">________________</b></span><span style="text-align:center">Grade: <b class="custom-grade-value">__________</b></span><span style="text-align:right">Time Allowed: <b class="custom-time-value">________________</b></span></div></div>':'')+'<div class="custom-writing" contenteditable="true" spellcheck="false" aria-label="Exam paper page '+i+'">Write your questions here…</div><div class="page-num">Page '+i+'</div>';
+  p.innerHTML=(i===1?'<div class="custom-school-head"><img class="logo-empty" src="" alt="School logo"><div class="custom-school-name">School Name</div><div class="custom-meta"><span>Subject: <b class="custom-subject-value">________________</b></span><span style="text-align:center">Grade: <b class="custom-grade-value">__________</b></span><span style="text-align:right">Time Allowed: <b class="custom-time-value">________________</b></span></div></div>':'')+'<div class="custom-writing" contenteditable="true" spellcheck="false" aria-label="Exam paper page '+i+'">Write your questions here…</div><div class="page-num">Page '+i+'</div>';
   const writing=p.querySelector(".custom-writing");
   if(oldTexts[i-1]!==undefined) writing.innerHTML=oldTexts[i-1];
   writing.addEventListener("focus",()=>{if(writing.textContent.trim()==="Write your questions here…")writing.textContent="";});
@@ -192,7 +203,7 @@ document.getElementById("customFields").classList.toggle("hidden",!customMode);d
 document.querySelector(".editor .settings:not(#customFields)").classList.toggle("hidden",customMode);document.querySelector(".editor .note").classList.toggle("hidden",customMode);
 home.classList.add("hidden");app.classList.remove("hidden");if(customMode){customPageCount=1;renderCustomPages();}else render();
 });
-document.querySelectorAll(".settings input").forEach(x=>x.addEventListener("input",()=>sync()));document.getElementById("customSubject").addEventListener("input",syncCustom);document.getElementById("customGrade").addEventListener("input",syncCustom);document.getElementById("customTime").addEventListener("input",syncCustom);document.getElementById("addPage").onclick=()=>{if(customMode){customPageCount++;renderCustomPages();}};document.getElementById("removePage").onclick=()=>{if(customMode&&customPageCount>1){customPageCount--;renderCustomPages();}};
+document.querySelectorAll(".settings input").forEach(x=>x.addEventListener("input",()=>sync()));document.getElementById("customSubject").addEventListener("input",syncCustom);document.getElementById("customGrade").addEventListener("input",syncCustom);document.getElementById("customTime").addEventListener("input",syncCustom);document.getElementById("customSchool").addEventListener("input",syncCustom);document.getElementById("customLogo").addEventListener("input",syncCustom);document.getElementById("addPage").onclick=()=>{if(customMode){customPageCount++;renderCustomPages();}};document.getElementById("removePage").onclick=()=>{if(customMode&&customPageCount>1){customPageCount--;renderCustomPages();}};
 
 // Blank exam pages use normal text editing; no free-positioned text blocks.
 // Keep Enter inside a dialogue box; never create a new dialogue box automatically.
