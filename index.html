@@ -183,13 +183,13 @@ function syncCustom(){
  img.classList.toggle("logo-empty",!logo);
  if(!logo){img.removeAttribute("src");}
  else{
-  const cleanLogo=logo.replace(/\\/+$/,"");
+  const cleanLogo=logo.replace(/\/+$/,"");
   let triedFallback=false;
   img.onload=()=>{img.classList.remove("logo-empty");};
   img.onerror=()=>{
    if(!triedFallback){
     triedFallback=true;
-    const match=cleanLogo.match(/^https?:\\/\\/lh3\\.googleusercontent\\.com\\/d\\/([^/?#]+)/i);
+    const match=cleanLogo.match(/^https?:\/\/lh3\.googleusercontent\.com\/d\/([^/?#]+)/i);
     if(match){img.src="https://drive.google.com/thumbnail?id="+encodeURIComponent(match[1])+"&sz=w1000";return;}
    }
    img.classList.add("logo-empty");
