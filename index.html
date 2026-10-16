@@ -292,10 +292,12 @@ function wrapSelectionInBox(){
 document.getElementById("back").onclick=()=>{app.classList.add("hidden");home.classList.remove("hidden")};
 document.getElementById("print").onclick=()=>window.print();
 async function capturePaper(index){
+if(typeof window.html2canvas!=="function") throw new Error("PDF/PNG capture library failed to load. Please reload the page and try again.");
 if(document.fonts&&document.fonts.ready) await document.fonts.ready;
 const source=document.getElementById("paper"+index);
 if(!source) throw new Error("Paper "+index+" not found");
 const clone=source.cloneNode(true);
+try{
 clone.style.setProperty("zoom","1","important");
 clone.style.setProperty("transform","none","important");
 clone.style.setProperty("width","794px","important");
@@ -317,29 +319,52 @@ clone.style.setProperty("font-size","13px","important");
 clone.querySelectorAll(".section").forEach(x=>x.style.setProperty("break-inside","avoid","important"));
 document.body.appendChild(clone);
 await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-const canvas=await html2canvas(clone,{
-scale:2,
-backgroundColor:"#fff",
-useCORS:true,
-logging:false,
-width:794,
-height:1123,
-windowWidth:794,
-windowHeight:1123,
-scrollX:0,
-scrollY:0
+const images=Array.from(clone.querySelectorAll("img"));
+await Promise.all(images.map(async img=>{
+if(img.complete) return;
+await new Promise(resolve=>{
+const done=()=>resolve();
+img.addEventListener("load",done,{once:true});
+img.addEventListener("error",done,{once:true});
+setTimeout(done,2500);
 });
+}));
+images.forEach(img=>{if(!img.complete||!img.naturalWidth) img.style.display="none";});
+try{
+return await html2canvas(clone,{scale:2,backgroundColor:"#fff",useCORS:true,allowTaint:false,logging:false,width:794,height:1123,windowWidth:794,windowHeight:1123,scrollX:0,scrollY:0});
+}catch(firstError){
+/* A remote logo without CORS permission must not block the paper export. */
+images.forEach(img=>img.style.setProperty("display","none","important"));
+return await html2canvas(clone,{scale:2,backgroundColor:"#fff",useCORS:true,allowTaint:false,logging:false,width:794,height:1123,windowWidth:794,windowHeight:1123,scrollX:0,scrollY:0});
+}
+}finally{
 clone.remove();
-return canvas;
+}
 }
 document.getElementById("pdf").onclick=async()=>{
-const {jsPDF}=window.jspdf;const pdf=new jsPDF("p","mm","a4");
-for(let i=1;i<=papers.querySelectorAll(".paper").length;i++){
+const button=document.getElementById("pdf");
+const originalLabel=button.textContent;
+if(button.disabled) return;
+button.disabled=true;
+try{
+if(!window.jspdf||typeof window.jspdf.jsPDF!=="function") throw new Error("PDF library failed to load. Check your internet connection, then reload the page.");
+const pageCount=papers.querySelectorAll(".paper").length;
+if(!pageCount) throw new Error("No exam pages found. Please open or prepare the exam paper first.");
+const pdf=new window.jspdf.jsPDF("p","mm","a4");
+for(let i=1;i<=pageCount;i++){
+button.textContent="Preparing PDF "+i+" / "+pageCount+"…";
 if(i>1)pdf.addPage();
 const c=await capturePaper(i);
 pdf.addImage(c.toDataURL("image/jpeg",.95),"JPEG",0,0,210,297);
 }
 pdf.save((subject||"Exam")+"-Exam-Paper.pdf");
+}catch(error){
+console.error("PDF export failed:",error);
+alert("PDF ထုတ်မရပါ။ "+(error&&error.message?error.message:"Unknown error")+"\nInternet connection စစ်ပြီး page ကို reload လုပ်ကာ ထပ်စမ်းပါ။");
+}finally{
+button.disabled=false;
+button.textContent=originalLabel;
+}
 };
 document.getElementById("png").onclick=async()=>{
 const button=document.getElementById("png"), originalLabel=button.textContent;
