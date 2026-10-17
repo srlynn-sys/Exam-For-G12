@@ -37,7 +37,20 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 @media(max-width:900px){.subjects{grid-template-columns:repeat(2,1fr)}.paper{transform-origin:top center;zoom:.72}.paper-list{overflow-x:auto;align-items:flex-start}.settings{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.subjects{gap:10px}.subject{min-height:145px;padding:17px}.icon{width:58px;height:58px}.settings{grid-template-columns:1fr}.toolbar h2{width:100%}.paper{zoom:.48}}
 @media print{body{background:#fff}.toolbar,.settings,.note{display:none!important}.editor{margin:0;padding:0}.paper-list{gap:0}.paper{box-shadow:none;margin:0;break-after:page;page-break-after:always}.paper:last-child{break-after:auto}}
-.custom-paper .custom-school-head{text-align:center;color:#102d68;border-bottom:2px solid #102d68;padding-bottom:9px;margin-bottom:12px}.custom-paper .custom-school-head img{width:78px;height:78px;object-fit:contain;display:block;margin:0 auto 5px}.custom-paper .custom-school-head img.logo-empty{display:none}.custom-paper .custom-meta{font-family:"Noto Sans Myanmar","Myanmar Text","Noto Sans",sans-serif}.custom-paper .custom-school-name{font-size:23px;font-weight:900;letter-spacing:.2px}.custom-paper .custom-meta{display:grid;grid-template-columns:1fr .7fr 1fr;align-items:end;gap:12px;margin-top:12px;font-size:14px;font-weight:700;color:#111}.custom-paper .custom-meta span{min-width:0;border-bottom:1px solid #555;padding:0 0 5px}.custom-paper .custom-writing{white-space:pre-wrap;outline:none;min-height:820px;font-size:14px;line-height:1.7;overflow-wrap:anywhere}.custom-paper .custom-writing:focus{outline:none}.custom-paper .custom-school-head [contenteditable=true]{outline:none}@media print{#addPage,#removePage{display:none!important}}\n</style>
+.custom-paper .custom-school-head{text-align:center;color:#102d68;border-bottom:2px solid #102d68;padding-bottom:9px;margin-bottom:12px}.custom-paper .custom-school-head img{width:78px;height:78px;object-fit:contain;display:block;margin:0 auto 5px}.custom-paper .custom-school-head img.logo-empty{display:none}.custom-paper .custom-meta{font-family:"Noto Sans Myanmar","Myanmar Text","Noto Sans",sans-serif}.custom-paper .custom-school-name{font-size:23px;font-weight:900;letter-spacing:.2px}.custom-paper .custom-meta{display:grid;grid-template-columns:1fr .7fr 1fr;align-items:end;gap:12px;margin-top:12px;font-size:14px;font-weight:700;color:#111}.custom-paper .custom-meta span{min-width:0;border-bottom:1px solid #555;padding:0 0 5px}.custom-paper .custom-writing{white-space:pre-wrap;outline:none;min-height:820px;font-size:14px;line-height:1.7;overflow-wrap:anywhere}.custom-paper .custom-writing:focus{outline:none}.custom-paper .custom-school-head [contenteditable=true]{outline:none}@media print{#addPage,#removePage{display:none!important}}\n
+/* Keep text-formatting tools reachable without scrolling back to the top. */
+.format-bubble{position:fixed;right:14px;bottom:18px;z-index:1001;border:0;border-radius:999px;background:#315bc7;color:#fff;padding:13px 16px;min-height:48px;box-shadow:0 8px 24px #17203335;display:flex;align-items:center;gap:8px;font-weight:800;cursor:pointer}
+.format-bubble span{font-size:12px}
+.format-toolbar{display:none;position:fixed!important;top:auto!important;right:12px;bottom:76px;z-index:1000;width:min(230px,calc(100vw - 24px));max-height:min(65vh,520px);overflow-y:auto;overscroll-behavior:contain;background:#fff;border:1px solid #cbd5e4;border-radius:16px;padding:12px;box-shadow:0 12px 36px #17203330;flex-direction:column;align-items:stretch;gap:8px}
+.format-toolbar.open{display:flex}
+.format-toolbar .format-label{margin:0 0 3px;font-size:14px}
+.format-toolbar .format-btn{width:100%;min-height:40px;text-align:left;padding:9px 12px}
+.format-toolbar .format-divider{width:100%;height:0;border-left:0;border-top:1px solid #d2dbea;margin:2px 0}
+.format-toolbar .format-help{width:auto;margin:2px 0 0;font-size:11px;line-height:1.5}
+@media(min-width:900px){.format-bubble{right:20px;bottom:24px}.format-toolbar{right:20px;bottom:84px}}
+@media print{.format-bubble,.format-toolbar{display:none!important}}
+
+</style>
 </head>
 <body>
 <section id="home" class="home">
@@ -62,6 +75,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <button class="btn back" id="back">← Subjects</button><h2 id="selectedTitle">Exam Paper</h2>
 <button class="btn primary" id="pdf">📄 Export PDF</button><button class="btn back hidden" id="addPage">＋ Add Page</button><button class="btn back hidden" id="removePage">− Remove Page</button><button class="btn green" id="png">🖼 Export Separate Page PNGs (ZIP)</button><button class="btn dark" id="print">🖨 Print</button>
 </div>
+<button type="button" class="format-bubble" id="formatBubble" aria-expanded="false" aria-controls="formatToolbar" title="စာသားပြင်ဆင်ရေးကိရိယာများ">Aa <span>စာသားပြင်ရန်</span></button>
 <div class="format-toolbar" id="formatToolbar" aria-label="Text formatting tools">
 <span class="format-label">စာသားပုံစံ</span>
 <button type="button" class="format-btn" data-command="bold" title="Bold"><b>B</b> Bold</button>
@@ -270,6 +284,13 @@ papers.addEventListener("keydown",event=>{
   selection.addRange(range);
 });
 // Rich-text tools apply to selected editable question text and are included in PDF/PNG exports.
+const formatBubble=document.getElementById("formatBubble");
+const formatToolbar=document.getElementById("formatToolbar");
+formatBubble.addEventListener("mousedown",event=>event.preventDefault());
+formatBubble.addEventListener("click",()=>{
+  const isOpen=formatToolbar.classList.toggle("open");
+  formatBubble.setAttribute("aria-expanded",String(isOpen));
+});
 document.querySelectorAll(".format-btn").forEach(button=>{
   button.addEventListener("mousedown",event=>event.preventDefault());
   button.addEventListener("click",()=>{
