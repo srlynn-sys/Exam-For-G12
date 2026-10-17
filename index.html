@@ -290,7 +290,6 @@ const formatToolbar=document.getElementById("formatToolbar");
 document.body.appendChild(formatBubble);
 document.body.appendChild(formatToolbar);
 formatBubble.addEventListener("mousedown",event=>event.preventDefault());
-formatBubble.addEventListener("touchstart",event=>{event.preventDefault();},{passive:false});
 formatBubble.addEventListener("click",()=>{
   const isOpen=formatToolbar.classList.toggle("open");
   formatBubble.setAttribute("aria-expanded",String(isOpen));
