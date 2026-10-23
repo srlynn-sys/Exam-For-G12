@@ -6,6 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous">
 <title>Grade 12 Exam Paper Generator</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:"Noto Sans Myanmar","Myanmar Text","Noto Sans",system-ui,sans-serif;background:#eef2f7;color:#172033}
@@ -45,6 +46,30 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 .english-essay-heading{text-align:center;margin-top:7px!important}.english-essay-topics{text-align:center}.english-essay-topics p{text-align:center;margin:3px 0 5px}.english-letter-prompt p{line-height:1.05}.english-paper .english-content{font-size:7.8pt;line-height:1.04}.english-paper .english-section-title{font-size:8.7pt}.english-paper .english-content h3.english-subtitle{font-size:7.8pt}.english-paper .english-questions li{margin-bottom:1px}.english-paper .english-passage{font-size:7.6pt;line-height:1.05}.english-paper .english-passage p{margin-bottom:3px}.english-paper .english-dialogue{margin-bottom:2px}.english-paper .essay-answer-space{height:8mm}
 .english-dialogue-box{border:1px solid #333;padding:4px 6px;margin:3px 0 5px;display:block;}
 .english-dialogue-box .english-dialogue{margin:0 0 3px;}.english-essay-topics p{margin:3px 0 6px}.english-letter-prompt{border:0!important;padding:0!important;margin:4px 0 6px!important}
+
+/* Scientific symbols and math editor — additive feature, existing paper layouts stay unchanged. */
+.science-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.science-toggle{border:0;border-radius:10px;padding:9px 12px;background:#174f8b;color:#fff;font-weight:800;cursor:pointer}
+.science-panel{display:none;margin:10px 0 16px;background:#fff;border:1px solid #d7e0ec;border-radius:14px;padding:14px;box-shadow:0 8px 24px #17203310}
+.science-panel.open{display:block}
+.science-panel h3{font-size:15px;margin:0 0 8px;color:#24334c}
+.science-group{margin:0 0 12px}
+.science-symbols{display:flex;flex-wrap:wrap;gap:6px}
+.science-symbol{min-width:42px;min-height:38px;padding:6px 9px;border:1px solid #d5deeb;background:#f8faff;border-radius:8px;cursor:pointer;font-family:"STIX Two Math","Cambria Math","Noto Sans",serif;font-size:17px;color:#172033}
+.science-symbol:hover,.science-symbol:focus{background:#e8efff;border-color:#7694d7}
+.science-help{font-size:12px;color:#637189;margin:7px 0 0}
+.math-dialog{display:none;position:fixed;inset:0;z-index:2000;background:#11182780;align-items:center;justify-content:center;padding:16px}
+.math-dialog.open{display:flex}
+.math-card{width:min(680px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:18px;box-shadow:0 20px 70px #0004}
+.math-card h2{font-size:20px;margin:0 0 6px}
+.math-card label{display:block;font-size:13px;font-weight:700;margin:12px 0 5px}
+.math-card textarea{width:100%;min-height:95px;border:1px solid #ccd5e3;border-radius:10px;padding:11px;font-family:ui-monospace,monospace;font-size:15px;resize:vertical}
+.math-preview{min-height:72px;overflow:auto;border:1px dashed #b8c6da;border-radius:10px;padding:15px;background:#fbfcff;display:flex;align-items:center;justify-content:center;font-size:22px}
+.math-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-top:13px}
+.math-render{display:inline-block;vertical-align:middle;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:1px 2px}
+.math-render .katex{font-size:1em}
+.science-symbol:focus-visible,.science-toggle:focus-visible{outline:3px solid #a9c1ff;outline-offset:2px}
+@media print{.science-panel,.math-dialog{display:none!important}}
 </style>
 </head>
 <body>
@@ -86,6 +111,30 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <span class="format-help">စာသားကို select လုပ်ပြီး ခလုတ်နှိပ်ပါ။</span>
 </div>
 </div>
+<div class="science-tools" style="padding:10px 16px 0;max-width:1100px;margin:auto">
+<button type="button" class="science-toggle" id="scienceToggle" aria-expanded="false">∑ Scientific Symbols</button>
+<button type="button" class="science-toggle" id="openMathEditor" style="background:#197a4b">√ Math Editor</button>
+<span class="science-help">Physics · Chemistry · Mathematics · Biology · English · Other subjects</span>
+</div>
+<div class="science-panel" id="sciencePanel" style="max-width:1100px;margin:10px auto 16px">
+<div class="science-group"><h3>Physics &amp; Mathematics — Greek letters / operators</h3><div class="science-symbols">
+<button type="button" class="science-symbol" data-insert="α">α</button><button type="button" class="science-symbol" data-insert="β">β</button><button type="button" class="science-symbol" data-insert="θ">θ</button><button type="button" class="science-symbol" data-insert="λ">λ</button><button type="button" class="science-symbol" data-insert="μ">μ</button><button type="button" class="science-symbol" data-insert="π">π</button><button type="button" class="science-symbol" data-insert="ρ">ρ</button><button type="button" class="science-symbol" data-insert="σ">σ</button><button type="button" class="science-symbol" data-insert="φ">φ</button><button type="button" class="science-symbol" data-insert="ω">ω</button><button type="button" class="science-symbol" data-insert="Δ">Δ</button><button type="button" class="science-symbol" data-insert="Ω">Ω</button><button type="button" class="science-symbol" data-insert="±">±</button><button type="button" class="science-symbol" data-insert="×">×</button><button type="button" class="science-symbol" data-insert="÷">÷</button><button type="button" class="science-symbol" data-insert="≈">≈</button><button type="button" class="science-symbol" data-insert="≠">≠</button><button type="button" class="science-symbol" data-insert="≤">≤</button><button type="button" class="science-symbol" data-insert="≥">≥</button><button type="button" class="science-symbol" data-insert="∞">∞</button><button type="button" class="science-symbol" data-insert="∑">∑</button><button type="button" class="science-symbol" data-insert="∫">∫</button><button type="button" class="science-symbol" data-insert="∂">∂</button><button type="button" class="science-symbol" data-insert="√">√</button><button type="button" class="science-symbol" data-insert="∇">∇</button><button type="button" class="science-symbol" data-insert="→">→</button><button type="button" class="science-symbol" data-insert="⃗">⃗</button>
+</div></div>
+<div class="science-group"><h3>Chemistry — subscripts, superscripts, ions, reaction arrows</h3><div class="science-symbols">
+<button type="button" class="science-symbol" data-insert="₀">₀</button><button type="button" class="science-symbol" data-insert="₁">₁</button><button type="button" class="science-symbol" data-insert="₂">₂</button><button type="button" class="science-symbol" data-insert="₃">₃</button><button type="button" class="science-symbol" data-insert="₄">₄</button><button type="button" class="science-symbol" data-insert="₅">₅</button><button type="button" class="science-symbol" data-insert="₆">₆</button><button type="button" class="science-symbol" data-insert="₇">₇</button><button type="button" class="science-symbol" data-insert="₈">₈</button><button type="button" class="science-symbol" data-insert="₉">₉</button><button type="button" class="science-symbol" data-insert="⁰">⁰</button><button type="button" class="science-symbol" data-insert="¹">¹</button><button type="button" class="science-symbol" data-insert="²">²</button><button type="button" class="science-symbol" data-insert="³">³</button><button type="button" class="science-symbol" data-insert="⁺">⁺</button><button type="button" class="science-symbol" data-insert="⁻">⁻</button><button type="button" class="science-symbol" data-insert="⇌">⇌</button><button type="button" class="science-symbol" data-insert="→">→</button><button type="button" class="science-symbol" data-insert="°">°</button><button type="button" class="science-symbol" data-insert="·">·</button>
+</div><p class="science-help">ဥပမာ — H₂SO₄, Ca(OH)₂, Na⁺, SO₄²⁻, 2H₂ + O₂ → 2H₂O</p></div>
+<div class="science-group"><h3>Biology &amp; general science</h3><div class="science-symbols">
+<button type="button" class="science-symbol" data-insert="♂">♂</button><button type="button" class="science-symbol" data-insert="♀">♀</button><button type="button" class="science-symbol" data-insert="↑">↑</button><button type="button" class="science-symbol" data-insert="↓">↓</button><button type="button" class="science-symbol" data-insert="℃">℃</button><button type="button" class="science-symbol" data-insert="℉">℉</button><button type="button" class="science-symbol" data-insert="µ">µ</button><button type="button" class="science-symbol" data-insert="‰">‰</button><button type="button" class="science-symbol" data-insert="©">©</button><button type="button" class="science-symbol" data-insert="®">®</button><button type="button" class="science-symbol" data-insert="✓">✓</button><button type="button" class="science-symbol" data-insert="★">★</button>
+</div></div>
+<p class="science-help">အသုံးပြုရန် — စာသားထည့်မည့်နေရာကို နှိပ်ပါ (သို့) စာသားကို select လုပ်ထားပြီး symbol ကိုနှိပ်ပါ။ Formula အတွက် Math Editor ကိုသုံးပါ။</p>
+</div>
+<div class="math-dialog" id="mathDialog" role="dialog" aria-modal="true" aria-labelledby="mathDialogTitle">
+<div class="math-card"><h2 id="mathDialogTitle">Scientific Math Editor</h2><p class="science-help">LaTeX ကိုရိုက်ထည့်ပါ။ Preview ကိုစစ်ပြီး စာမေးပွဲစာရွက်ထဲ Insert လုပ်နိုင်ပါတယ်။</p>
+<label for="mathLatex">Formula (LaTeX)</label><textarea id="mathLatex" spellcheck="false">\frac{-b\pm\sqrt{b^2-4ac}}{2a}</textarea>
+<label>Preview</label><div class="math-preview" id="mathPreview" aria-live="polite"></div>
+<p class="science-help">ဥပမာ: \frac{a}{b}, \sqrt{x}, x^2, H_2SO_4, \sum_{i=1}^{n} i, \int_0^1 x^2\,dx</p>
+<div class="math-actions"><button type="button" class="btn back" id="cancelMath">Cancel</button><button type="button" class="btn green" id="insertMath">Insert Formula</button></div>
+</div></div>
 <div class="editor">
 <div class="settings">
 <div class="field"><label>School / Center</label><input id="school" value="School / Education Center"></div>
@@ -103,6 +152,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js'"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" crossorigin="anonymous"></script>
 <script>
 const home=document.getElementById("home"),app=document.getElementById("app"),papers=document.getElementById("papers");
 let subject="",subjectMM="";
@@ -412,6 +462,88 @@ function wrapSelectionInBox(current){
     savedFormatEditable=editable;
   }catch(error){console.error("Could not add text box",error);}
 }
+
+
+// Scientific symbol panel and LaTeX math editor. Kept separate from existing formatting/export logic.
+(function initScientificTools(){
+ const panel=document.getElementById("sciencePanel");
+ const toggle=document.getElementById("scienceToggle");
+ const dialog=document.getElementById("mathDialog");
+ const latexInput=document.getElementById("mathLatex");
+ const preview=document.getElementById("mathPreview");
+ if(!panel||!toggle||!dialog||!latexInput||!preview)return;
+ toggle.addEventListener("click",()=>{
+   const open=panel.classList.toggle("open");
+   toggle.setAttribute("aria-expanded",String(open));
+ });
+ function activeEditable(){
+   const sel=window.getSelection();
+   if(sel&&sel.rangeCount){
+     const n=sel.getRangeAt(0).commonAncestorContainer;
+     const el=n.nodeType===1?n:n.parentElement;
+     const candidate=el&&el.closest('[contenteditable="true"]');
+     if(candidate&&papers.contains(candidate))return candidate;
+   }
+   if(savedFormatEditable&&papers.contains(savedFormatEditable))return savedFormatEditable;
+   return null;
+ }
+ function restoreScienceRange(editable){
+   const sel=window.getSelection();
+   if(savedFormatRange&&savedFormatEditable===editable&&editable.contains(savedFormatRange.commonAncestorContainer)){
+     sel.removeAllRanges();sel.addRange(savedFormatRange);return sel.getRangeAt(0);
+   }
+   const r=document.createRange();r.selectNodeContents(editable);r.collapse(false);return r;
+ }
+ function insertNodeAtCaret(node){
+   const editable=activeEditable();
+   if(!editable){
+     alert("Symbol သို့မဟုတ် formula ထည့်မည့် မေးခွန်းစာသား / စာရေးနေရာကို အရင်နှိပ်ပါ။");
+     return false;
+   }
+   editable.focus({preventScroll:true});
+   const range=restoreScienceRange(editable);
+   range.deleteContents();
+   range.insertNode(node);
+   const after=document.createRange();after.setStartAfter(node);after.collapse(true);
+   const sel=window.getSelection();sel.removeAllRanges();sel.addRange(after);
+   savedFormatRange=after.cloneRange();savedFormatEditable=editable;
+   return true;
+ }
+ panel.querySelectorAll("[data-insert]").forEach(btn=>{
+   btn.addEventListener("mousedown",e=>e.preventDefault());
+   btn.addEventListener("click",()=>insertNodeAtCaret(document.createTextNode(btn.dataset.insert)));
+ });
+ function renderPreview(){
+   const value=latexInput.value.trim();
+   if(!value){preview.textContent="Formula preview";return;}
+   if(!window.katex){preview.textContent=value+" (Math renderer is loading…)";return;}
+   try{window.katex.render(value,preview,{throwOnError:false,displayMode:true,strict:"ignore",trust:false});}
+   catch(e){preview.textContent=value;}
+ }
+ document.getElementById("openMathEditor").addEventListener("click",()=>{
+   const editable=activeEditable();
+   if(!editable){alert("Formula ထည့်မည့် မေးခွန်းစာသား / စာရေးနေရာကို အရင်နှိပ်ပါ။");return;}
+   dialog.classList.add("open");renderPreview();latexInput.focus();
+ });
+ latexInput.addEventListener("input",renderPreview);
+ document.getElementById("cancelMath").addEventListener("click",()=>dialog.classList.remove("open"));
+ dialog.addEventListener("click",e=>{if(e.target===dialog)dialog.classList.remove("open");});
+ document.addEventListener("keydown",e=>{if(e.key==="Escape")dialog.classList.remove("open");});
+ document.getElementById("insertMath").addEventListener("click",()=>{
+   const value=latexInput.value.trim();
+   if(!value){alert("Formula ကို အရင်ထည့်ပါ။");return;}
+   if(!window.katex){alert("Math renderer မတင်ရသေးပါ။ Internet connection စစ်ပြီး ထပ်စမ်းပါ။");return;}
+   const wrapper=document.createElement("span");
+   wrapper.className="math-render";
+   wrapper.contentEditable="false";
+   wrapper.setAttribute("data-latex",value);
+   wrapper.setAttribute("aria-label","Formula: "+value);
+   try{window.katex.render(value,wrapper,{throwOnError:false,displayMode:false,strict:"ignore",trust:false});}
+   catch(e){wrapper.textContent=value;}
+   if(insertNodeAtCaret(wrapper))dialog.classList.remove("open");
+ });
+ renderPreview();
+})();
 
 document.getElementById("back").onclick=()=>{app.classList.add("hidden");home.classList.remove("hidden")};
 document.getElementById("print").onclick=()=>window.print();
