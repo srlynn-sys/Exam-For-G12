@@ -549,38 +549,27 @@ function wrapSelectionInBox(current){
 (function installMathPasteRenderer(){
  function appendRichLine(parent,line){
    const re=/(\\\\\[[\s\S]+?\\\\\]|\\\\\([\s\S]+?\\\\\)|\$\$[\s\S]+?\$\$|\$[^$\n]+\$)/g;
-   let last=0, match;
+   let last=0,match;
    while((match=re.exec(line))){
-     if(match.index>last) parent.appendChild(document.createTextNode(line.slice(last,match.index)));
-     const token=match[0];
-     const display=token.startsWith("$$")||token.startsWith("\\\\[");
-     const latex=token.startsWith("$$")?token.slice(2,-2):token.startsWith("\\\\[")?token.slice(2,-2):token.startsWith("$")?token.slice(1,-1):token.slice(2,-2);
-     const node=document.createElement(display?"div":"span");
-     node.className="math-render";
-     node.contentEditable="false";
-     node.setAttribute("data-latex",latex);
-     if(window.katex){try{window.katex.render(latex,node,{throwOnError:false,displayMode:display,strict:"ignore",trust:false});}catch(e){node.textContent=token;}}
-     else node.textContent=token;
+     if(match.index>last)parent.appendChild(document.createTextNode(line.slice(last,match.index)));
+     const token=match[0],display=token.startsWith("$$")||token.startsWith("\\[");
+     const latex=token.startsWith("$$")?token.slice(2,-2):token.startsWith("\\[")?token.slice(2,-2):token.startsWith("$")?token.slice(1,-1):token.slice(2,-2);
+     const node=document.createElement(display?"div":"span");node.className="math-render";node.contentEditable="false";node.setAttribute("data-latex",latex);
+     if(window.katex){try{window.katex.render(latex,node,{throwOnError:false,displayMode:display,strict:"ignore",trust:false});}catch(e){node.textContent=token;}}else node.textContent=token;
      parent.appendChild(node);last=re.lastIndex;
    }
-   if(last<line.length) parent.appendChild(document.createTextNode(line.slice(last)));
+   if(last<line.length)parent.appendChild(document.createTextNode(line.slice(last)));
  }
  document.addEventListener("paste",function(e){
-   const editable=e.target&&e.target.closest&&e.target.closest(".blank-writing");
-   if(!editable)return;
-   const text=(e.clipboardData||window.clipboardData).getData("text/plain");
-   if(!text)return;
-   e.preventDefault();
-   const sel=window.getSelection();
-   if(!sel||!sel.rangeCount)return;
-   const range=sel.getRangeAt(0);
-   if(!editable.contains(range.startContainer)&&range.startContainer!==editable)return;
-   range.deleteContents();
-   const frag=document.createDocumentFragment();
-   text.replace(/\\r\\n?/g,"\\n").split("\\n").forEach((line,i)=>{
-     if(i)frag.appendChild(document.createElement("br"));
-     appendRichLine(frag,line);
-   });
+   const editable=e.target&&e.target.closest&&e.target.closest('[contenteditable="true"]');
+   if(!editable||!papers.contains(editable))return;
+   const clipboard=e.clipboardData||window.clipboardData;
+   const text=clipboard&&clipboard.getData("text/plain");
+   if(!text||!/(\\\\\[|\\\\\(|\$\$|\$[^$\n]+\$)/.test(text))return;
+   e.preventDefault();const sel=window.getSelection();if(!sel||!sel.rangeCount)return;
+   const range=sel.getRangeAt(0);if(!editable.contains(range.startContainer)&&range.startContainer!==editable)return;
+   range.deleteContents();const frag=document.createDocumentFragment();
+   text.replace(/\r\n?/g,"\n").split("\n").forEach((line,i)=>{if(i)frag.appendChild(document.createElement("br"));appendRichLine(frag,line);});
    range.insertNode(frag);
  });
 })();
