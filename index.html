@@ -69,8 +69,9 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 .math-render{display:inline-block;vertical-align:middle;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:1px 2px}
 .math-render .katex{font-size:1em}
 .math-question > b:first-child{display:block;text-align:center;font-weight:800;margin:0 0 6px}
-.math-question .math-graph{color:#000;break-inside:avoid;page-break-inside:avoid}
-@media print{.math-question .math-graph svg{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+.math-question .math-graph{color:#000;break-inside:avoid;page-break-inside:avoid;width:100%;max-width:100%;overflow:visible}
+.math-question .math-graph svg{display:block;width:100%;max-width:100%;height:auto;overflow:visible}
+@media print{.math-question .math-graph,.math-question .math-graph svg{break-inside:avoid;page-break-inside:avoid;print-color-adjust:exact;-webkit-print-color-adjust:exact}}
 .question-inline-image{max-width:100%;height:auto;object-fit:contain;break-inside:avoid;page-break-inside:avoid}
 .science-symbol:focus-visible,.science-toggle:focus-visible{outline:3px solid #a9c1ff;outline-offset:2px}
 @media print{.science-panel,.math-dialog{display:none!important}}
