@@ -287,13 +287,17 @@ function renderCustomPages(){
  syncCustom();
 }
 function render(){renderSubject();}
-document.querySelectorAll(".subject").forEach(b=>b.onclick=()=>{
-subject=b.dataset.subject;subjectMM=b.dataset.mm;customMode=subject==="PhoenixPaper"||subject==="CustomPaper";
-document.getElementById("selectedTitle").textContent=customMode?(subject==="PhoenixPaper"?"Phoenix Spring High School — Exam Paper":"Custom Exam Paper"):subject+" / "+subjectMM;
-document.getElementById("customFields").classList.toggle("hidden",!customMode);document.getElementById("addPage").classList.toggle("hidden",!customMode);document.getElementById("removePage").classList.toggle("hidden",!customMode);
-document.querySelector(".editor .settings:not(#customFields)").classList.toggle("hidden",customMode);document.querySelector(".editor .note").classList.toggle("hidden",customMode);
-if(customMode){document.getElementById("customSchool").value=subject==="PhoenixPaper"?"Phoenix Spring High School":"";document.getElementById("customSchoolColor").value="#102d68";document.getElementById("customLogo").value=subject==="PhoenixPaper"?"assets/phoenix-spring-logo.svg":"";document.getElementById("customSubject").value="";document.getElementById("customGrade").value="";document.getElementById("customTime").value="";}home.classList.add("hidden");app.classList.remove("hidden");if(customMode){customPageCount=1;renderCustomPages();}else render();
-});
+function openSubjectButton(b){
+ subject=b.dataset.subject;subjectMM=b.dataset.mm;customMode=subject==="PhoenixPaper"||subject==="CustomPaper";
+ document.getElementById("selectedTitle").textContent=customMode?(subject==="PhoenixPaper"?"Phoenix Spring High School — Exam Paper":"Custom Exam Paper"):subject+" / "+subjectMM;
+ document.getElementById("customFields").classList.toggle("hidden",!customMode);document.getElementById("addPage").classList.toggle("hidden",!customMode);document.getElementById("removePage").classList.toggle("hidden",!customMode);
+ document.querySelector(".editor .settings:not(#customFields)").classList.toggle("hidden",customMode);document.querySelector(".editor .note").classList.toggle("hidden",customMode);
+ if(customMode){document.getElementById("customSchool").value=subject==="PhoenixPaper"?"Phoenix Spring High School":"";document.getElementById("customSchoolColor").value="#102d68";document.getElementById("customLogo").value=subject==="PhoenixPaper"?"assets/phoenix-spring-logo.svg":"";document.getElementById("customSubject").value="";document.getElementById("customGrade").value="";document.getElementById("customTime").value="";}
+ home.classList.add("hidden");app.classList.remove("hidden");
+ if(customMode){customPageCount=1;renderCustomPages();}else render();
+}
+document.querySelectorAll(".subject").forEach(b=>b.addEventListener("click",()=>openSubjectButton(b)));
+document.addEventListener("click",event=>{const b=event.target instanceof Element?event.target.closest("button.subject"):null;if(!b)return;event.preventDefault();openSubjectButton(b);},true);
 document.querySelectorAll(".settings input").forEach(x=>x.addEventListener("input",()=>sync()));document.getElementById("customSubject").addEventListener("input",syncCustom);document.getElementById("customGrade").addEventListener("input",syncCustom);document.getElementById("customTime").addEventListener("input",syncCustom);document.getElementById("customSchool").addEventListener("input",syncCustom);document.getElementById("customSchoolColor").addEventListener("input",syncCustom);document.getElementById("customLogo").addEventListener("input",syncCustom);document.getElementById("addPage").onclick=()=>{if(customMode){customPageCount++;renderCustomPages();}};document.getElementById("removePage").onclick=()=>{if(customMode&&customPageCount>1){customPageCount--;renderCustomPages();}};
 
 // Normalize pasted questions on standard exam pages: avoid carrying oversized fonts and paragraph spacing from websites/documents.
