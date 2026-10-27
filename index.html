@@ -545,43 +545,46 @@ function wrapSelectionInBox(current){
  renderPreview();
 })();
 
-/* Reliable math/text paste: keep pasted content as editable UTF-8 text and normalize common math glyphs. */
-(function installSafeMathPaste(){
- const mathTextMap={
-  "−":"-","–":"-","—":"-","×":"×","÷":"÷","·":"·","π":"pi","θ":"theta","α":"alpha","β":"beta","γ":"gamma",
-  "√":"sqrt","∞":"infinity","≤":"<=","≥":">=","≠":"!=","≈":"~=","∈":" in ","∉":" not in ","ℝ":"R","ℂ":"C",
-  "²":"^2","³":"^3","⁴":"^4","⁵":"^5","⁶":"^6","⁷":"^7","⁸":"^8","⁹":"^9","⁰":"^0",
-  "¹":"^1","⁺":"+","⁻":"-","₀":"_0","₁":"_1","₂":"_2","₃":"_3","₄":"_4","₅":"_5","₆":"_6","₇":"_7","₈":"_8","₉":"_9",
-  "½":"1/2","⅓":"1/3","⅔":"2/3","¼":"1/4","¾":"3/4","�":"[unsupported symbol]"
- };
- function normalizeMathPaste(text){
-  return Array.from(text).map(ch=>mathTextMap[ch] ?? ch).join("")
-   .replace(/[\u200B-\u200D\uFEFF]/g,"")
-   .replace(/\r\n?/g,"\n");
+/* Keep original Unicode symbols intact. Render LaTeX delimited formulas with KaTeX after paste. */
+(function installMathPasteRenderer(){
+ function appendRichLine(parent,line){
+   const re=/(\\\\\[[\s\S]+?\\\\\]|\\\\\([\s\S]+?\\\\\)|\$\$[\s\S]+?\$\$|\$[^$\n]+\$)/g;
+   let last=0, match;
+   while((match=re.exec(line))){
+     if(match.index>last) parent.appendChild(document.createTextNode(line.slice(last,match.index)));
+     const token=match[0];
+     const display=token.startsWith("$$")||token.startsWith("\\\\[");
+     const latex=token.startsWith("$$")?token.slice(2,-2):token.startsWith("\\\\[")?token.slice(2,-2):token.startsWith("$")?token.slice(1,-1):token.slice(2,-2);
+     const node=document.createElement(display?"div":"span");
+     node.className="math-render";
+     node.contentEditable="false";
+     node.setAttribute("data-latex",latex);
+     if(window.katex){try{window.katex.render(latex,node,{throwOnError:false,displayMode:display,strict:"ignore",trust:false});}catch(e){node.textContent=token;}}
+     else node.textContent=token;
+     parent.appendChild(node);last=re.lastIndex;
+   }
+   if(last<line.length) parent.appendChild(document.createTextNode(line.slice(last)));
  }
  document.addEventListener("paste",function(e){
-  const target=e.target&&e.target.closest&&e.target.closest('[contenteditable="true"]');
-  if(!target)return;
-  const clipboard=e.clipboardData;
-  if(!clipboard)return;
-  const plain=clipboard.getData("text/plain");
-  if(!plain)return;
-  e.preventDefault();
-  const text=normalizeMathPaste(plain);
-  if(document.queryCommandSupported&&document.queryCommandSupported("insertText")){
-   document.execCommand("insertText",false,text);
-  }else{
+   const editable=e.target&&e.target.closest&&e.target.closest(".blank-writing");
+   if(!editable)return;
+   const text=(e.clipboardData||window.clipboardData).getData("text/plain");
+   if(!text)return;
+   e.preventDefault();
    const sel=window.getSelection();
-   if(!sel||!sel.rangeCount){target.appendChild(document.createTextNode(text));return;}
+   if(!sel||!sel.rangeCount)return;
    const range=sel.getRangeAt(0);
+   if(!editable.contains(range.startContainer)&&range.startContainer!==editable)return;
    range.deleteContents();
-   const node=document.createTextNode(text);
-   range.insertNode(node);
-   range.setStartAfter(node);range.collapse(true);
-   sel.removeAllRanges();sel.addRange(range);
-  }
- },true);
+   const frag=document.createDocumentFragment();
+   text.replace(/\\r\\n?/g,"\\n").split("\\n").forEach((line,i)=>{
+     if(i)frag.appendChild(document.createElement("br"));
+     appendRichLine(frag,line);
+   });
+   range.insertNode(frag);
+ });
 })();
+
 
 document.getElementById("back").onclick=()=>{app.classList.add("hidden");home.classList.remove("hidden")};
 document.getElementById("print").onclick=()=>window.print();
