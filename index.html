@@ -68,6 +68,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 .math-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-top:13px}
 .math-render{display:inline-block;vertical-align:middle;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:1px 2px}
 .math-render .katex{font-size:1em}
+.question-inline-image{max-width:100%;height:auto;object-fit:contain;break-inside:avoid;page-break-inside:avoid}
 .science-symbol:focus-visible,.science-toggle:focus-visible{outline:3px solid #a9c1ff;outline-offset:2px}
 @media print{.science-panel,.math-dialog{display:none!important}}
 </style>
@@ -114,6 +115,8 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <div class="science-tools" style="padding:10px 16px 0;max-width:1100px;margin:auto">
 <button type="button" class="science-toggle" id="scienceToggle" aria-expanded="false">∑ Scientific Symbols</button>
 <button type="button" class="science-toggle" id="openMathEditor" style="background:#197a4b">√ Math Editor</button>
+<button type="button" class="science-toggle" id="insertImageButton" style="background:#7c3aed">▧ Insert / Paste Image</button>
+<input type="file" id="scienceImageInput" accept="image/*" hidden>
 <span class="science-help">Physics · Chemistry · Mathematics · Biology · English · Other subjects</span>
 </div>
 <div class="science-panel" id="sciencePanel" style="max-width:1100px;margin:10px auto 16px">
@@ -463,6 +466,45 @@ function wrapSelectionInBox(current){
   }catch(error){console.error("Could not add text box",error);}
 }
 
+
+// Image insertion: upload an image or paste a copied image into any editable paper area.
+(function initImagePaste(){
+ const input=document.getElementById("scienceImageInput");
+ const button=document.getElementById("insertImageButton");
+ if(!input||!button)return;
+ let imageRange=null,imageEditable=null;
+ function rememberImageCaret(){
+  const sel=window.getSelection();
+  if(!sel||!sel.rangeCount)return;
+  const range=sel.getRangeAt(0),node=range.commonAncestorContainer,el=node.nodeType===1?node:node.parentElement;
+  const editable=el&&el.closest('[contenteditable="true"]');
+  if(editable&&papers.contains(editable)){imageRange=range.cloneRange();imageEditable=editable;}
+ }
+ document.addEventListener("selectionchange",rememberImageCaret);
+ papers.addEventListener("mouseup",rememberImageCaret);
+ papers.addEventListener("touchend",()=>setTimeout(rememberImageCaret,0),{passive:true});
+ button.addEventListener("mousedown",e=>e.preventDefault());
+ button.addEventListener("click",()=>{rememberImageCaret();if(!imageEditable||!papers.contains(imageEditable)){alert("ပုံထည့်မည့် မေးခွန်းစာသားနေရာကို အရင်နှိပ်ပါ။");return;}input.click();});
+ function insertImage(src,alt){
+  if(!imageEditable||!papers.contains(imageEditable)){alert("ပုံထည့်မည့် မေးခွန်းစာသားနေရာကို အရင်နှိပ်ပါ။");return;}
+  imageEditable.focus({preventScroll:true});
+  const range=imageRange&&imageEditable.contains(imageRange.commonAncestorContainer)?imageRange:document.createRange();
+  if(!imageRange||!imageEditable.contains(imageRange.commonAncestorContainer)){range.selectNodeContents(imageEditable);range.collapse(false);}
+  range.deleteContents();
+  const img=document.createElement("img");img.src=src;img.alt=alt||"Question diagram";img.className="question-inline-image";img.style.cssText="display:block;max-width:100%;max-height:430px;width:auto;height:auto;object-fit:contain;margin:8px auto;break-inside:avoid;";
+  range.insertNode(img);
+  const after=document.createRange();after.setStartAfter(img);after.collapse(true);
+  const sel=window.getSelection();sel.removeAllRanges();sel.addRange(after);
+  imageRange=after.cloneRange();
+ }
+ input.addEventListener("change",()=>{const file=input.files&&input.files[0];if(!file)return;if(!file.type.startsWith("image/")){alert("Image ဖိုင်ကိုသာ ရွေးပါ။");return;}const reader=new FileReader();reader.onload=()=>insertImage(reader.result,file.name);reader.readAsDataURL(file);input.value="";});
+ papers.addEventListener("paste",e=>{
+  const editable=e.target&&e.target.closest&&e.target.closest('[contenteditable="true"]');
+  if(!editable||!papers.contains(editable))return;
+  const items=e.clipboardData&&e.clipboardData.items;if(!items)return;
+  for(const item of items){if(item.type&&item.type.startsWith("image/")){const file=item.getAsFile();if(!file)continue;e.preventDefault();imageEditable=editable;rememberImageCaret();const reader=new FileReader();reader.onload=()=>insertImage(reader.result,file.name||"Pasted diagram");reader.readAsDataURL(file);return;}}
+ });
+})();
 
 // Scientific symbol panel and LaTeX math editor. Kept separate from existing formatting/export logic.
 (function initScientificTools(){
