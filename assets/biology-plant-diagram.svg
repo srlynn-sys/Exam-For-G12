@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+<rect width="1200" height="760" fill="#fff"/>
+<g fill="#fff" stroke="#444" stroke-width="3">
+<ellipse cx="150" cy="90" rx="82" ry="40"/><ellipse cx="390" cy="90" rx="82" ry="40"/><ellipse cx="650" cy="90" rx="82" ry="40"/><ellipse cx="1035" cy="350" rx="82" ry="40"/><ellipse cx="650" cy="680" rx="82" ry="40"/><ellipse cx="390" cy="600" rx="82" ry="40"/><ellipse cx="150" cy="350" rx="82" ry="40"/>
+</g>
+<g font-family="Georgia,serif" font-size="42" text-anchor="middle" fill="#111" font-weight="700"><text x="150" y="105">1</text><text x="390" y="105">2</text><text x="650" y="105">3</text><text x="1035" y="365">4</text><text x="650" y="695">5</text><text x="390" y="615">6</text><text x="150" y="365">7</text></g>
+<g stroke="#444" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M250 335 C300 280 315 240 365 210" /><path d="M350 210 l24 -3 -11 22"/>
+<path d="M475 150 C500 185 510 195 540 210"/><path d="M535 200 l12 18 -23 -1"/>
+<path d="M705 150 C735 175 760 200 785 225"/><path d="M778 204 l10 24 -22 -8"/>
+<path d="M870 325 C825 345 810 380 805 420"/><path d="M795 410 l10 18 10 -20"/>
+<path d="M870 570 C820 600 770 615 730 620"/><path d="M742 610 l-18 10 19 8"/>
+<path d="M520 590 C485 575 465 555 455 530"/><path d="M447 543 l7 -22 13 17"/>
+<path d="M235 420 C250 465 275 490 310 510"/><path d="M288 508 l23 5 -10 -21"/>
+</g>
+<!-- brick wall / boundary -->
+<g transform="translate(455 180)" stroke="#555" stroke-width="3" fill="#e9e9e9">
+<rect x="0" y="0" width="145" height="28"/><rect x="0" y="29" width="145" height="28"/><rect x="0" y="58" width="145" height="28"/>
+<path d="M48 0v28 M98 0v28 M24 29v28 M74 29v28 M122 29v28 M48 58v28 M98 58v28" fill="none"/>
+</g>
+<!-- central plant -->
+<g stroke="#394f36" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M655 535 C655 475 650 420 660 365 C665 325 660 290 660 255"/>
+<path d="M660 420 C625 400 600 380 575 355"/><path d="M660 390 C695 375 715 350 730 325"/>
+<path d="M660 330 C630 310 615 280 610 250"/><path d="M660 305 C690 280 705 255 710 230"/>
+</g>
+<g fill="#dce8d5" stroke="#394f36" stroke-width="4">
+<path d="M654 411 C620 416 585 390 575 355 C610 352 642 370 654 411Z"/>
+<path d="M665 388 C700 392 727 365 735 330 C700 330 675 352 665 388Z"/>
+<path d="M655 320 C625 317 605 286 610 250 C642 260 659 286 655 320Z"/>
+<path d="M668 296 C695 293 713 265 710 230 C681 244 666 267 668 296Z"/>
+</g>
+<!-- root and soil -->
+<path d="M580 540 Q660 520 740 540" stroke="#555" stroke-width="7" fill="none"/>
+<g stroke="#8a725c" stroke-width="4" fill="none"><path d="M657 540 l-15 25 -10 20 M660 540 l15 28 10 15 M650 548 l-28 8 M670 550 l25 8"/></g>
+<!-- seed / fruit forms -->
+<g fill="#666" stroke="#333" stroke-width="4"><ellipse cx="835" cy="255" rx="45" ry="58" transform="rotate(25 835 255)"/><ellipse cx="840" cy="460" rx="48" ry="62" transform="rotate(-18 840 460)"/><ellipse cx="655" cy="585" rx="42" ry="65" transform="rotate(8 655 585)"/><ellipse cx="350" cy="495" rx="58" ry="48" transform="rotate(-18 350 495)"/></g>
+<g fill="#bbb" opacity=".6"><circle cx="820" cy="235" r="8"/><circle cx="847" cy="260" r="10"/><circle cx="835" cy="285" r="7"/><circle cx="328" cy="480" r="8"/><circle cx="360" cy="500" r="7"/><circle cx="645" cy="565" r="8"/></g>
+<g stroke="#777" stroke-width="3" fill="none" stroke-dasharray="8 7"><path d="M705 230 L790 250"/><path d="M730 325 L790 440"/><path d="M740 540 L790 470"/><path d="M575 355 L390 485"/><path d="M655 585 L560 650"/></g>
+</svg>
