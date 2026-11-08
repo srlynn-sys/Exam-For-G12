@@ -497,6 +497,44 @@ sub('a','In an electric circuit, which component is used for (i) supplying elect
 sub('b','Explain the difference between active and passive electrical components with examples. <span class="physics-marks">(8 marks)</span>')+
 '<div class="physics-problem">When two 6 V batteries, having the same internal resistance and connected in series, are connected to a 5 Ω resistor, the current is 2 A. When these batteries are in parallel, a current of 1.5 A flows through when connected to another resistor. Find the resistance of the resistor.</div></div>'
 ];
+// Rebalance the Physics paper in question order so the first pages are not left
+// with large empty lower sections. Keep all questions and the four-page export.
+const physicsHosts=pages.map((html)=>{const el=document.createElement('div');el.innerHTML=html;return el;});
+const physicsContent=physicsHosts.map(el=>el.querySelector('.physics-content'));
+if(physicsContent.every(Boolean)){
+  const first=physicsContent[0], second=physicsContent[1], third=physicsContent[2];
+  const firstLists=first.querySelectorAll('.physics-list');
+  const secondLists=second.querySelectorAll('.physics-list');
+  const secondQuestions=second.querySelectorAll('.physics-q');
+  if(firstLists.length>=2 && secondLists.length>=2 && secondQuestions.length>=2){
+    // Finish Question 2 on page 1, then begin Question 3 there.
+    const q2Continuation=secondLists[0];
+    while(q2Continuation.firstElementChild) firstLists[1].appendChild(q2Continuation.firstElementChild);
+    secondQuestions[0].remove();
+    q2Continuation.remove();
+    const q3Heading=second.querySelector('.physics-q');
+    if(q3Heading) first.appendChild(q3Heading);
+    const q3List=second.querySelector('.physics-list');
+    const firstFive=document.createElement('div');
+    firstFive.className='physics-list';
+    for(let i=0;i<5 && q3List && q3List.firstElementChild;i++) firstFive.appendChild(q3List.firstElementChild);
+    if(firstFive.children.length) first.appendChild(firstFive);
+    // Continue Question 3 and place Question 4 at the top of page 2.
+    const pageThreeQ3=third.querySelector('.physics-item');
+    if(pageThreeQ3 && pageThreeQ3.textContent.trim().startsWith('(xv)') && q3List) q3List.appendChild(pageThreeQ3);
+    const sectionB=Array.from(third.children).find(el=>el.classList.contains('physics-section'));
+    const q5=Array.from(third.children).find(el=>el.classList.contains('physics-q') && /^5\./.test(el.textContent.trim()));
+    if(sectionB && q5){
+      let node=sectionB;
+      while(node && node!==q5){
+        const next=node.nextElementSibling;
+        second.appendChild(node);
+        node=next;
+      }
+    }
+  }
+}
+pages.splice(0,pages.length,...physicsHosts.map(el=>el.innerHTML));
 return pages.map((content)=>'<div class="physics-page">'+content+'</div>');
 }
 
