@@ -57,7 +57,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 .physics-paper .physics-problem{margin:2px 0 4px 14px;line-height:1.16}
 .physics-paper .physics-blank{display:inline-block;border-bottom:1px dotted #111;min-width:65px;height:10px}
 .physics-paper .physics-formula{font-weight:700;display:block;text-align:center;margin:3px 0}
-.physics-paper .physics-page{width:100%}
+.physics-paper .physics-page{width:100%}.physics-paper .physics-page-number{text-align:right;font-family:"Times New Roman",Times,serif;font-size:9pt;line-height:1.25;margin:0 0 8px}
 
 /* Clear print-ready Biology exam layout */
 .biology-paper .biology-content{font-family:"Times New Roman",Times,serif;font-size:11.2pt;line-height:1.3;color:#111;overflow-wrap:break-word}.biology-paper .biology-section-heading{text-align:center;font-size:13pt;font-weight:700;margin:0 0 8pt}.biology-paper .biology-instruction{font-weight:700;margin:0 0 7pt}.biology-paper .biology-question{margin:0 0 8pt;break-inside:avoid;page-break-inside:avoid}.biology-paper .biology-question-title{font-weight:700;margin:0 0 4pt}.biology-paper .biology-items{margin:0;padding-left:24pt}.biology-paper .biology-items li{padding-left:3pt;margin:0 0 3pt}.biology-paper .biology-subq{margin:0 0 10pt;break-inside:avoid;page-break-inside:avoid}.biology-paper .biology-diagram{display:block;width:min(100%,150mm);max-height:95mm;height:auto;object-fit:contain;margin:8pt auto;break-inside:avoid;page-break-inside:avoid}.biology-paper .biology-continued{text-align:center;font-weight:700;margin-bottom:8pt}
@@ -405,7 +405,7 @@ return [pages[0], mcqPage + q4Start, q4Continuation + pages[3], pages[4] + pages
 }
 
 function getPhysicsPages(){
-const head=(page)=>'<div class="physics-head"><div class="ph-time">Time Allowed: 3 Hours<br>Page '+page+'</div><div class="ph-line1">2027</div><div class="ph-line2">MATRICULATION EXAMINATION</div><div class="ph-line2">DEPARTMENT OF MYANMAR EXAMINATIONS</div><div class="ph-line3">PHYSICS</div><div class="ph-line4">WRITE YOUR ANSWERS IN THE ANSWER BOOKLET</div><div class="ph-line5">The symbols in this paper have their usual significance</div></div>';
+const head=(page)=>page===1?'<div class="physics-head"><div class="ph-time">Time Allowed: 3 Hours<br>Page 1</div><div class="ph-line1">2027</div><div class="ph-line2">MATRICULATION EXAMINATION</div><div class="ph-line2">DEPARTMENT OF MYANMAR EXAMINATIONS</div><div class="ph-line3">PHYSICS</div><div class="ph-line4">WRITE YOUR ANSWERS IN THE ANSWER BOOKLET</div><div class="ph-line5">The symbols in this paper have their usual significance</div></div>':'<div class="physics-page-number">Page '+page+'</div>';
 const secA='<div class="physics-section">SECTION (A)</div><div class="physics-sub">(Answer ALL questions)</div>';
 const secB='<div class="physics-section">SECTION (B)</div><div class="physics-sub">(Answer any FOUR questions)</div>';
 const q=(n,body)=>'<div class="physics-q"><b>'+n+'.</b> '+body+'</div>';
