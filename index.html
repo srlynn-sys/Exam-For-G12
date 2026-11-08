@@ -507,7 +507,7 @@ function balanceChemistryPages(){
 }
 
 if(subject==="Mathematics"&&window.renderMathInElement){papers.querySelectorAll(".math-exam-content").forEach(el=>window.renderMathInElement(el,{delimiters:[{left:"\\(",right:"\\)",display:false}],throwOnError:false,strict:"ignore"}));}
-if(subject==="Chemistry"){formatChemistryElementNumbers();balanceChemistryPages();}
+if(subject==="Chemistry"){formatChemistryElementNumbers();}
 sync();
 }
 
