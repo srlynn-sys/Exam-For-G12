@@ -384,7 +384,8 @@ function balanceChemistryPages(){
    }
    const heading=document.createElement("div");
    heading.className="chem-q chemistry-question-heading";
-   heading.innerHTML=node.querySelector(":scope > b")?.outerHTML+" "+(number==="4."||number==="5."||number==="6."||number==="7."?"Answer ALL questions.":"");
+   // Preserve the original question title and marks exactly as authored.
+   Array.from(node.childNodes).filter(child=>!(child.nodeType===1&&child.classList.contains("chem-subq"))).forEach(child=>heading.append(child.cloneNode(true)));
    const subs=Array.from(node.querySelectorAll(":scope > .chem-subq"));
    if(subs.length){
     const first=document.createElement("div");
