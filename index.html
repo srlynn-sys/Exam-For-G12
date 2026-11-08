@@ -144,6 +144,26 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 .paper.chemistry-paper .chemistry-content .ir-figure{width:72%!important;max-width:105mm!important;margin:5px auto 6px!important}
 .paper.chemistry-paper .chemistry-content .ir-figure svg{width:100%!important;height:auto!important;max-height:50mm!important}
 @media print{.paper.chemistry-paper{padding:8mm 10mm!important}.paper.chemistry-paper .chemistry-content{font-size:13pt!important;line-height:1.25!important}}
+
+
+/* FINAL override: actually distribute Chemistry questions to fill A4 pages */
+.paper.chemistry-paper .chemistry-exam-content{
+  display:flex!important;flex-direction:column!important;justify-content:space-between!important;
+  box-sizing:border-box!important;height:281mm!important;min-height:281mm!important;max-height:281mm!important;overflow:hidden!important;
+}
+.paper.chemistry-paper#paper1 .chemistry-exam-content{
+  height:242mm!important;min-height:242mm!important;max-height:242mm!important;
+}
+.paper.chemistry-paper .chemistry-exam-content > .chemistry-content{
+  display:flex!important;flex:1 1 auto!important;flex-direction:column!important;justify-content:space-between!important;
+  min-height:0!important;box-sizing:border-box!important;
+}
+.paper.chemistry-paper .chemistry-exam-content .chem-q{break-inside:avoid!important;page-break-inside:avoid!important}
+.paper.chemistry-paper .chemistry-exam-content .ir-figure{flex:0 0 auto!important}
+@media print{
+ .paper.chemistry-paper .chemistry-exam-content{height:281mm!important;min-height:281mm!important;max-height:281mm!important}
+ .paper.chemistry-paper#paper1 .chemistry-exam-content{height:242mm!important;min-height:242mm!important;max-height:242mm!important}
+}
 </style>
 </head>
 <body>
@@ -833,22 +853,3 @@ try{
 </script>
 </body>
 </html>
-
-/* FINAL override: actually distribute Chemistry questions to fill A4 pages */
-.paper.chemistry-paper .chemistry-exam-content{
-  display:flex!important;flex-direction:column!important;justify-content:space-between!important;
-  box-sizing:border-box!important;height:281mm!important;min-height:281mm!important;max-height:281mm!important;overflow:hidden!important;
-}
-.paper.chemistry-paper#paper1 .chemistry-exam-content{
-  height:242mm!important;min-height:242mm!important;max-height:242mm!important;
-}
-.paper.chemistry-paper .chemistry-exam-content > .chemistry-content{
-  display:flex!important;flex:1 1 auto!important;flex-direction:column!important;justify-content:space-between!important;
-  min-height:0!important;box-sizing:border-box!important;
-}
-.paper.chemistry-paper .chemistry-exam-content .chem-q{break-inside:avoid!important;page-break-inside:avoid!important}
-.paper.chemistry-paper .chemistry-exam-content .ir-figure{flex:0 0 auto!important}
-@media print{
- .paper.chemistry-paper .chemistry-exam-content{height:281mm!important;min-height:281mm!important;max-height:281mm!important}
- .paper.chemistry-paper#paper1 .chemistry-exam-content{height:242mm!important;min-height:242mm!important;max-height:242mm!important}
-}
