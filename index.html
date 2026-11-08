@@ -80,17 +80,17 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 @media print{.science-panel,.math-dialog{display:none!important}}
 
 /* Print-safe government-style Chemistry layout and scientific notation */
-.chemistry-paper{padding:10mm 12mm;font-family:"Times New Roman",Times,serif}
-.chemistry-paper .standard-exam-head{padding-bottom:4px;margin-bottom:5px}
-.chemistry-paper .standard-year{font-size:12pt;line-height:1.05}
-.chemistry-paper .standard-title{font-size:13pt;margin-top:2px}
-.chemistry-paper .standard-department{font-size:10pt;margin-top:2px}
-.chemistry-paper .standard-meta{font-size:9pt;padding:5px 1px 0}
-.chemistry-paper .standard-instructions{font-size:8pt;padding-top:5px;line-height:1.1}
+.chemistry-paper{padding:9mm 11mm;font-family:"Times New Roman",Times,serif}
+.chemistry-paper .standard-exam-head{padding-bottom:5px;margin-bottom:7px}
+.chemistry-paper .standard-year{font-size:13pt;line-height:1.08}
+.chemistry-paper .standard-title{font-size:14pt;margin-top:3px}
+.chemistry-paper .standard-department{font-size:11pt;margin-top:3px}
+.chemistry-paper .standard-meta{font-size:10.5pt;padding:6px 1px 0}
+.chemistry-paper .standard-instructions{font-size:9.5pt;padding-top:6px;line-height:1.15}
 .chemistry-exam-content{height:auto;min-height:0;overflow:visible;padding:0;margin:0}
-.chemistry-content{font-family:"Times New Roman",Times,serif;font-size:10pt;line-height:1.12;color:#111;overflow-wrap:break-word}
-.chemistry-content .chem-section{text-align:center;font-size:11.5pt;font-weight:700;margin:2px 0 4px}
-.chemistry-content .chem-instruction{text-align:center;font-size:10pt;font-weight:700;margin:0 0 5px}
+.chemistry-content{font-family:"Times New Roman",Times,serif;font-size:11.5pt;line-height:1.2;color:#111;overflow-wrap:break-word}
+.chemistry-content .chem-section{text-align:center;font-size:12.5pt;font-weight:700;margin:2px 0 4px}
+.chemistry-content .chem-instruction{text-align:center;font-size:11.5pt;font-weight:700;margin:0 0 5px}
 .chemistry-content .chem-q{margin:0 0 4px;break-inside:avoid;page-break-inside:avoid}
 .chemistry-content .chem-list{margin:3px 0 4px;padding-left:24px}
 .chemistry-content .chem-list li{padding-left:2px;margin:0 0 2px;break-inside:avoid;page-break-inside:avoid}
@@ -337,10 +337,11 @@ const pages = [
 const sectionB = pages[1].indexOf('<div class="chem-section">SECTION (B)</div>');
 const mcqPage = sectionB >= 0 ? pages[1].slice(0, sectionB) : "";
 const q4Start = sectionB >= 0 ? pages[1].slice(sectionB) : "";
-// Page 1: Questions 1–3 (including all MCQs). Page 2: complete Question 4.
+// Government-style four-page layout:
+// Page 1: Questions 1 and 2. Page 2: Question 3 (MCQs) and all of Question 4.
 // Page 3: Questions 5 and 6. Page 4: Question 7.
 const q4Continuation = (pages[2] + pages[3]).replace('<div class="chem-q"><b>4.</b>', '<div class="chem-q">');
-return [pages[0] + mcqPage, q4Start + q4Continuation, pages[4] + pages[5], pages[6]];
+return [pages[0], mcqPage + q4Start + q4Continuation, pages[4] + pages[5], pages[6]];
 }
 
 function renderSubject(){
