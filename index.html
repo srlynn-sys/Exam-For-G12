@@ -436,18 +436,6 @@ function balanceChemistryPages(){
    contents[contents.length-1].append(unit);
   }
  });
- // Small final pass: move a trailing block forward when it fits, reducing avoidable gaps.
- for(let p=0;p<contents.length-1;p++){
-  while(contents[p].lastElementChild){
-   const candidate=contents[p].lastElementChild;
-   contents[p].removeChild(candidate);
-   contents[p+1].prepend(candidate);
-   if(wraps[p+1].scrollHeight<=wraps[p+1].clientHeight+3)continue;
-   contents[p+1].removeChild(candidate);
-   contents[p].append(candidate);
-   break;
-  }
- }
 }
 
 if(subject==="Mathematics"&&window.renderMathInElement){papers.querySelectorAll(".math-exam-content").forEach(el=>window.renderMathInElement(el,{delimiters:[{left:"\\(",right:"\\)",display:false}],throwOnError:false,strict:"ignore"}));}
