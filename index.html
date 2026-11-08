@@ -110,6 +110,11 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 .paper.chemistry-paper{padding:10mm 11mm!important;overflow:hidden!important}
 .paper.chemistry-paper .chemistry-exam-content{display:block!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;margin:0!important;padding:0!important;white-space:normal!important}
 .paper.chemistry-paper .chemistry-content{display:block!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.22!important;color:#111!important;white-space:normal!important;overflow-wrap:break-word!important}.paper.chemistry-paper .chemistry-content .chem-section{font-size:13pt!important;margin:0 0 5px!important}.paper.chemistry-paper .chemistry-content .chem-instruction{font-size:11.5pt!important;margin:0 0 5px!important}.paper.chemistry-paper .chemistry-content .chem-q{margin:0 0 6px!important}.paper.chemistry-paper .chemistry-content .chem-list{margin:3px 0 5px!important;padding-left:25px!important}.paper.chemistry-paper .chemistry-content .chem-list li{margin-bottom:3px!important}.paper.chemistry-paper .chemistry-content .chem-subq{margin:4px 0 5px!important;padding-left:12px!important}.paper.chemistry-paper .chemistry-content .chem-options{line-height:1.2!important;margin-top:2px!important}.paper.chemistry-paper .chemistry-content .chem-equation{margin:5px 0!important}.paper.chemistry-paper .chemistry-content sup,.paper.chemistry-paper .chemistry-content sub{font-size:75%!important;line-height:0!important}
+/* Chemical element notation: mass/atomic numbers belong at the lower-left of the symbol. */
+.paper.chemistry-paper .chemistry-content .element-notation{display:inline-flex!important;align-items:flex-end!important;vertical-align:middle!important;white-space:nowrap!important}
+.paper.chemistry-paper .chemistry-content .element-notation .element-number{display:inline-block!important;font-size:68%!important;line-height:1!important;align-self:flex-end!important;transform:translateY(1px)!important;margin-right:1px!important}
+.paper.chemistry-paper .chemistry-content .element-notation .element-symbol{display:inline-block!important;font-size:100%!important;line-height:1!important}
+
 .paper.chemistry-paper .chemistry-content .chem-q{margin:0 0 4px!important}
 .paper.chemistry-paper .chemistry-content .chem-list{margin:2px 0 3px!important;padding-left:24px!important}
 .paper.chemistry-paper .chemistry-content .chem-list li{margin-bottom:2px!important}
@@ -356,6 +361,44 @@ p.innerHTML=header+'<div class="blank-writing" contenteditable="true" spellcheck
 }else if(subject==="Physics"){const content=i===0?'<div class="physics-section">SECTION (A)</div><div class="physics-sub">(Answer ALL questions)</div>':'<div class="physics-section">SECTION (B)</div><div class="physics-sub">(Answer any FOUR questions)</div>';p.innerHTML=header+'<div class="questions">'+content+sections.map(makeSection).join("")+'</div>';}else{p.innerHTML=header+'<div class="questions">'+sections.map(makeSection).join("")+'</div>';}
 papers.appendChild(p);
 });
+
+function formatChemistryElementNumbers(){
+ if(subject!=="Chemistry")return;
+ papers.querySelectorAll(".chemistry-content").forEach(content=>{
+  // Convert isotope notation like <sup>58</sup>Ce into a lower-left number.
+  content.querySelectorAll("sup").forEach(sup=>{
+   if(sup.closest(".ir-figure,.element-notation"))return;
+   const next=sup.nextSibling;
+   if(!next||next.nodeType!==Node.TEXT_NODE)return;
+   const match=next.nodeValue.match(/^([A-Z][a-z]?)(?![a-z])/);
+   if(!match)return;
+   const span=document.createElement("span");span.className="element-notation";
+   const num=document.createElement("span");num.className="element-number";num.textContent=sup.textContent;
+   const sym=document.createElement("span");sym.className="element-symbol";sym.textContent=match[1];
+   span.append(num,sym);sup.replaceWith(span);
+   next.nodeValue=next.nodeValue.slice(match[1].length);
+  });
+  // Also support Unicode superscript digits immediately before an element symbol.
+  const walker=document.createTreeWalker(content,NodeFilter.SHOW_TEXT);
+  const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+  const unicodeDigits={"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"};
+  nodes.forEach(node=>{
+   if(!node.parentElement||node.parentElement.closest(".element-notation,script,style,.ir-figure"))return;
+   const value=node.nodeValue;
+   const re=/([⁰¹²³⁴⁵⁶⁷⁸⁹]+)([A-Z][a-z]?)(?![a-z])/g;
+   if(!re.test(value))return;
+   re.lastIndex=0;const frag=document.createDocumentFragment();let last=0,m;
+   while((m=re.exec(value))){
+    frag.append(document.createTextNode(value.slice(last,m.index)));
+    const span=document.createElement("span");span.className="element-notation";
+    const num=document.createElement("span");num.className="element-number";num.textContent=m[1].split("").map(ch=>unicodeDigits[ch]).join("");
+    const sym=document.createElement("span");sym.className="element-symbol";sym.textContent=m[2];
+    span.append(num,sym);frag.append(span);last=m.index+m[0].length;
+   }
+   frag.append(document.createTextNode(value.slice(last)));node.replaceWith(frag);
+  });
+ });
+}
 function balanceChemistryPages(){
  if(subject!=="Chemistry")return;
  const paperEls=Array.from(papers.querySelectorAll(".chemistry-paper"));
@@ -456,7 +499,7 @@ function balanceChemistryPages(){
 }
 
 if(subject==="Mathematics"&&window.renderMathInElement){papers.querySelectorAll(".math-exam-content").forEach(el=>window.renderMathInElement(el,{delimiters:[{left:"\\(",right:"\\)",display:false}],throwOnError:false,strict:"ignore"}));}
-if(subject==="Chemistry")balanceChemistryPages();
+if(subject==="Chemistry"){formatChemistryElementNumbers();balanceChemistryPages();}
 sync();
 }
 
