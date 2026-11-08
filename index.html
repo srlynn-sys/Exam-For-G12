@@ -350,7 +350,8 @@ const q4Start = sectionB >= 0 ? pages[1].slice(sectionB) : "";
 const q4Continuation = (pages[2] + pages[3]).replace('<div class="chem-q"><b>4.</b>', '<div class="chem-q">');
 const page3 = pages[4] + pages[5]; // Explicitly keep Question 5 followed by Question 6 on Page 3.
 const page4 = pages[6]; // Question 7 must start on Page 4 only.
-return [pages[0], mcqPage + q4Start + q4Continuation, page3, page4];
+// Leave the Chemistry exam header only; remove all rendered question content.
+return [''];
 }
 
 function renderSubject(){
