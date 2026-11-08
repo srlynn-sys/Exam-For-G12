@@ -462,6 +462,14 @@ function balanceChemistryPages(){
   return wraps[p].scrollHeight<=wraps[p].clientHeight+3;
  };
  units.forEach(unit=>{
+  // Keep the complete Chemistry MCQ block (Question 3) visible on page 2.
+  // It is a long objective section and must not be pushed off the paper by
+  // the automatic height-balancing loop.
+  if(unit.querySelector && unit.querySelector(".mcq")){
+   contents[1].append(unit);
+   page=Math.max(page,1);
+   return;
+  }
   let placed=false;
   while(page<contents.length&&!placed){
    contents[page].append(unit);
