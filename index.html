@@ -354,7 +354,31 @@ p.innerHTML=header+'<div class="blank-writing" contenteditable="true" spellcheck
 }else if(subject==="Physics"){const content=i===0?'<div class="physics-section">SECTION (A)</div><div class="physics-sub">(Answer ALL questions)</div>':'<div class="physics-section">SECTION (B)</div><div class="physics-sub">(Answer any FOUR questions)</div>';p.innerHTML=header+'<div class="questions">'+content+sections.map(makeSection).join("")+'</div>';}else{p.innerHTML=header+'<div class="questions">'+sections.map(makeSection).join("")+'</div>';}
 papers.appendChild(p);
 });
+function fitChemistryPages(){
+ if(subject!=="Chemistry")return;
+ papers.querySelectorAll(".chemistry-paper .chemistry-exam-content").forEach((wrap)=>{
+  const content=wrap.querySelector(".chemistry-content");
+  if(!content)return;
+  let size=13, line=1.25;
+  content.style.setProperty("font-size",size+"pt","important");
+  content.style.setProperty("line-height",line,"important");
+  let guard=0;
+  while(wrap.scrollHeight>wrap.clientHeight+2 && size>10.5 && guard<12){
+   size=Math.max(10.5,size-0.25);
+   line=Math.max(1.08,line-0.025);
+   content.style.setProperty("font-size",size+"pt","important");
+   content.style.setProperty("line-height",line.toFixed(3),"important");
+   guard++;
+  }
+  if(wrap.scrollHeight>wrap.clientHeight+2){
+   content.style.setProperty("font-size","10.5pt","important");
+   content.style.setProperty("line-height","1.05","important");
+  }
+ });
+}
+
 if(subject==="Mathematics"&&window.renderMathInElement){papers.querySelectorAll(".math-exam-content").forEach(el=>window.renderMathInElement(el,{delimiters:[{left:"\\(",right:"\\)",display:false}],throwOnError:false,strict:"ignore"}));}
+if(subject==="Chemistry")fitChemistryPages();
 sync();
 }
 
