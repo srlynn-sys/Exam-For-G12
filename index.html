@@ -520,7 +520,6 @@ p.innerHTML=(i===0?header:"") + '<div class="blank-writing biology-exam-content"
 }else if(subject==="Chemistry"){p.innerHTML=(i===0?header:"") + '<div class="blank-writing chemistry-exam-content" contenteditable="true" spellcheck="false" aria-label="Chemistry exam questions — click to edit">' + getChemistryPages()[i] + '</div>';
 }else if(subject==="Physics"){
 p.innerHTML=sections;
-}
 }else{p.innerHTML=header+'<div class="questions">'+sections.map(makeSection).join("")+'</div>';}
 papers.appendChild(p);
 });
