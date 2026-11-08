@@ -146,20 +146,22 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 @media print{.paper.chemistry-paper{padding:8mm 10mm!important}.paper.chemistry-paper .chemistry-content{font-size:13pt!important;line-height:1.25!important}}
 
 
-/* FINAL override: actually distribute Chemistry questions to fill A4 pages */
+/* Chemistry pagination: preserve question order and let the script pack blocks into each A4 page */
 .paper.chemistry-paper .chemistry-exam-content{
-  display:flex!important;flex-direction:column!important;justify-content:space-between!important;
-  box-sizing:border-box!important;height:281mm!important;min-height:281mm!important;max-height:281mm!important;overflow:hidden!important;
+ display:block!important;box-sizing:border-box!important;width:100%!important;
+ height:281mm!important;min-height:281mm!important;max-height:281mm!important;
+ overflow:hidden!important;margin:0!important;padding:0!important;
 }
 .paper.chemistry-paper#paper1 .chemistry-exam-content{
-  height:242mm!important;min-height:242mm!important;max-height:242mm!important;
+ height:242mm!important;min-height:242mm!important;max-height:242mm!important;
 }
-.paper.chemistry-paper .chemistry-exam-content > .chemistry-content{
-  display:flex!important;flex:1 1 auto!important;flex-direction:column!important;justify-content:space-between!important;
-  min-height:0!important;box-sizing:border-box!important;
+.paper.chemistry-paper .chemistry-exam-content>.chemistry-content{
+ display:block!important;box-sizing:border-box!important;width:100%!important;min-height:0!important;
 }
-.paper.chemistry-paper .chemistry-exam-content .chem-q{break-inside:avoid!important;page-break-inside:avoid!important}
-.paper.chemistry-paper .chemistry-exam-content .ir-figure{flex:0 0 auto!important}
+.paper.chemistry-paper .chemistry-question-heading{margin:0 0 3px!important}
+.paper.chemistry-paper .chemistry-question-part{break-inside:avoid!important;page-break-inside:avoid!important}
+.paper.chemistry-paper .chemistry-opening{display:block!important}
+.paper.chemistry-paper .chemistry-exam-content .ir-figure{break-inside:avoid!important;page-break-inside:avoid!important}
 @media print{
  .paper.chemistry-paper .chemistry-exam-content{height:281mm!important;min-height:281mm!important;max-height:281mm!important}
  .paper.chemistry-paper#paper1 .chemistry-exam-content{height:242mm!important;min-height:242mm!important;max-height:242mm!important}
@@ -354,31 +356,102 @@ p.innerHTML=header+'<div class="blank-writing" contenteditable="true" spellcheck
 }else if(subject==="Physics"){const content=i===0?'<div class="physics-section">SECTION (A)</div><div class="physics-sub">(Answer ALL questions)</div>':'<div class="physics-section">SECTION (B)</div><div class="physics-sub">(Answer any FOUR questions)</div>';p.innerHTML=header+'<div class="questions">'+content+sections.map(makeSection).join("")+'</div>';}else{p.innerHTML=header+'<div class="questions">'+sections.map(makeSection).join("")+'</div>';}
 papers.appendChild(p);
 });
-function fitChemistryPages(){
+function balanceChemistryPages(){
  if(subject!=="Chemistry")return;
- papers.querySelectorAll(".chemistry-paper .chemistry-exam-content").forEach((wrap)=>{
-  const content=wrap.querySelector(".chemistry-content");
-  if(!content)return;
-  let size=13, line=1.25;
-  content.style.setProperty("font-size",size+"pt","important");
-  content.style.setProperty("line-height",line,"important");
-  let guard=0;
-  while(wrap.scrollHeight>wrap.clientHeight+2 && size>10.5 && guard<12){
-   size=Math.max(10.5,size-0.25);
-   line=Math.max(1.08,line-0.025);
-   content.style.setProperty("font-size",size+"pt","important");
-   content.style.setProperty("line-height",line.toFixed(3),"important");
-   guard++;
+ const paperEls=Array.from(papers.querySelectorAll(".chemistry-paper"));
+ if(paperEls.length!==4)return;
+ const wraps=paperEls.map(p=>p.querySelector(".chemistry-exam-content"));
+ const contents=wraps.map(w=>w&&w.querySelector(".chemistry-content"));
+ if(wraps.some(w=>!w)||contents.some(c=>!c))return;
+
+ // Collect question blocks in their original order before moving anything.
+ const units=[];
+ let intro=[];
+ const originalContents=contents.slice();
+ originalContents.forEach((content,pageIndex)=>{
+  const children=Array.from(content.children);
+  children.forEach(node=>{
+   if(node.classList.contains("chem-section")||node.classList.contains("chem-instruction")){
+    if(pageIndex===0)intro.push(node);
+    return;
+   }
+   if(!node.classList.contains("chem-q")){units.push(node);return;}
+   const number=(node.querySelector(":scope > b")?.textContent||"").trim();
+   // Keep short objective questions intact. Split longer structured questions
+   // at their (a), (b), ... sub-question boundaries so they can flow to the next page.
+   if(!/^[4-7]\./.test(number)||!node.querySelector(":scope > .chem-subq")){
+    units.push(node);return;
+   }
+   const heading=document.createElement("div");
+   heading.className="chem-q chemistry-question-heading";
+   heading.innerHTML=node.querySelector(":scope > b")?.outerHTML+" "+(number==="4."||number==="5."||number==="6."||number==="7."?"Answer ALL questions.":"");
+   const subs=Array.from(node.querySelectorAll(":scope > .chem-subq"));
+   if(subs.length){
+    const first=document.createElement("div");
+    first.className="chem-q chemistry-question-part";
+    first.append(heading,subs[0]);
+    units.push(first);
+    subs.slice(1).forEach(sub=>{
+     const part=document.createElement("div");
+     part.className="chem-q chemistry-question-part";
+     part.append(sub);
+     units.push(part);
+    });
+   }else units.push(node);
+  });
+ });
+ // Attach the section title/instruction to Question 1, avoiding a stranded heading.
+ if(intro.length&&units.length){
+  const first=units[0];
+  const opening=document.createElement("div");
+  opening.className="chem-q chemistry-opening";
+  intro.forEach(n=>opening.append(n));
+  opening.append(first);
+  units[0]=opening;
+ }
+ // Empty all four page containers, then repack sequentially using real rendered height.
+ contents.forEach(c=>{c.innerHTML="";c.style.display="block";c.style.justifyContent="initial";});
+ let page=0;
+ const appendUnit=(unit,p)=>{
+  contents[p].append(unit);
+  // Let the browser calculate the actual height before deciding whether it fits.
+  return wraps[p].scrollHeight<=wraps[p].clientHeight+3;
+ };
+ units.forEach(unit=>{
+  let placed=false;
+  while(page<contents.length&&!placed){
+   contents[page].append(unit);
+   if(wraps[page].scrollHeight<=wraps[page].clientHeight+3){
+    placed=true;
+   }else{
+    contents[page].removeChild(unit);
+    if(contents[page].children.length===0&&page===0){
+     // A single large block should remain visible rather than disappear.
+     contents[page].append(unit);placed=true;
+    }else page++;
+   }
   }
-  if(wrap.scrollHeight>wrap.clientHeight+2){
-   content.style.setProperty("font-size","10.5pt","important");
-   content.style.setProperty("line-height","1.05","important");
+  if(!placed){
+   // Keep any overflow visible for review instead of silently dropping questions.
+   contents[contents.length-1].append(unit);
   }
  });
+ // Small final pass: move a trailing block forward when it fits, reducing avoidable gaps.
+ for(let p=0;p<contents.length-1;p++){
+  while(contents[p].lastElementChild){
+   const candidate=contents[p].lastElementChild;
+   contents[p].removeChild(candidate);
+   contents[p+1].prepend(candidate);
+   if(wraps[p+1].scrollHeight<=wraps[p+1].clientHeight+3)continue;
+   contents[p+1].removeChild(candidate);
+   contents[p].append(candidate);
+   break;
+  }
+ }
 }
 
 if(subject==="Mathematics"&&window.renderMathInElement){papers.querySelectorAll(".math-exam-content").forEach(el=>window.renderMathInElement(el,{delimiters:[{left:"\\(",right:"\\)",display:false}],throwOnError:false,strict:"ignore"}));}
-if(subject==="Chemistry")fitChemistryPages();
+if(subject==="Chemistry")balanceChemistryPages();
 sync();
 }
 
