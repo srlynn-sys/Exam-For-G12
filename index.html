@@ -372,13 +372,12 @@ const sectionB = pages[1].indexOf('<div class="chem-section">SECTION (B)</div>')
 const mcqPage = sectionB >= 0 ? pages[1].slice(0, sectionB) : "";
 const q4Start = sectionB >= 0 ? pages[1].slice(sectionB) : "";
 // Government-style four-page layout:
-// Page 1: Questions 1 and 2. Page 2: Question 3 (MCQs) and all of Question 4.
-// Page 3: Questions 5 and 6. Page 4: Question 7.
-const q4Continuation = (pages[2] + pages[3]).replace('<div class="chem-q"><b>4.</b>', '<div class="chem-q">');
-const page3 = pages[4] + pages[5]; // Explicitly keep Question 5 followed by Question 6 on Page 3.
-const page4 = pages[6]; // Question 7 must start on Page 4 only.
-// Leave the Chemistry exam header only; remove all rendered question content.
-return [pages[0], mcqPage + q4Start + q4Continuation, page3, page4];
+// Page 1: Questions 1–2.
+// Page 2: Question 3 and Question 4(a)–(b).
+// Page 3: Question 4(c)–(e) and Question 5.
+// Page 4: Questions 6–7, including the IR spectrum at Question 7(c)(i).
+const q4Continuation = pages[2];
+return [pages[0], mcqPage + q4Start, q4Continuation + pages[3], pages[4] + pages[5]];
 }
 
 function renderSubject(){
