@@ -171,6 +171,13 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
  .paper.chemistry-paper .chemistry-exam-content{height:281mm!important;min-height:281mm!important;max-height:281mm!important}
  .paper.chemistry-paper#paper1 .chemistry-exam-content{height:242mm!important;min-height:242mm!important;max-height:242mm!important}
 }
+/* Fix Chemistry body text being clipped below the exam header */
+.paper.chemistry-paper .chemistry-exam-content{
+ height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;display:block!important;
+}
+.paper.chemistry-paper#paper1 .chemistry-exam-content{
+ height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;
+}
 </style>
 </head>
 <body>
