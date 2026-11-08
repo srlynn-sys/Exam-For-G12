@@ -462,7 +462,7 @@ mcq('x','A refrigerator has an electrical power ranging from 100 W to <span clas
 mcq('xi','The SI unit of magnetic field strength is the <span class="physics-blank"></span>.',['ampere per metre','weber','tesla'])+
 mcq('xii','A generator converts <span class="physics-blank"></span> energy into electrical energy.',['chemical','mechanical','thermal'])+
 mcq('xiii','LDR consists of a disc of <span class="physics-blank"></span> material on its surface with two electrodes.',['insulator','semiconductor','conductor'])+
-mcq('xiv','<span class="physics-blank"></span> are massless and move at the speed of light in vacuum.',['Neutrons','Photons','Electrons'])+'</div></div>',
+mcq('xiv','<span class="physics-blank"></span> are massless and move at the speed of light in vacuum.',['Neutrons','Photons','Electrons'])+'</div></div>'+
 '<div class="physics-content">'+head(3)+
 mcq('xv','Treatment with radiation is known as <span class="physics-blank"></span>.',['radioactivity','radiotherapy','radiography'])+
 secB+
@@ -480,7 +480,8 @@ sub('a','(i) When the charge on a capacitor is increased, does its capacitance i
 '<div class="physics-problem">The equivalent capacitance is 10 μF when n identical capacitors are connected in parallel and 0.4 μF when they are connected in series. Determine n and the capacitance of each capacitor.</div>'+
 sub('b','Draw the simple transformer. <span class="physics-marks">(8 marks)</span>')+
 '<div class="physics-problem">A 2 kW transformer is used to step down an AC supply of 240 V to 60 V. (i) What is the turns ratio? (ii) What will the output current be if there is a 10% power loss? (iii) How large is the output current if there is no power loss (100% efficiency)?</div></div>',
-'<div class="physics-content">'+head(4)+
+,
+'<div class="physics-content">'+head(3)+
 q(7,'<span class="physics-marks">(15 marks)</span>')+
 sub('a',"State De Morgan’s second theorem. Give the formula for expressing De Morgan’s second theorem for two variables and construct its truth table. <span class=\"physics-marks\">(7 marks)</span>")+
 '<div class="physics-problem">Construct the truth table to prove the following Boolean algebra rule: <span class="physics-formula">(A + B)(A + C) = A + BC</span></div>'+
@@ -499,7 +500,6 @@ sub('b','Explain the difference between active and passive electrical components
 ];
 return pages.map((content)=>'<div class="physics-page">'+content+'</div>');
 }
-
 function renderSubject(){
 papers.innerHTML="";
 const pages=subject==="Physics" ? getPhysicsPages() : subject==="Chemistry" ? getChemistryPages().map(()=>[]) : subject==="Biology" ? [[],[],[]] : subject==="Mathematics" ? getMathematicsPages() : subject==="English" ? getEnglishPages().map(()=>[]) : subjectTemplate(subject);
