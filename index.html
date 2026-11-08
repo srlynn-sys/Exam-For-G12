@@ -406,7 +406,7 @@ return [pages[0], mcqPage + q4Start, q4Continuation + pages[3], pages[4] + pages
 }
 
 function getPhysicsPages(){
-const head=(page)=>page===1?'<div class="physics-head"><div class="ph-time">Time Allowed: 3 Hours<br>Page 1</div><div class="ph-line1">2027</div><div class="ph-line2">MATRICULATION EXAMINATION</div><div class="ph-line2">DEPARTMENT OF MYANMAR EXAMINATIONS</div><div class="ph-line3">PHYSICS</div><div class="ph-line4">WRITE YOUR ANSWERS IN THE ANSWER BOOKLET</div><div class="ph-line5">The symbols in this paper have their usual significance</div></div>':'<div class="physics-page-number">Page '+page+'</div>';
+const head=(page)=>page===1?'<div class="standard-exam-head"><div class="standard-year">2027</div><div class="standard-title">MATRICULATION EXAMINATION</div><div class="standard-department">DEPARTMENT OF MYANMAR EXAMINATIONS</div><div class="standard-meta"><span>PHYSICS</span><span>Time Allowed: 3 Hours</span></div><div class="standard-instructions">WRITE YOUR ANSWERS IN THE ANSWER BOOKLET<br>The symbols in this paper have their usual significance</div></div>':'<div class="physics-page-number">Page '+page+'</div>';
 const secA='<div class="physics-section">SECTION (A)</div><div class="physics-sub">(Answer ALL questions)</div>';
 const secB='<div class="physics-section">SECTION (B)</div><div class="physics-sub">(Answer any FOUR questions)</div>';
 const q=(n,body)=>'<div class="physics-q"><b>'+n+'.</b> '+body+'</div>';
