@@ -437,6 +437,22 @@ function balanceChemistryPages(){
    contents[contents.length-1].append(unit);
   }
  });
+
+ // Backfill spare space in earlier pages with the next sequential blocks.
+ // This prevents a mostly empty page 3 when page 4 still contains questions.
+ for(let p=0;p<contents.length-1;p++){
+  let next=contents[p+1];
+  while(next.firstElementChild){
+   const candidate=next.firstElementChild;
+   contents[p].append(candidate);
+   if(wraps[p].scrollHeight<=wraps[p].clientHeight+3){
+    // The first block from the next page now follows the last block on this page.
+    continue;
+   }
+   contents[p].removeChild(candidate);
+   break;
+  }
+ }
 }
 
 if(subject==="Mathematics"&&window.renderMathInElement){papers.querySelectorAll(".math-exam-content").forEach(el=>window.renderMathInElement(el,{delimiters:[{left:"\\(",right:"\\)",display:false}],throwOnError:false,strict:"ignore"}));}
