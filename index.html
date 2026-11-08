@@ -497,13 +497,43 @@ sub('a','In an electric circuit, which component is used for (i) supplying elect
 sub('b','Explain the difference between active and passive electrical components with examples. <span class="physics-marks">(8 marks)</span>')+
 '<div class="physics-problem">When two 6 V batteries, having the same internal resistance and connected in series, are connected to a 5 Ω resistor, the current is 2 A. When these batteries are in parallel, a current of 1.5 A flows through when connected to another resistor. Find the resistance of the resistor.</div></div>'
 ];
-// Keep question groups in a deliberate page order:
-// Page 1: Q1 and the first ten parts of Q2.
-// Page 2: remaining Q2 parts and all of Q3.
-// Page 3: Q4, Q5 and Q6.
-// Page 4: Q7, Q8 and Q9.
-// This avoids moving whole questions unpredictably between pages.
-return pages.map((content)=>'<div class="physics-page">'+content+'</div>');
+// Reflow Physics into exactly three pages while preserving every question.
+// Page 1: Q1 and all of Q2.
+// Page 2: Q3, Q4 and Q5.
+// Page 3: Q6, Q7, Q8 and Q9.
+const parsed=pages.map((html)=>{
+ const holder=document.createElement("div");
+ holder.innerHTML=html;
+ return holder.querySelector(".physics-content");
+});
+const [p1,p2,p3,p4]=parsed;
+if(p1&&p2&&p3&&p4){
+ const p1Children=Array.from(p1.children);
+ const p2Children=Array.from(p2.children);
+ const p3Children=Array.from(p3.children);
+ const p4Children=Array.from(p4.children);
+ // Append the remaining five blanks to Q2 on page 1.
+ const q2List1=p1Children.find(el=>el.classList.contains("physics-list")&&el.previousElementSibling?.textContent.includes("Fill in the blanks"));
+ const q2List2=p2Children.find(el=>el.classList.contains("physics-list")&&el.previousElementSibling?.textContent.includes("continued"));
+ if(q2List1&&q2List2)Array.from(q2List2.children).forEach(el=>q2List1.append(el));
+ // Page 2 receives all of Q3, followed by Q4 and Q5.
+ const mcqList=p2Children.find(el=>el.classList.contains("physics-list")&&el.querySelector(".physics-options"));
+ const finalMcq=p3Children.find(el=>el.classList.contains("physics-item")&&el.textContent.trim().startsWith("(xv)"));
+ if(mcqList&&finalMcq)mcqList.append(finalMcq);
+ const secB=p3Children.find(el=>el.classList.contains("physics-section"));
+ const q4=p3Children.find(el=>el.classList.contains("physics-q")&&el.textContent.trim().startsWith("4."));
+ const q5=p3Children.find(el=>el.classList.contains("physics-q")&&el.textContent.trim().startsWith("5."));
+ if(secB)p2.append(secB);
+ if(q4)p2.append(q4);
+ if(q5)p2.append(q5);
+ // Page 3 receives Q6-Q9 in order.
+ const q6=p3Children.find(el=>el.classList.contains("physics-q")&&el.textContent.trim().startsWith("6."));
+ if(q6)p3.append(q6);
+ p4Children.filter(el=>el.classList.contains("physics-q")).forEach(el=>p3.append(el));
+ // Remove obsolete continuation wrappers after their content has been moved.
+ p2Children.filter(el=>el===q2List2||el.textContent.trim().startsWith("2. Fill in the blanks")).forEach(el=>el.remove());
+}
+return parsed.slice(0,3).map(content=>'<div class="physics-page">'+content.outerHTML+'</div>');
 }
 
 function renderSubject(){
