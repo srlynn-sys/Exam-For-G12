@@ -47,6 +47,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 .physics-paper .physics-section{text-align:center;font-size:11pt;font-weight:700;margin:5px 0 1px}
 .physics-paper .physics-sub{text-align:center;font-size:9.5pt;font-style:italic;margin:0 0 5px}
 .physics-paper .physics-content{font-family:"Times New Roman",Times,serif;font-size:9pt;line-height:1.15;color:#111}
+.physics-paper .physics-editable{outline:none;cursor:text}.physics-paper .physics-editable:focus{outline:1px dashed #9aaedb;outline-offset:2px}
 .physics-paper .physics-q{font-size:9.3pt;font-weight:400;margin:4px 0 2px;line-height:1.16}
 .physics-paper .physics-q>b{font-weight:700}
 .physics-paper .physics-marks{float:right;font-weight:400;font-size:8.5pt;margin-left:8px}
@@ -519,7 +520,7 @@ p.classList.add("biology-paper");
 p.innerHTML=(i===0?header:"") + '<div class="blank-writing biology-exam-content" contenteditable="true" spellcheck="false" aria-label="Biology exam questions — click to edit">' + getBiologyPage(i) + '</div>';
 }else if(subject==="Chemistry"){p.innerHTML=(i===0?header:"") + '<div class="blank-writing chemistry-exam-content" contenteditable="true" spellcheck="false" aria-label="Chemistry exam questions — click to edit">' + getChemistryPages()[i] + '</div>';
 }else if(subject==="Physics"){
-p.innerHTML=sections;
+p.innerHTML='<div class="physics-editable" contenteditable="true" spellcheck="false" aria-label="Physics exam text — click to edit">'+sections+'</div>';
 }else{p.innerHTML=header+'<div class="questions">'+sections.map(makeSection).join("")+'</div>';}
 papers.appendChild(p);
 });
