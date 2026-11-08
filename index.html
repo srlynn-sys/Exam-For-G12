@@ -406,9 +406,98 @@ return [pages[0], mcqPage + q4Start, q4Continuation + pages[3], pages[4] + pages
 }
 
 function getPhysicsPages(){
-const header='<div class="standard-exam-head"><div class="standard-year">2027</div><div class="standard-title">MATRICULATION EXAMINATION</div><div class="standard-department">DEPARTMENT OF MYANMAR EXAMINATIONS</div><div class="standard-meta"><span>PHYSICS</span><span>Time Allowed: 3 Hours</span></div><div class="standard-instructions">WRITE YOUR ANSWERS IN THE ANSWER BOOKLET<br>The symbols in this paper have their usual significance</div></div>';
-// Physics: clear all question content and keep only the existing exam header.
-return ['<div class="physics-content">'+header+'</div>'];
+const head=(page)=>page===1?'<div class="physics-head"><div class="ph-time">Time Allowed: 3 Hours<br>Page 1</div><div class="ph-line1">2027</div><div class="ph-line2">MATRICULATION EXAMINATION</div><div class="ph-line2">DEPARTMENT OF MYANMAR EXAMINATIONS</div><div class="ph-line3">PHYSICS</div><div class="ph-line4">WRITE YOUR ANSWERS IN THE ANSWER BOOKLET</div><div class="ph-line5">The symbols in this paper have their usual significance</div></div>':'<div class="physics-page-number">Page '+page+'</div>';
+const secA='<div class="physics-section">SECTION (A)</div><div class="physics-sub">(Answer ALL questions)</div>';
+const secB='<div class="physics-section">SECTION (B)</div><div class="physics-sub">(Answer any FOUR questions)</div>';
+const q=(n,body)=>'<div class="physics-q"><b>'+n+'.</b> '+body+'</div>';
+const sub=(letter,body)=>'<div class="physics-subq"><b>('+letter+')</b> '+body+'</div>';
+const item=(n,body)=>'<div class="physics-item">('+n+') '+body+'</div>';
+const mcq=(n,body,opts)=>'<div class="physics-item">('+n+') '+body+'<div class="physics-options">(A. '+opts[0]+' &nbsp; B. '+opts[1]+' &nbsp; C. '+opts[2]+')</div></div>';
+const pages=[
+'<div class="physics-content">'+head(1)+secA+
+q(1,'Are the following statements True (or) False? <span class="physics-marks">(10 marks)</span>')+
+'<div class="physics-list">'+
+item('i','The angular acceleration is equal to zero when there is no change in angular speed.')+
+item('ii','The SI unit of viscosity is newton per metre squared.')+
+item('iii','Flat plate collectors are the least common type of collector.')+
+item('iv','A black object is a good absorber and a good radiator.')+
+item('v','The retina is the light sensitive area of the cells, at the front of the eye.')+
+item('vi','A capacitor consists of two conductors separated by a small distance.')+
+item('vii','The practical unit of electrical energy is kilowatt hour.')+
+item('viii','The lamps are connected in parallel in the lighting circuit.')+
+item('ix','A photodiode converts light into electrical current.')+
+item('x','Neutrons released from a fission reaction are slow neutrons.')+'</div>'+
+q(2,'Fill in the blanks. <span class="physics-marks">(15 marks)</span>')+
+'<div class="physics-list">'+
+item('i','The direction of tangential acceleration is always <span class="physics-blank"></span> to the circular path.')+
+item('ii','An attractive force exists between the sun and the earth in a direction <span class="physics-blank"></span> to the path of the earth.')+
+item('iii','A large amount of <span class="physics-blank"></span> energy is stored in the fossil fuels.')+
+item('iv','A series of processes in which a system is brought back to its initial state is called a <span class="physics-blank"></span>.')+
+item('v','The SI units of Young’s modulus and the bulk modulus are <span class="physics-blank"></span>.')+
+item('vi','The human eye responds only to light having wavelengths between about 400 nm and <span class="physics-blank"></span>.')+
+item('vii','<span class="physics-blank"></span> coherent light is used in the double slits experiment.')+
+item('viii','Variable capacitors mostly use air as the <span class="physics-blank"></span> medium.')+
+item('ix','The equivalent capacitance of the capacitors connected in <span class="physics-blank"></span> is the sum of the capacitances of the individual capacitors.')+
+item('x','In parallel connection of batteries, care must be taken that the terminal of the <span class="physics-blank"></span> polarity should be connected together.')+'</div></div>',
+'<div class="physics-content">'+head(2)+
+q(2,'Fill in the blanks — continued.')+
+'<div class="physics-list">'+
+item('xi','Mica is a good electrical <span class="physics-blank"></span> and can withstand very high temperature.')+
+item('xii','In the alternating current the direction of the flow of electrons changes <span class="physics-blank"></span>.')+
+item('xiii','A modern light source that requires <span class="physics-blank"></span> voltages is the light emitting diode (LED).')+
+item('xiv','A thermistor can convert changes in <span class="physics-blank"></span> into changes in electric current.')+
+item('xv','<span class="physics-blank"></span> relativity is most useful in the field of nuclear physics.')+'</div>'+
+q(3,'Choose the correct answer from the following. <span class="physics-marks">(15 marks)</span>')+
+'<div class="physics-list">'+
+mcq('i','Centrifugal pump converts mechanical energy into <span class="physics-blank"></span> energy by the use of centrifugal force acting on the fluid.',['hydraulic','electrical','chemical'])+
+mcq('ii','Adhesion refers to forces between molecules of <span class="physics-blank"></span> substances.',['same','different','normal'])+
+mcq('iii','Non-renewable energy sources are available only in <span class="physics-blank"></span> supply.',['limited','unlimited','constant'])+
+mcq('iv','An isothermal process occurs at a constant <span class="physics-blank"></span>.',['pressure','volume','temperature'])+
+mcq('v','The speed of sound is <span class="physics-blank"></span> in solids than liquids and gases.',['lower','higher','smaller'])+
+mcq('vi','<span class="physics-blank"></span> is a defect of vision in which near objects are seen clearly, but objects far away are blurry.',['Farsightedness','Nearsightedness','Blindness'])+
+mcq('vii','The bright and dark fringes in a diffraction pattern are created by <span class="physics-blank"></span> of diffracted light waves.',['interference','reflection','refraction'])+
+mcq('viii','<span class="physics-blank"></span> can also be used in a time-dependent circuit (timer circuit).',['Inductors','Resistors','Capacitors'])+
+mcq('ix','The value of dielectric constant of vacuum is <span class="physics-blank"></span>.',['zero','one','two'])+
+mcq('x','A refrigerator has an electrical power ranging from 100 W to <span class="physics-blank"></span>.',['250 W','2000 W','1200 W'])+
+mcq('xi','The SI unit of magnetic field strength is the <span class="physics-blank"></span>.',['ampere per metre','weber','tesla'])+
+mcq('xii','A generator converts <span class="physics-blank"></span> energy into electrical energy.',['chemical','mechanical','thermal'])+
+mcq('xiii','LDR consists of a disc of <span class="physics-blank"></span> material on its surface with two electrodes.',['insulator','semiconductor','conductor'])+
+mcq('xiv','<span class="physics-blank"></span> are massless and move at the speed of light in vacuum.',['Neutrons','Photons','Electrons'])+'</div></div>',
+'<div class="physics-content">'+head(3)+
+mcq('xv','Treatment with radiation is known as <span class="physics-blank"></span>.',['radioactivity','radiotherapy','radiography'])+
+secB+
+q(4,'<span class="physics-marks">(15 marks)</span>')+
+sub('a','(i) How are the flow rate and fluid velocity related? (ii) Which force causes capillary action rise? <span class="physics-marks">(7 marks)</span>')+
+'<div class="physics-problem">A square plate 0.1 m side moves parallel to second plate with a velocity of 0.1 m s<sup>−1</sup>, both plates being immersed in water. If the viscous force is 0.002 N and the coefficient of viscosity is 0.01 poise, what is the distance between the plates? (1 Pa s = 10 poise)</div>'+
+sub('b','Draw a p–V diagram for the four reversible processes of Carnot cycle. <span class="physics-marks">(8 marks)</span>')+
+'<div class="physics-problem">An automobile engine has an efficiency of 20% and produces an average of 24000 J of mechanical work per second during operation. (i) How much heat input is required per second? (ii) How much heat is discharged as waste heat per second?</div>'+
+q(5,'<span class="physics-marks">(15 marks)</span>')+
+sub('a','What are the major types of renewable energy sources? State the changes in form of energy while producing hydroelectricity. <span class="physics-marks">(7 marks)</span>')+
+'<div class="physics-problem">How many lines per centimetre are there on a diffraction grating that gives a first-order maximum for 470 nm blue light at an angle of 25°?</div>'+
+sub('b','What are alpha, beta and gamma rays? Describe the properties of alpha rays. Draw a diagram to show nuclear fission. <span class="physics-marks">(8 marks)</span>')+
+q(6,'<span class="physics-marks">(15 marks)</span>')+
+sub('a','(i) When the charge on a capacitor is increased, does its capacitance increase? Explain. (ii) A capacitor stores charge Q at a potential difference V. What happens if the voltage applied to the capacitor is doubled? <span class="physics-marks">(7 marks)</span>')+
+'<div class="physics-problem">The equivalent capacitance is 10 μF when n identical capacitors are connected in parallel and 0.4 μF when they are connected in series. Determine n and the capacitance of each capacitor.</div>'+
+sub('b','Draw the simple transformer. <span class="physics-marks">(8 marks)</span>')+
+'<div class="physics-problem">A 2 kW transformer is used to step down an AC supply of 240 V to 60 V. (i) What is the turns ratio? (ii) What will the output current be if there is a 10% power loss? (iii) How large is the output current if there is no power loss (100% efficiency)?</div></div>',
+'<div class="physics-content">'+head(4)+
+q(7,'<span class="physics-marks">(15 marks)</span>')+
+sub('a',"State De Morgan’s second theorem. Give the formula for expressing De Morgan’s second theorem for two variables and construct its truth table. <span class=\"physics-marks\">(7 marks)</span>")+
+'<div class="physics-problem">Construct the truth table to prove the following Boolean algebra rule: <span class="physics-formula">(A + B)(A + C) = A + BC</span></div>'+
+sub('b','Draw a diagram to show the centripetal force on the ball and its reaction force on the hand when a person whirls a ball on the end of a string in a horizontal circle around his head. <span class="physics-marks">(8 marks)</span>')+
+'<div class="physics-problem">(i) What frequency is received by a person watching an oncoming ambulance moving at 110 km h<sup>−1</sup> and emitting a steady 800 Hz sound from its siren? The speed of sound on this day is 345 m s<sup>−1</sup>. (ii) What frequency does she receive after the ambulance has passed?</div>'+
+q(8,'<span class="physics-marks">(15 marks)</span>')+
+sub('a','Under what condition is the angular acceleration of a rotating object equal to zero? In circular motion, how is a tangential acceleration produced? <span class="physics-marks">(7 marks)</span>')+
+'<div class="physics-problem">Suppose a piece of food is on the edge of a rotating microwave oven plate. Does it experience tangential acceleration, centripetal acceleration, or both when the plate rotates at constant angular velocity and when the plate slows down to stop? Draw a circuit diagram of two batteries in parallel connected with an external resistor.</div>'+
+sub('b','What are meant by farsightedness and nearsightedness, and how can they be corrected? <span class="physics-marks">(8 marks)</span>')+
+'<div class="physics-problem">The proper length L<sub>0</sub> is 1 km. An observer in motion with respect to the frame of reference of the two points measures 0.6 km, which is L. What is the relative speed of the frame of reference with respect to the observer?</div>'+
+q(9,'<span class="physics-marks">(15 marks)</span>')+
+sub('a','In an electric circuit, which component is used for (i) supplying electricity, (ii) closing or opening the circuit, and (iii) providing a path for electric current? What are open and closed circuits? <span class="physics-marks">(7 marks)</span>')+
+'<div class="physics-problem">Draw the block diagram for a digital communication system.</div>'+
+sub('b','Explain the difference between active and passive electrical components with examples. <span class="physics-marks">(8 marks)</span>')+
+'<div class="physics-problem">When two 6 V batteries, having the same internal resistance and connected in series, are connected to a 5 Ω resistor, the current is 2 A. When these batteries are in parallel, a current of 1.5 A flows through when connected to another resistor. Find the resistance of the resistor.</div></div>'
+];
+return pages.map((content)=>'<div class="physics-page">'+content+'</div>');
 }
 
 function renderSubject(){
