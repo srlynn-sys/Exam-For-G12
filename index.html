@@ -1012,6 +1012,7 @@ if(document.fonts&&document.fonts.ready) await document.fonts.ready;
 const source=document.getElementById("paper"+index);
 if(!source) throw new Error("Paper "+index+" not found");
 const clone=source.cloneNode(true);
+const isChemistry=clone.classList.contains("chemistry-paper");
 try{
 clone.style.setProperty("zoom","1","important");
 clone.style.setProperty("transform","none","important");
@@ -1021,7 +1022,7 @@ clone.style.setProperty("min-width","794px","important");
 clone.style.setProperty("min-height","1123px","important");
 clone.style.setProperty("max-width","794px","important");
 clone.style.setProperty("max-height","1123px","important");
-clone.style.setProperty("padding","53px 57px","important");
+clone.style.setProperty("padding",isChemistry?"7mm 9mm":"53px 57px","important");
 clone.style.setProperty("box-sizing","border-box","important");
 clone.style.setProperty("margin","0","important");
 clone.style.setProperty("box-shadow","none","important");
@@ -1030,7 +1031,7 @@ clone.style.setProperty("left","-10000px","important");
 clone.style.setProperty("top","0","important");
 clone.style.setProperty("overflow","hidden","important");
 clone.style.setProperty("background","#fff","important");
-clone.style.setProperty("font-size","13px","important");
+if(!isChemistry)clone.style.setProperty("font-size","13px","important");
 clone.querySelectorAll(".section").forEach(x=>x.style.setProperty("break-inside","avoid","important"));
 document.body.appendChild(clone);
 await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
@@ -1044,13 +1045,23 @@ img.addEventListener("error",done,{once:true});
 setTimeout(done,2500);
 });
 }));
-images.forEach(img=>{if(!img.complete||!img.naturalWidth) img.style.display="none";});
+images.forEach(img=>{
+ if(!img.complete||!img.naturalWidth){
+  if(isChemistry&&img.closest(".ir-figure"))throw new Error("The IR spectrum for Question 7(c)(i) could not be loaded; export stopped rather than omit the figure.");
+  img.style.display="none";
+ }
+});
 try{
 return await html2canvas(clone,{scale:2,backgroundColor:"#fff",useCORS:true,allowTaint:false,logging:false,width:794,height:1123,windowWidth:794,windowHeight:1123,scrollX:0,scrollY:0});
 }catch(firstError){
-/* A remote logo without CORS permission must not block the paper export. */
-images.forEach(img=>img.style.setProperty("display","none","important"));
-return await html2canvas(clone,{scale:2,backgroundColor:"#fff",useCORS:true,allowTaint:false,logging:false,width:794,height:1123,windowWidth:794,windowHeight:1123,scrollX:0,scrollY:0});
+/* Hide only non-essential remote images on retry; never silently remove the Chemistry IR spectrum. */
+images.filter(img=>!(isChemistry&&img.closest(".ir-figure"))).forEach(img=>img.style.setProperty("display","none","important"));
+try{
+ return await html2canvas(clone,{scale:2,backgroundColor:"#fff",useCORS:true,allowTaint:false,logging:false,width:794,height:1123,windowWidth:794,windowHeight:1123,scrollX:0,scrollY:0});
+}catch(retryError){
+ if(isChemistry&&images.some(img=>img.closest(".ir-figure")))throw new Error("PDF/PNG export could not capture the IR spectrum at Question 7(c)(i). Check that the spectrum image is reachable and permits cross-origin capture.");
+ throw retryError;
+}
 }
 }finally{
 clone.remove();
