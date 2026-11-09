@@ -509,107 +509,117 @@ function balanceChemistryPages(){
  const contents=wraps.map(w=>w&&w.querySelector(".chemistry-content"));
  if(wraps.some(w=>!w)||contents.some(c=>!c))return;
 
- // Collect question blocks in their original order before moving anything.
  const units=[];
- let intro=[];
- const originalContents=contents.slice();
- originalContents.forEach((content,pageIndex)=>{
-  const children=Array.from(content.children);
-  children.forEach(node=>{
+ const intro=[];
+ const pendingSectionHeadings=[];
+ contents.slice().forEach((content,pageIndex)=>{
+  Array.from(content.children).forEach(node=>{
    if(node.classList.contains("chem-section")||node.classList.contains("chem-instruction")){
-    if(pageIndex===0)intro.push(node);
+    (pageIndex===0?intro:pendingSectionHeadings).push(node);
     return;
    }
-   if(!node.classList.contains("chem-q")){units.push(node);return;}
-   const number=(node.querySelector(":scope > b")?.textContent||"").trim();
-   // Keep short objective questions intact. Split longer structured questions
-   // at their (a), (b), ... sub-question boundaries so they can flow to the next page.
-   if(!/^[4-7]\./.test(number)||!node.querySelector(":scope > .chem-subq")){
-    units.push(node);return;
+   const firstNewUnit=units.length;
+   if(!node.classList.contains("chem-q")){
+    units.push(node);
+   }else{
+    const number=(node.querySelector(":scope > b")?.textContent||"").trim();
+    if(!/^[4-7]\./.test(number)||!node.querySelector(":scope > .chem-subq")){
+     units.push(node);
+    }else{
+     const heading=document.createElement("div");
+     heading.className="chem-q chemistry-question-heading";
+     Array.from(node.childNodes)
+      .filter(child=>!(child.nodeType===1&&child.classList.contains("chem-subq")))
+      .forEach(child=>heading.append(child.cloneNode(true)));
+     const subs=Array.from(node.querySelectorAll(":scope > .chem-subq"));
+     if(subs.length){
+      const first=document.createElement("div");
+      first.className="chem-q chemistry-question-part";
+      first.append(heading,subs[0]);
+      units.push(first);
+      subs.slice(1).forEach(sub=>{
+       const part=document.createElement("div");
+       part.className="chem-q chemistry-question-part";
+       part.append(sub);
+       units.push(part);
+      });
+     }else units.push(node);
+    }
    }
-   const heading=document.createElement("div");
-   heading.className="chem-q chemistry-question-heading";
-   // Preserve the original question title and marks exactly as authored.
-   Array.from(node.childNodes).filter(child=>!(child.nodeType===1&&child.classList.contains("chem-subq"))).forEach(child=>heading.append(child.cloneNode(true)));
-   const subs=Array.from(node.querySelectorAll(":scope > .chem-subq"));
-   if(subs.length){
-    const first=document.createElement("div");
-    first.className="chem-q chemistry-question-part";
-    first.append(heading,subs[0]);
-    units.push(first);
-    subs.slice(1).forEach(sub=>{
-     const part=document.createElement("div");
-     part.className="chem-q chemistry-question-part";
-     part.append(sub);
-     units.push(part);
-    });
-   }else units.push(node);
+   // Keep SECTION (B) and its instruction with the first part of Question 4.
+   if(pageIndex>0&&pendingSectionHeadings.length&&units.length>firstNewUnit){
+    const opening=document.createElement("div");
+    opening.className="chem-q chemistry-opening";
+    pendingSectionHeadings.splice(0).forEach(heading=>opening.append(heading));
+    opening.append(units[firstNewUnit]);
+    units[firstNewUnit]=opening;
+   }
   });
  });
- // Attach the section title/instruction to Question 1, avoiding a stranded heading.
+ // Keep SECTION (A) and its instruction with Question 1.
  if(intro.length&&units.length){
-  const first=units[0];
   const opening=document.createElement("div");
   opening.className="chem-q chemistry-opening";
-  intro.forEach(n=>opening.append(n));
-  opening.append(first);
+  intro.forEach(heading=>opening.append(heading));
+  opening.append(units[0]);
   units[0]=opening;
  }
- // Empty all four page containers, then repack sequentially using real rendered height.
+
  contents.forEach(c=>{c.innerHTML="";c.style.display="block";c.style.justifyContent="initial";});
  let page=0;
- const appendUnit=(unit,p)=>{
-  contents[p].append(unit);
-  // Let the browser calculate the actual height before deciding whether it fits.
-  return wraps[p].scrollHeight<=wraps[p].clientHeight+3;
+ const fits=p=>wraps[p].scrollHeight<=wraps[p].clientHeight+3;
+ const startsQuestionSeven=unit=>{
+  const heading=unit.querySelector&&unit.querySelector(".chemistry-question-heading > b");
+  return !!(heading&&/^7\./.test(heading.textContent.trim()));
  };
  units.forEach(unit=>{
-  // Keep the complete Chemistry MCQ block (Question 3) visible on page 2.
-  // It is a long objective section and must not be pushed off the paper by
-  // the automatic height-balancing loop.
-  if(unit.querySelector && unit.querySelector(".mcq")){
+  // Question 3 must start on page 2; do not backfill it onto page 1.
+  if(unit.querySelector&&unit.querySelector(".mcq")){
    contents[1].append(unit);
    page=Math.max(page,1);
    return;
   }
+  // Keep Question 7, including the IR spectrum at 7(c)(i), on page 4.
+  if(startsQuestionSeven(unit))page=Math.max(page,3);
   let placed=false;
   while(page<contents.length&&!placed){
    contents[page].append(unit);
-   if(wraps[page].scrollHeight<=wraps[page].clientHeight+3){
+   if(fits(page)){
     placed=true;
    }else{
     contents[page].removeChild(unit);
     if(contents[page].children.length===0&&page===0){
-     // A single large block should remain visible rather than disappear.
-     contents[page].append(unit);placed=true;
+     // Never discard a large opening block if the browser reports a rounding overflow.
+     contents[page].append(unit);
+     placed=true;
     }else page++;
    }
   }
   if(!placed){
-   // Keep any overflow visible for review instead of silently dropping questions.
+   // Preserve every question in the DOM; never silently discard overflow content.
    contents[contents.length-1].append(unit);
   }
  });
 
- // Backfill spare space in earlier pages with the next sequential blocks.
- // This prevents a mostly empty page 3 when page 4 still contains questions.
- for(let p=0;p<contents.length-1;p++){
-  let next=contents[p+1];
+ // Use spare room on pages 2–3 for the next sequential sub-question.
+ // Stop before Question 7 so its heading and spectrum remain together on page 4.
+ for(let p=1;p<contents.length-1;p++){
+  const next=contents[p+1];
   while(next.firstElementChild){
    const candidate=next.firstElementChild;
+   if((candidate.querySelector&&candidate.querySelector(".mcq"))||startsQuestionSeven(candidate))break;
    contents[p].append(candidate);
-   if(wraps[p].scrollHeight<=wraps[p].clientHeight+3){
-    // The first block from the next page now follows the last block on this page.
-    continue;
-   }
+   if(fits(p))continue;
    contents[p].removeChild(candidate);
    break;
   }
  }
 }
-
 if(subject==="Mathematics"&&window.renderMathInElement){papers.querySelectorAll(".math-exam-content").forEach(el=>window.renderMathInElement(el,{delimiters:[{left:"\\(",right:"\\)",display:false}],throwOnError:false,strict:"ignore"}));}
-if(subject==="Chemistry"){formatChemistryElementNumbers();}
+if(subject==="Chemistry"){
+ formatChemistryElementNumbers();
+ balanceChemistryPages();
+}
 sync();
 }
 
