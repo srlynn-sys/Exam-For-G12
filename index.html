@@ -179,6 +179,38 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
  .paper.chemistry-paper .chemistry-content{font-size:11pt!important;line-height:1.16!important}
  .paper.chemistry-paper .chemistry-content .ir-figure img{print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
 }
+
+/* Results: two Myanmar-style result slips on one landscape A4 sheet */
+.results-app{min-height:100vh;background:#eef2f7}.results-controls{max-width:1500px;margin:16px auto;padding:0 14px}.results-controls>p,.results-note{font-size:13px;color:#5d6a80;text-align:center;margin:10px auto 16px}
+.results-sheet{width:297mm;height:210mm;margin:0 auto;background:#fff;display:grid;grid-template-columns:1fr 1fr;position:relative;box-shadow:0 5px 24px #17203322;overflow:hidden}
+.results-sheet:after{content:"";position:absolute;top:0;bottom:0;left:50%;border-left:1px dashed #9aa3b2;z-index:5;pointer-events:none}
+.result-half{position:relative;min-width:0;overflow:hidden;padding:5mm 5mm 4mm;border:1px solid #d7dce4;display:flex;flex-direction:column;--result-color:#b4232f;--result-tint:rgba(180,35,47,.055)}
+.result-half[data-theme="pass"]{--result-color:#187344;--result-tint:rgba(24,115,68,.055)}
+.result-half[data-theme="fail"]{--result-color:#b4232f;--result-tint:rgba(180,35,47,.055)}
+.result-controls{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px;font:11px Arial,sans-serif;color:#4d596b}
+.result-controls select{font:11px Arial,sans-serif;border:1px solid #ccd4e0;border-radius:5px;padding:4px;max-width:54%}
+.result-watermark{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.12;background-image:repeating-linear-gradient(-45deg,transparent 0,transparent 65px,var(--result-tint) 65px,var(--result-tint) 125px)}
+.result-watermark:before{content:"ကျရှုံး";position:absolute;inset:-20%;display:flex;align-items:center;justify-content:center;white-space:pre-wrap;text-align:center;font-family:"Noto Sans Myanmar","Myanmar Text",sans-serif;font-weight:900;font-size:39px;line-height:2.3;letter-spacing:3px;color:var(--result-color);transform:rotate(-45deg);text-shadow:0 0 1px var(--result-color);background-image:repeating-linear-gradient(0deg,transparent 0 65px,rgba(255,255,255,.02) 65px 70px)}
+.result-half[data-theme="pass"] .result-watermark:before{content:"အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်"}
+.result-half[data-theme="fail"] .result-watermark:before{content:"ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး"}
+.result-document{position:relative;z-index:1;flex:1;min-height:0;padding:4px 5px;color:#1e293b;background:rgba(255,255,255,.88);border:1.5px solid var(--result-color);outline:none;font-family:"Noto Sans Myanmar","Myanmar Text",sans-serif;font-size:10px;line-height:1.5;overflow:hidden}
+.result-document:focus{outline:2px dashed var(--result-color);outline-offset:1px}
+.result-authority{text-align:center;font-size:10px;font-weight:800;line-height:1.45;color:var(--result-color)}
+.result-document h3{text-align:center;font-size:17px;margin:3px 0 0;color:var(--result-color);letter-spacing:1px}
+.result-subtitle{text-align:center;font-size:9px;font-weight:700;margin:1px 0 5px}
+.result-meta{font-size:9px;margin:3px 0;white-space:normal}
+.result-table{width:100%;border-collapse:collapse;margin:5px 0;font-size:9px;line-height:1.35}
+.result-table th,.result-table td{border:1px solid var(--result-color);padding:3px 3px;text-align:center}
+.result-table th{background:var(--result-tint);font-weight:800;color:var(--result-color)}
+.result-table td:nth-child(2){text-align:left}
+.result-outcome{margin:6px 0 3px;padding:4px;border:1px solid var(--result-color);font-weight:800;color:var(--result-color);text-align:center;font-size:11px}
+.result-signatures{display:flex;justify-content:space-between;gap:10px;margin-top:auto;padding-top:8px;font-size:8px;text-align:center}
+.result-signatures span{min-width:42%}
+.results-note{margin:14px auto 24px}
+@media(max-width:900px){.results-sheet{transform-origin:top left;transform:scale(.72);margin-bottom:-58mm}.results-controls{overflow-x:auto}}
+@media(max-width:560px){.results-sheet{transform:scale(.42);margin-bottom:-122mm}.results-toolbar h2{width:100%}.results-toolbar{position:sticky}}
+@media print{body:has(#resultsApp:not(.hidden)){background:#fff}@page{size:A4 landscape;margin:0}body:has(#resultsApp:not(.hidden)) #home,body:has(#resultsApp:not(.hidden)) #app,body:has(#resultsApp:not(.hidden)) .results-toolbar,body:has(#resultsApp:not(.hidden)) .results-controls>p,body:has(#resultsApp:not(.hidden)) .results-note{display:none!important}body:has(#resultsApp:not(.hidden)) #resultsApp{display:block!important}.results-sheet{width:297mm;height:210mm;margin:0;transform:none!important;box-shadow:none}.result-controls{display:none!important}.result-half{padding:5mm 5mm 4mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
 </style>
 </head>
 <body>
@@ -194,6 +226,7 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <button class="subject" data-subject="Physics" data-mm="ရူပဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="4" ry="8"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(-60 12 12)"/></svg></div><h2>Physics</h2><p>ရူပဗေဒ</p></button>
 <button class="subject" data-subject="PhoenixPaper" data-mm="Exam Paper"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 5 7v10l7 4 7-4V7z"/><path d="M8 13l4-5 4 5-4 3z"/></svg></div><h2>Phoenix Spring</h2><p>Custom Exam Paper</p></button>
 <button class="subject" data-subject="CustomPaper" data-mm="Custom Exam Paper"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h5M8 16h8"/></svg></div><h2>Custom Exam Paper</h2><p>ကိုယ်ပိုင် Logo / Grade / Subject</p></button>
+<button class="subject" data-subject="Results" data-mm="အမှတ်စာရင်း"><div class="icon"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5z"/><path d="M8 8h8M8 12h3M8 16h8M14 11l2 2 3-4"/></svg></div><h2>Results</h2><p>အမှတ်စာရင်း ဖန်တီးရန်</p></button>
 <button class="subject" data-subject="Biology" data-mm="ဇီဝဗေဒ"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 20c-3.8-2.2-6-5.4-6-9.2C6 6.5 8.7 4 12 4s6 2.5 6 6.8c0 3.8-2.2 7-6 9.2z"/><path d="M12 4c0 5.5-2.5 9.3-7 11M12 8c2.5 0 4.5 1 6 3"/></svg></div><h2>Biology</h2><p>ဇီဝဗေဒ</p></button>
 </div>
 </div>
@@ -258,6 +291,49 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 <div id="customFields" class="settings hidden"><div class="field"><label>Logo URL / Logo ပုံလင့်ခ်</label><input id="customLogo" type="url" placeholder="https://example.com/logo.png"></div><div class="field"><label>School Name / ကျောင်းအမည်</label><input id="customSchool" placeholder="School Name"></div><div class="field"><label>School Name Color / ကျောင်းအမည်အရောင်</label><input id="customSchoolColor" type="color" value="#102d68" aria-label="School name color" style="width:100%;height:42px;padding:4px;border:1px solid #ccd5e3;border-radius:8px;background:#fff;cursor:pointer"></div><div class="field"><label>Subject / ဘာသာရပ်</label><input id="customSubject" placeholder="e.g. Physics / မြန်မာစာ"></div><div class="field"><label>Grade / အတန်း</label><input id="customGrade" placeholder="e.g. Grade 12"></div><div class="field"><label>Time Allowed / ခွင့်ပြုချိန်</label><input id="customTime" placeholder="e.g. 2 Hours"></div><div class="field phoenix-letter-tool hidden" id="phoenixLetterTool"><button type="button" class="btn primary" id="salaryLetter">＋ Employer / Salary Confirmation Letter ထည့်ရန်</button></div></div><p class="note">အောက်က စာမျက်နှာတွေမှာ မေးခွန်းတွေကို နောက်မှ တိုက်ရိုက်ထည့်နိုင်ပါတယ်။</p>
 <div id="papers" class="paper-list"></div>
 </div>
+</section>
+
+<section id="resultsApp" class="results-app hidden">
+ <div class="toolbar results-toolbar">
+  <button class="btn back" id="resultsBack">← Subjects</button><h2>Results / အမှတ်စာရင်း</h2>
+  <button class="btn primary" id="resultsPdf">📄 Export A4 Landscape PDF</button>
+  <button class="btn green" id="resultsPng">🖼 Export PNG</button>
+  <button class="btn dark" id="resultsPrint">🖨 Print</button>
+ </div>
+ <div class="results-controls">
+  <p>စာရွက်တစ်ရွက်ကို အလယ်တည့်တည့်မှ နှစ်ပိုင်းခွဲထားသည်။ တစ်ပိုင်းစီတွင် အမှတ်စာရင်းတစ်ခုစီကို ပြင်ဆင်နိုင်ပြီး theme ကို သီးခြားရွေးနိုင်သည်။</p>
+  <div class="results-sheet" id="resultsSheet">
+   <div class="result-half" id="resultHalf1" data-theme="fail">
+    <div class="result-watermark" aria-hidden="true"></div>
+    <div class="result-controls"><label>ဘယ်ဘက်အမှတ်စာရင်း Theme</label><select class="result-theme" data-half="1"><option value="fail">ကျရှုံး — အနီရောင်</option><option value="pass">အောင်မြင် — အစိမ်းရောင်</option></select></div>
+    <div class="result-document" contenteditable="true" spellcheck="false" aria-label="ဘယ်ဘက် အမှတ်စာရင်းကို ပြင်ဆင်ရန်">
+     <div class="result-authority">ပြည်ထောင်စုသမ္မတမြန်မာနိုင်ငံတော်</div><div class="result-authority">မြန်မာနိုင်ငံစာစစ်ဦးစီးဌာန</div>
+     <h3>အမှတ်စာရင်း</h3><div class="result-subtitle">တက္ကသိုလ်ဝင်စာမေးပွဲ — ၂၀၂၇ ခုနှစ်</div>
+     <div class="result-meta">ခုံအမှတ် — ____________　 စာစစ်ဌာန — ____________</div>
+     <div class="result-meta">အမည် — __________________________________________</div>
+     <table class="result-table"><thead><tr><th>စဉ်</th><th>ဘာသာရပ်</th><th>ရမှတ်</th><th>အများဆုံး</th></tr></thead><tbody>
+      <tr><td>၁</td><td>မြန်မာစာ</td><td>_____</td><td>၁၀၀</td></tr><tr><td>၂</td><td>အင်္ဂလိပ်စာ</td><td>_____</td><td>၁၀၀</td></tr><tr><td>၃</td><td>သင်္ချာ</td><td>_____</td><td>၁၀၀</td></tr><tr><td>၄</td><td>ဓာတုဗေဒ</td><td>_____</td><td>၁၀၀</td></tr><tr><td>၅</td><td>ရူပဗေဒ</td><td>_____</td><td>၁၀၀</td></tr><tr><td>၆</td><td>ဇီဝဗေဒ</td><td>_____</td><td>၁၀၀</td></tr>
+     </tbody><tfoot><tr><th colspan="2">စုစုပေါင်း</th><th>_____</th><th>၆၀၀</th></tr></tfoot></table>
+     <div class="result-outcome">ရလဒ် — ____________________</div><div class="result-signatures"><span>လက်မှတ် ____________<br>စစ်ဆေးသူ</span><span>လက်မှတ် ____________<br>တာဝန်ခံ</span></div>
+    </div>
+   </div>
+   <div class="result-half" id="resultHalf2" data-theme="pass">
+    <div class="result-watermark" aria-hidden="true"></div>
+    <div class="result-controls"><label>ညာဘက်အမှတ်စာရင်း Theme</label><select class="result-theme" data-half="2"><option value="fail">ကျရှုံး — အနီရောင်</option><option value="pass" selected>အောင်မြင် — အစိမ်းရောင်</option></select></div>
+    <div class="result-document" contenteditable="true" spellcheck="false" aria-label="ညာဘက် အမှတ်စာရင်းကို ပြင်ဆင်ရန်">
+     <div class="result-authority">ပြည်ထောင်စုသမ္မတမြန်မာနိုင်ငံတော်</div><div class="result-authority">မြန်မာနိုင်ငံစာစစ်ဦးစီးဌာန</div>
+     <h3>အမှတ်စာရင်း</h3><div class="result-subtitle">တက္ကသိုလ်ဝင်စာမေးပွဲ — ၂၀၂၇ ခုနှစ်</div>
+     <div class="result-meta">ခုံအမှတ် — ____________　 စာစစ်ဌာန — ____________</div>
+     <div class="result-meta">အမည် — __________________________________________</div>
+     <table class="result-table"><thead><tr><th>စဉ်</th><th>ဘာသာရပ်</th><th>ရမှတ်</th><th>အများဆုံး</th></tr></thead><tbody>
+      <tr><td>၁</td><td>မြန်မာစာ</td><td>_____</td><td>၁၀၀</td></tr><tr><td>၂</td><td>အင်္ဂလိပ်စာ</td><td>_____</td><td>၁၀၀</td></tr><tr><td>၃</td><td>သင်္ချာ</td><td>_____</td><td>၁၀၀</td></tr><tr><td>၄</td><td>ဓာတုဗေဒ</td><td>_____</td><td>၁၀၀</td></tr><tr><td>၅</td><td>ရူပဗေဒ</td><td>_____</td><td>၁၀၀</td></tr><tr><td>၆</td><td>ဇီဝဗေဒ</td><td>_____</td><td>၁၀၀</td></tr>
+     </tbody><tfoot><tr><th colspan="2">စုစုပေါင်း</th><th>_____</th><th>၆၀၀</th></tr></tfoot></table>
+     <div class="result-outcome">ရလဒ် — ____________________</div><div class="result-signatures"><span>လက်မှတ် ____________<br>စစ်ဆေးသူ</span><span>လက်မှတ် ____________<br>တာဝန်ခံ</span></div>
+    </div>
+   </div>
+  </div>
+  <div class="results-note">စာရွက်ပေါ်က အမှတ်စာရင်းနှစ်ခုစလုံးကို တိုက်ရိုက်နှိပ်၍ ပြင်နိုင်သည်။ ပုံစံသည် တရားဝင်စာရွက်မဟုတ်ဘဲ စိတ်ကြိုက်ပြင်ဆင်နိုင်သော မူကြမ်းဖြစ်သည်။</div>
+ </div>
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -667,6 +743,8 @@ function renderCustomPages(){
 }
 function render(){renderSubject();}
 function openSubjectButton(b){
+ if(b.dataset.subject==="Results"){home.classList.add("hidden");app.classList.add("hidden");document.getElementById("resultsApp").classList.remove("hidden");return;}
+ document.getElementById("resultsApp").classList.add("hidden");
  subject=b.dataset.subject;subjectMM=b.dataset.mm;customMode=subject==="PhoenixPaper"||subject==="CustomPaper";
  document.getElementById("selectedTitle").textContent=customMode?(subject==="PhoenixPaper"?"Phoenix Spring High School — Exam Paper":"Custom Exam Paper"):subject+" / "+subjectMM;
  document.getElementById("customFields").classList.toggle("hidden",!customMode);document.getElementById("addPage").classList.toggle("hidden",!customMode);document.getElementById("removePage").classList.toggle("hidden",!customMode);
@@ -1005,6 +1083,43 @@ function wrapSelectionInBox(current){
  });
 })();
 
+
+
+document.getElementById("resultsBack").addEventListener("click",()=>{document.getElementById("resultsApp").classList.add("hidden");home.classList.remove("hidden");});
+document.querySelectorAll(".result-theme").forEach(select=>select.addEventListener("change",()=>{
+ const half=document.getElementById("resultHalf"+select.dataset.half);
+ half.dataset.theme=select.value;
+ const watermark=half.querySelector(".result-watermark");
+ if(watermark)watermark.setAttribute("aria-label",select.value==="pass"?"အောင်မြင် ရေစာ":"ကျရှုံး ရေစာ");
+}));
+async function captureResultsSheet(){
+ if(typeof window.html2canvas!=="function")throw new Error("Image export library failed to load. Reload the page and try again.");
+ if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+ const source=document.getElementById("resultsSheet");
+ const clone=source.cloneNode(true);
+ clone.style.setProperty("transform","none","important");clone.style.setProperty("margin","0","important");
+ clone.style.setProperty("width","1123px","important");clone.style.setProperty("height","794px","important");
+ clone.style.setProperty("min-width","1123px","important");clone.style.setProperty("min-height","794px","important");
+ clone.style.setProperty("max-width","1123px","important");clone.style.setProperty("max-height","794px","important");
+ clone.style.setProperty("position","fixed","important");clone.style.setProperty("left","-12000px","important");clone.style.setProperty("top","0","important");clone.style.setProperty("box-shadow","none","important");
+ clone.querySelectorAll(".result-controls").forEach(x=>x.remove());
+ document.body.appendChild(clone);
+ try{return await html2canvas(clone,{scale:2,backgroundColor:"#fff",width:1123,height:794,windowWidth:1123,windowHeight:794,scrollX:0,scrollY:0,logging:false});}
+ finally{clone.remove();}
+}
+document.getElementById("resultsPdf").addEventListener("click",async()=>{
+ const button=document.getElementById("resultsPdf"),label=button.textContent;if(button.disabled)return;button.disabled=true;
+ try{if(!window.jspdf||!window.jspdf.jsPDF)throw new Error("PDF library failed to load.");button.textContent="Preparing landscape PDF…";const canvas=await captureResultsSheet();const pdf=new window.jspdf.jsPDF({orientation:"landscape",unit:"mm",format:"a4"});pdf.addImage(canvas.toDataURL("image/jpeg",.96),"JPEG",0,0,297,210);pdf.save("Results-Marksheets-A4-Landscape.pdf");}
+ catch(e){console.error(e);alert("အမှတ်စာရင်း PDF မထုတ်နိုင်ပါ။ "+(e.message||"ထပ်စမ်းကြည့်ပါ။"));}
+ finally{button.disabled=false;button.textContent=label;}
+});
+document.getElementById("resultsPng").addEventListener("click",async()=>{
+ const button=document.getElementById("resultsPng"),label=button.textContent;if(button.disabled)return;button.disabled=true;
+ try{button.textContent="Preparing PNG…";const canvas=await captureResultsSheet();const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error("PNG creation failed")),"image/png"));const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Results-Marksheets-A4-Landscape.png";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
+ catch(e){console.error(e);alert("အမှတ်စာရင်း PNG မထုတ်နိုင်ပါ။ "+(e.message||"ထပ်စမ်းကြည့်ပါ။"));}
+ finally{button.disabled=false;button.textContent=label;}
+});
+document.getElementById("resultsPrint").addEventListener("click",()=>window.print());
 
 document.getElementById("back").onclick=()=>{app.classList.add("hidden");home.classList.remove("hidden")};
 document.getElementById("print").onclick=()=>window.print();
