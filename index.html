@@ -189,10 +189,9 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 .result-half[data-theme="fail"]{--result-color:#b4232f;--result-tint:rgba(180,35,47,.13)}
 .result-controls{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px;font:11px Arial,sans-serif;color:#4d596b}
 .result-controls select{font:11px Arial,sans-serif;border:1px solid #ccd4e0;border-radius:5px;padding:4px;max-width:54%}
-.result-watermark{position:absolute;z-index:0;inset:0;pointer-events:none;overflow:hidden;opacity:.34}
-.result-watermark:before{content:"";position:absolute;top:-55%;left:-55%;width:210%;height:210%;display:block;white-space:pre-wrap;text-align:center;font-family:"Noto Sans Myanmar","Myanmar Text",sans-serif;font-weight:900;font-size:18px;line-height:2.8;letter-spacing:.5px;color:var(--result-color);transform:rotate(-45deg);transform-origin:center;overflow-wrap:anywhere;text-shadow:0 0 .35px currentColor}
-.result-half[data-theme="pass"] .result-watermark:before{content:"အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်\A အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်　 အောင်မြင်"}
-.result-half[data-theme="fail"] .result-watermark:before{content:"ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး\A ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး　 ကျရှုံး"}
+.result-watermark{position:absolute;z-index:0;inset:-34%;width:168%;height:168%;pointer-events:none;overflow:visible;opacity:.38;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-auto-rows:38px;align-content:center;justify-items:center;transform:rotate(-45deg);transform-origin:center}
+.result-watermark span{display:block;white-space:nowrap;font-family:"Noto Sans Myanmar","Myanmar Text",sans-serif;font-weight:900;font-size:16px;line-height:1.5;letter-spacing:.2px;color:var(--result-color);text-shadow:0 0 .35px currentColor}
+.result-watermark:before{content:none!important}
 .result-document{position:relative;z-index:1;flex:1;min-height:0;padding:4px 5px;color:#1e293b;background:transparent;border:1.5px solid var(--result-color);outline:none;font-family:"Noto Sans Myanmar","Myanmar Text",sans-serif;font-size:10px;line-height:1.5;overflow:hidden}
 .result-document:focus{outline:2px dashed var(--result-color);outline-offset:1px}
 .result-authority{text-align:center;font-size:10px;font-weight:800;line-height:1.45;color:var(--result-color)}
@@ -1086,11 +1085,23 @@ function wrapSelectionInBox(current){
 
 
 document.getElementById("resultsBack").addEventListener("click",()=>{document.getElementById("resultsApp").classList.add("hidden");home.classList.remove("hidden");});
+function fillResultWatermark(half){
+ const watermark=half.querySelector(".result-watermark");
+ if(!watermark)return;
+ const word=half.dataset.theme==="pass"?"အောင်မြင်":"ကျရှုံး";
+ watermark.replaceChildren();
+ watermark.setAttribute("aria-label",word+" ရေစာ");
+ for(let i=0;i<98;i++){
+  const span=document.createElement("span");
+  span.textContent=word;
+  watermark.appendChild(span);
+ }
+}
+document.querySelectorAll(".result-half").forEach(fillResultWatermark);
 document.querySelectorAll(".result-theme").forEach(select=>select.addEventListener("change",()=>{
  const half=document.getElementById("resultHalf"+select.dataset.half);
  half.dataset.theme=select.value;
- const watermark=half.querySelector(".result-watermark");
- if(watermark)watermark.setAttribute("aria-label",select.value==="pass"?"အောင်မြင် ရေစာ":"ကျရှုံး ရေစာ");
+ fillResultWatermark(half);
 }));
 async function captureResultsSheet(){
  if(typeof window.html2canvas!=="function")throw new Error("Image export library failed to load. Reload the page and try again.");
