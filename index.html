@@ -201,9 +201,9 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 .result-document h3{text-align:center;font-size:17px;margin:3px 0 0;color:var(--result-color);letter-spacing:1px}
 .result-subtitle{text-align:center;font-size:9px;font-weight:700;margin:1px 0 5px}
 .result-meta{font-size:9px;margin:3px 0;white-space:normal}
-.result-table{width:100%;border-collapse:collapse;margin:5px 0;font-size:9px;line-height:1.35}
-.result-table th,.result-table td{border:1px solid var(--result-color);padding:3px 3px;text-align:center}
-.result-table th{background:var(--result-tint);font-weight:800;color:var(--result-color)}
+.result-table{width:100%;border-collapse:separate;border-spacing:0 7px;margin:5px 0;font-size:10px;line-height:1.65}
+.result-table th,.result-table td{border:0;padding:3px 4px;text-align:left;background:transparent}
+.result-table th{font-weight:800;color:var(--result-color);border-bottom:1px dotted color-mix(in srgb,var(--result-color) 55%,transparent)}
 .result-table td:nth-child(2){text-align:left}
 .result-outcome{margin:7px 0 3px;padding:5px;border:1px solid var(--result-color);font-weight:900;color:var(--result-color);text-align:center;font-size:12px;background:var(--result-tint)}
 .results-note{margin:14px auto 24px}
