@@ -182,9 +182,9 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 
 /* Results: two Myanmar-style result slips on one landscape A4 sheet */
 .results-app{min-height:100vh;background:#eef2f7}.results-controls{max-width:1500px;margin:16px auto;padding:0 14px}.results-controls>p,.results-note{font-size:13px;color:#5d6a80;text-align:center;margin:10px auto 16px}
-.results-sheet{width:297mm;height:210mm;margin:0 auto;background:#fff;display:grid;grid-template-columns:1fr 1fr;position:relative;box-shadow:0 5px 24px #17203322;overflow:hidden}
-.results-sheet:after{content:"";position:absolute;top:0;bottom:0;left:50%;border-left:1px dashed #9aa3b2;z-index:5;pointer-events:none}
-.result-half{position:relative;isolation:isolate;min-width:0;overflow:hidden;padding:5mm 5mm 4mm;border:1px solid #d7dce4;display:flex;flex-direction:column;background:var(--result-tint);--result-color:#b4232f;--result-tint:rgba(180,35,47,.13)}
+.results-sheet{width:210mm;height:297mm;margin:0 auto;background:#fff;display:grid;grid-template-columns:1fr;grid-template-rows:1fr 1fr;position:relative;box-shadow:0 5px 24px #17203322;overflow:hidden}
+.results-sheet:after{content:"";position:absolute;left:0;right:0;top:50%;border-top:1px dashed #9aa3b2;z-index:5;pointer-events:none}
+.result-half{position:relative;isolation:isolate;min-width:0;min-height:0;overflow:hidden;padding:5mm 7mm 4mm;border:1.5px solid #7b8798;display:flex;flex-direction:column;background:var(--result-tint);--result-color:#b4232f;--result-tint:rgba(180,35,47,.13)}
 .result-half[data-theme="pass"]{--result-color:#187344;--result-tint:rgba(24,115,68,.13)}
 .result-half[data-theme="fail"]{--result-color:#b4232f;--result-tint:rgba(180,35,47,.13)}
 .result-controls{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px;font:11px Arial,sans-serif;color:#4d596b}
@@ -198,6 +198,10 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 .result-document .result-date{text-align:right;font-size:9px;font-weight:700;margin:0 0 5px}
 .result-document .result-student-info{font-size:10px;margin:4px 0 7px;line-height:1.8;padding-bottom:2px}
 .result-document .result-intro{text-align:left;font-weight:500;border:0}
+.result-subject-list{margin:7px 0 4px;font-size:10px;line-height:1.8}
+.result-subject-list>div{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:1px 2px}
+.result-subject-list>div span:last-child{min-width:65px;text-align:right;white-space:nowrap}
+.result-outcome{margin:7px 0 3px;padding:5px;border:1px solid var(--result-color);font-weight:900;color:var(--result-color);text-align:center;font-size:12px;background:var(--result-tint)}
 .result-document h3{text-align:center;font-size:17px;margin:3px 0 0;color:var(--result-color);letter-spacing:1px}
 .result-subtitle{text-align:center;font-size:9px;font-weight:700;margin:1px 0 5px}
 .result-meta{font-size:9px;margin:3px 0;white-space:normal}
@@ -207,9 +211,9 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
 .result-table td:nth-child(2){text-align:left}
 .result-outcome{margin:7px 0 3px;padding:5px;border:1px solid var(--result-color);font-weight:900;color:var(--result-color);text-align:center;font-size:12px;background:var(--result-tint)}
 .results-note{margin:14px auto 24px}
-@media(max-width:900px){.results-sheet{transform-origin:top left;transform:scale(.72);margin-bottom:-58mm}.results-controls{overflow-x:auto}}
-@media(max-width:560px){.results-sheet{transform:scale(.42);margin-bottom:-122mm}.results-toolbar h2{width:100%}.results-toolbar{position:sticky}}
-@media print{body:has(#resultsApp:not(.hidden)){background:#fff}@page{size:A4 landscape;margin:0}body:has(#resultsApp:not(.hidden)) #home,body:has(#resultsApp:not(.hidden)) #app,body:has(#resultsApp:not(.hidden)) .results-toolbar,body:has(#resultsApp:not(.hidden)) .results-controls>p,body:has(#resultsApp:not(.hidden)) .results-note{display:none!important}body:has(#resultsApp:not(.hidden)) #resultsApp{display:block!important}.results-sheet{width:297mm;height:210mm;margin:0;transform:none!important;box-shadow:none}.result-controls{display:none!important}.result-half{padding:5mm 5mm 4mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+@media(max-width:900px){.results-sheet{transform-origin:top left;transform:scale(.72);margin-bottom:-83mm}.results-controls{overflow-x:auto}}
+@media(max-width:560px){.results-sheet{transform:scale(.42);margin-bottom:-172mm}.results-toolbar h2{width:100%}.results-toolbar{position:sticky}}
+@media print{body:has(#resultsApp:not(.hidden)){background:#fff}@page{size:A4 portrait;margin:0}body:has(#resultsApp:not(.hidden)) #home,body:has(#resultsApp:not(.hidden)) #app,body:has(#resultsApp:not(.hidden)) .results-toolbar,body:has(#resultsApp:not(.hidden)) .results-controls>p,body:has(#resultsApp:not(.hidden)) .results-note{display:none!important}body:has(#resultsApp:not(.hidden)) #resultsApp{display:block!important}.results-sheet{width:210mm;height:297mm;margin:0;transform:none!important;box-shadow:none}.result-controls{display:none!important}.result-half{padding:5mm 5mm 4mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 
 </style>
 </head>
@@ -309,10 +313,15 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
     <div class="result-document" contenteditable="true" spellcheck="false" aria-label="ဘယ်ဘက် အမှတ်စာရင်းကို ပြင်ဆင်ရန်">
      <div class="result-date">နေ့စွဲ — ____ / ____ / ______</div>
      <div class="result-student-info result-intro">၂၀၂၆ ခုနစ်၊ နိုဝင်ဘာ လတွင် ကျင်းပပြီးစီးခဲ့သော စာမေးပွဲ၌ _______ ၏ ရရှိသော အမှတ်များမှာ အောက်ပါအတိုင်းဖြစ်ပါသည်။</div>
-     <table class="result-table"><thead><tr><th>ဘာသာရပ်</th><th>ရရှိသောအမှတ်</th></tr></thead><tbody>
-      <tr><td>၁။ မြန်မာစာ</td><td>_____ / ၁၀၀</td></tr><tr><td>၂။ အင်္ဂလိပ်စာ</td><td>_____ / ၁၀၀</td></tr><tr><td>၃။ သင်္ချာ</td><td>_____ / ၁၀၀</td></tr><tr><td>၄။ ဓာတုဗေဒ</td><td>_____ / ၁၀၀</td></tr><tr><td>၅။ ရူပဗေဒ</td><td>_____ / ၁၀၀</td></tr><tr><td>၆။ ဇီဝဗေဒ</td><td>_____ / ၁၀၀</td></tr>
-     </tbody></table>
-     <div class="result-outcome">ရလဒ် — ____________________</div>
+     <div class="result-subject-list">
+      <div><span>၁။ မြန်မာစာ</span><span>_____ / ၁၀၀</span></div>
+      <div><span>၂။ အင်္ဂလိပ်စာ</span><span>_____ / ၁၀၀</span></div>
+      <div><span>၃။ သင်္ချာ</span><span>_____ / ၁၀၀</span></div>
+      <div><span>၄။ ဓာတုဗေဒ</span><span>_____ / ၁၀၀</span></div>
+      <div><span>၅။ ရူပဗေဒ</span><span>_____ / ၁၀၀</span></div>
+      <div><span>၆။ ဇီဝဗေဒ</span><span>_____ / ၁၀၀</span></div>
+     </div>
+     <div class="result-outcome">ဂုဏ်ထူး — ____________________</div>
     </div>
    </div>
    <div class="result-half" id="resultHalf2" data-theme="pass">
@@ -321,10 +330,15 @@ h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px}.sub{color:#68758a;margin:0 0 2
     <div class="result-document" contenteditable="true" spellcheck="false" aria-label="ညာဘက် အမှတ်စာရင်းကို ပြင်ဆင်ရန်">
      <div class="result-date">နေ့စွဲ — ____ / ____ / ______</div>
      <div class="result-student-info result-intro">၂၀၂၆ ခုနစ်၊ နိုဝင်ဘာ လတွင် ကျင်းပပြီးစီးခဲ့သော စာမေးပွဲ၌ _______ ၏ ရရှိသော အမှတ်များမှာ အောက်ပါအတိုင်းဖြစ်ပါသည်။</div>
-     <table class="result-table"><thead><tr><th>ဘာသာရပ်</th><th>ရရှိသောအမှတ်</th></tr></thead><tbody>
-      <tr><td>၁။ မြန်မာစာ</td><td>_____ / ၁၀၀</td></tr><tr><td>၂။ အင်္ဂလိပ်စာ</td><td>_____ / ၁၀၀</td></tr><tr><td>၃။ သင်္ချာ</td><td>_____ / ၁၀၀</td></tr><tr><td>၄။ ဓာတုဗေဒ</td><td>_____ / ၁၀၀</td></tr><tr><td>၅။ ရူပဗေဒ</td><td>_____ / ၁၀၀</td></tr><tr><td>၆။ ဇီဝဗေဒ</td><td>_____ / ၁၀၀</td></tr>
-     </tbody></table>
-     <div class="result-outcome">ရလဒ် — ____________________</div>
+     <div class="result-subject-list">
+      <div><span>၁။ မြန်မာစာ</span><span>_____ / ၁၀၀</span></div>
+      <div><span>၂။ အင်္ဂလိပ်စာ</span><span>_____ / ၁၀၀</span></div>
+      <div><span>၃။ သင်္ချာ</span><span>_____ / ၁၀၀</span></div>
+      <div><span>၄။ ဓာတုဗေဒ</span><span>_____ / ၁၀၀</span></div>
+      <div><span>၅။ ရူပဗေဒ</span><span>_____ / ၁၀၀</span></div>
+      <div><span>၆။ ဇီဝဗေဒ</span><span>_____ / ၁၀၀</span></div>
+     </div>
+     <div class="result-outcome">ဂုဏ်ထူး — ____________________</div>
     </div>
    </div>
   </div>
